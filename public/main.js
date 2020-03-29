@@ -33,11 +33,13 @@ function createWindow() {
     win = null
   })
 
-  autoUpdater.checkForUpdatesAndNotify();
-  setInterval(autoUpdater.checkForUpdatesAndNotify(), 60000)
+
+  function checkYo(){
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+  checkYo()
+  setInterval(checkYo, 60000)
 }
-
-
 
 app.on('ready', createWindow)
 
@@ -53,6 +55,7 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
 ipcMain.on('app_version', (event) => {
   event.sender.send('app_version', { version: app.getVersion() });
 });
@@ -64,6 +67,7 @@ ipcMain.on('restart_app', () => {
 autoUpdater.on('update-available', () => {
   win.webContents.send('update_available');
 });
+
 autoUpdater.on('update-downloaded', () => {
   win.webContents.send('update_downloaded');
 });
