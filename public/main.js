@@ -36,6 +36,8 @@ function createWindow() {
   autoUpdater.checkForUpdatesAndNotify();
 }
 
+setInterval(autoUpdater.checkForUpdatesAndNotify(), 60000)
+
 app.on('ready', createWindow)
 
 // Quit when all windows are closed.
