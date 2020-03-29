@@ -32,7 +32,7 @@ function createWindow() {
   win.on('closed', () => {
     win = null
   })
-  
+
   checkYo()
   setInterval(checkYo, 60000)
 }
