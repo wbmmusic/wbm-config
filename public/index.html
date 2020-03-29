@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+  #notification {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 200px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="stylesheet" href="https://unpkg.com/react-selectize@3.0.1/dist/index.min.css" />
+
+  <meta name="description" content="Application for configuring your WBM Tek devices">
+  <title>Config App</title>
+
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <p id="version" style="color: green; margin: 0px; padding: 0px;"></p>
+  <div id="root"></div>
+
+  <div id="notification" class="hidden">
+    <p id="message"></p>
+    <button id="close-button" onClick="closeNotification()">
+      Close
+    </button>
+    <button id="restart-button" onClick="restartApp()" class="hidden">
+      Restart
+    </button>
+  </div>
+
+</body>
+
+</html>
+
+<script>
+  const { ipcRenderer } = require('electron');
+  const version = document.getElementById('version');
+
+  ipcRenderer.send('app_version');
+  ipcRenderer.on('app_version', (event, arg) => {
+    ipcRenderer.removeAllListeners('app_version');
+    version.innerText = 'Version ' + arg.version;
+  });
+
+  const notification = document.getElementById('notification');
+  const message = document.getElementById('message');
+  const restartButton = document.getElementById('restart-button');
+  ipcRenderer.on('update_available', () => {
+    ipcRenderer.removeAllListeners('update_available');
+    message.innerText = 'A new update is available. Downloading now...';
+    notification.classList.remove('hidden');
+  });
+  ipcRenderer.on('update_downloaded', () => {
+    ipcRenderer.removeAllListeners('update_downloaded');
+    message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
+    restartButton.classList.remove('hidden');
+    notification.classList.remove('hidden');
+  });
+</script>
