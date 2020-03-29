@@ -75,4 +75,11 @@
     restartButton.classList.remove('hidden');
     notification.classList.remove('hidden');
   });
+
+  function closeNotification() {
+    notification.classList.add('hidden');
+  }
+  function restartApp() {
+    ipcRenderer.send('restart_app');
+  }
 </script>
