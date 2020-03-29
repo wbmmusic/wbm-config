@@ -10,6 +10,7 @@ import midiGpio from './Components/midiGPIO/midiGpio'
 import midiButton from './Components/midiButton/midiButton'
 import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
+import About from './Components/layout/about'
 
 import { v4 as uuid } from "uuid";
 import axios from 'axios';
@@ -71,6 +72,7 @@ export class App extends Component {
             <Route exact path='/midiButton' component={midiButton} />
             <Route exact path='/mtcDisplay' component={mtcDisplay} />
             <Route exact path='/midiAB' component={midiAB} />
+            <Route exact path='/about' component={About} />
             <Route exact path='/' component={MidiLightChannel} />
           </div>
         </div>
