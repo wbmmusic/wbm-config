@@ -32,11 +32,7 @@ function createWindow() {
   win.on('closed', () => {
     win = null
   })
-
-
-  function checkYo(){
-    autoUpdater.checkForUpdatesAndNotify();
-  }
+  
   checkYo()
   setInterval(checkYo, 60000)
 }
@@ -55,6 +51,10 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+function checkYo() {
+  autoUpdater.checkForUpdatesAndNotify();
+}
 
 ipcMain.on('app_version', (event) => {
   event.sender.send('app_version', { version: app.getVersion() });
