@@ -34,9 +34,10 @@ function createWindow() {
   })
 
   autoUpdater.checkForUpdatesAndNotify();
+  setInterval(autoUpdater.checkForUpdatesAndNotify(), 60000)
 }
 
-setInterval(autoUpdater.checkForUpdatesAndNotify(), 60000)
+
 
 app.on('ready', createWindow)
 
