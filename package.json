@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -27,8 +27,8 @@
     "eject": "react-scripts eject",
     "electron": "electron .",
     "ebuild": "yarn build && node_modules/.bin/build",
-    "package": "electron-builder build --win -c.extraMetadata.main=build/public/main.js --publish never",
-    "deploy": "electron-builder build --win -c.extraMetadata.main=build/public/main.js --publish always"
+    "package": "electron-builder build --win -c.extraMetadata.main=build/main.js --publish never",
+    "deploy": "electron-builder build --win -c.extraMetadata.main=build/main.js --publish always"
   },
   "repository": {
     "type": "git",
