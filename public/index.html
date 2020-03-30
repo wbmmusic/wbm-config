@@ -73,6 +73,11 @@
       restartButton.classList.remove('hidden');
       notification.classList.remove('hidden');
     });
+    ipcRenderer.on('update_error', () => {
+      ipcRenderer.removeAllListeners('update_error');
+      message.innerText = 'UPDATE ERROR';
+      notification.classList.remove('hidden');
+    });
 
     function closeNotification() {
       notification.classList.add('hidden');

@@ -71,3 +71,7 @@ autoUpdater.on('update-available', () => {
 autoUpdater.on('update-downloaded', () => {
   win.webContents.send('update_downloaded');
 });
+
+autoUpdater.on('error', () => {
+  win.webContents.send('update_error');
+});
