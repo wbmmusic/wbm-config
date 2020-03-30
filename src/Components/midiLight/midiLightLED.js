@@ -7,11 +7,11 @@ export class midiLightLED extends Component {
         return (
             <div style={{ backgroundColor: 'lightpink' }}>
                 <div style={mainDiv}>
-                    <p>LED Options</p>
+                    LED Options
                     <table style={{ width: '100%' }}>
                         <tbody>
                             <tr>
-                                <td style={td}>
+                                <td style={dotCell}>
                                     <span style={dot}>
 
                                     </span>
@@ -19,7 +19,7 @@ export class midiLightLED extends Component {
                                 <td style={td}>Color</td>
                             </tr>
                             <tr>
-                                <td style={td}>Style:</td>
+                                <td style={label}>Style:</td>
                                 <td style={td}>
                                     <div>
                                         <SimpleSelect
@@ -35,15 +35,15 @@ export class midiLightLED extends Component {
                                 </td>
                             </tr>
                             <tr>
-                                <td style={td}>A:</td>
+                                <td style={label}>A:</td>
                                 <td style={td}>d</td>
                             </tr>
                             <tr>
-                                <td style={td}>B:</td>
+                                <td style={label}>B:</td>
                                 <td style={td}>e</td>
                             </tr>
                             <tr>
-                                <td style={td}>C:</td>
+                                <td style={label}>C:</td>
                                 <td style={td}>f</td>
                             </tr>
                         </tbody>
@@ -74,13 +74,25 @@ const td = {
     border: '2px black solid'
 }
 
+const dotCell = {
+    border: '2px black solid',
+    alignContents: 'center',
+}
+
+const label = {
+    border: '2px black solid',
+    textAlign: 'right',
+    paddingRight: '4px',
+}
+
 const dot = {
     height: '30px',
-    width: '30px',
+    width: '90%',
     backgroundColor: 'magenta',
-    borderRadius: '50%',
+    /*borderRadius: '100%',*/
     display: 'inline-block',
     margin: '3px',
+    verticalAlign: "middle",
 }
 
 const mainDiv = {

@@ -26,8 +26,11 @@ export class midiLight extends Component {
             <div>
                 <h1>MIDI Light</h1>
                 <div>
-                    <p>These devices will have a varying number of LEDs</p>
-                    <p>Below we see UIs for each LED</p>
+                    <b>
+                        These devices will have a varying number of LEDs
+                    <br></br>
+                    Below we see UIs for each LED
+                    </b>
                 </div>
                 {this.createTable()}
             </div>
@@ -36,7 +39,7 @@ export class midiLight extends Component {
     }
 }
 
-const chnl={
+const chnl = {
     display: 'inline-block',
     padding: '6px',
 }

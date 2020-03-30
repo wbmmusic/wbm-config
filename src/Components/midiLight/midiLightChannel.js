@@ -14,7 +14,7 @@ export class midiLightChannel extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td style={tblcell}><h3>LED #{this.props.channel}</h3></td>
+                                            <td style={tblcell}><b>LED #{this.props.channel}</b></td>
                                         </tr>
                                         <tr>
                                             <td style={tblcell}>

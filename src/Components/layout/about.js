@@ -6,7 +6,9 @@ export class about extends Component {
         
         return (
             <div>
-                <p id="version" style={{color: "white"}}>??</p>
+                <p id="version" style={{color: "white"}}>
+                    This is the about page :)
+                </p>
             </div>
         )
     }
