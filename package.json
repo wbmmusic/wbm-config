@@ -1,7 +1,10 @@
 {
   "name": "wbm-config",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "author": "Marece Williams",
+  "description": "App for configuring WBM Tek devices",
+  "homepage": "./",
+  "main": "public/main.js",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -50,9 +53,6 @@
       "last 1 safari version"
     ]
   },
-  "description": "App for configuring WBM Tek devices",
-  "homepage": "./",
-  "main": "public/main.js",
   "build": {
     "productName": "WBM Config App",
     "appId": "com.reactbits.reactelectron",
