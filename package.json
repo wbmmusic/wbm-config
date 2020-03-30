@@ -1,8 +1,7 @@
 {
   "name": "wbm-config",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "private": true,
-  "author": "Marece Williams",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -51,6 +50,7 @@
     ]
   },
   "description": "App for configuring WBM Tek devices",
+  "author": "Marece Williams",
   "homepage": "./",
   "main": "public/main.js",
   "build": {
@@ -67,7 +67,7 @@
       "icon": "public/logo512.png"
     },
     "win": {
-      "icon": "favicon.ico"
+      "icon": "public/favicon.ico"
     }
   },
   "devDependencies": {
