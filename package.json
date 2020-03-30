@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -49,17 +49,25 @@
       "last 1 safari version"
     ]
   },
-  "description": "React and Electron Awesome App",
+  "description": "App for configuring WBM Tek devices",
   "homepage": "./",
   "main": "public/main.js",
   "build": {
-    "productName": "React Electron App",
+    "productName": "WBM Config App",
     "appId": "com.reactbits.reactelectron",
     "electronVersion": "8.2.0",
+    "copyright": "Marece Williams",
     "files": [
       "build/**/*",
       "electron/*"
-    ]
+    ],
+    "mac": {
+      "gatekeeperAccess": "true",
+      "icon": "public/logo512.png"
+    },
+    "win": {
+      "icon": "public/logo512.png"
+    }
   },
   "devDependencies": {
     "electron": "^8.2.0",

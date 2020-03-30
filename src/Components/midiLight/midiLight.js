@@ -24,14 +24,7 @@ export class midiLight extends Component {
     render() {
         return (
             <div>
-                <h1>MIDI Light</h1>
-                <div>
-                    <b>
-                        These devices will have a varying number of LEDs
-                    <br></br>
-                    Below we see UIs for each LED
-                    </b>
-                </div>
+                <b style={{display: 'block'}}>MIDI Light</b>
                 {this.createTable()}
             </div>
 
@@ -41,7 +34,6 @@ export class midiLight extends Component {
 
 const chnl = {
     display: 'inline-block',
-    padding: '6px',
 }
 
 export default midiLight
