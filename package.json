@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -56,7 +56,8 @@
     "productName": "WBM Config App",
     "appId": "com.reactbits.reactelectron",
     "electronVersion": "8.2.0",
-    "copyright": "Marece Williams",
+    "copyright": "WBM Tek",
+    "author": "Marece Williams",
     "files": [
       "build/**/*",
       "electron/*"
@@ -66,7 +67,7 @@
       "icon": "public/logo512.png"
     },
     "win": {
-      "icon": "public/logo512.png"
+      "icon": "favicon.ico"
     }
   },
   "devDependencies": {
