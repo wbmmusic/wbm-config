@@ -2,6 +2,7 @@
   "name": "wbm-config",
   "version": "0.0.26",
   "private": true,
+  "author": "Marece Williams",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -57,7 +58,6 @@
     "appId": "com.reactbits.reactelectron",
     "electronVersion": "8.2.0",
     "copyright": "WBM Tek",
-    "author": "Marece Williams",
     "files": [
       "build/**/*",
       "electron/*"
