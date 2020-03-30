@@ -62,7 +62,7 @@
       "electron/*"
     ],
     "mac": {
-      "gatekeeperAccess": "true",
+      "gatekeeperAssess": "true",
       "icon": "public/logo512.png"
     },
     "win": {
