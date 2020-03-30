@@ -5,50 +5,48 @@ import { v4 as uuid } from 'uuid';
 export class midiLightLED extends Component {
     render() {
         return (
-            <div style={{ backgroundColor: 'lightpink' }}>
-                <div style={mainDiv}>
-                    LED Options
-                    <table style={{ width: '100%' }}>
-                        <tbody>
-                            <tr>
-                                <td style={dotCell}>
-                                    <span style={dot}>
+            <div style={mainDiv}>
+                LED Options
+                <table style={{ width: '100%' }}>
+                    <tbody>
+                        <tr>
+                            <td style={dotCell}>
+                                <span style={dot}>
 
-                                    </span>
-                                </td>
-                                <td style={td}>Color</td>
-                            </tr>
-                            <tr>
-                                <td style={label}>Style:</td>
-                                <td style={td}>
-                                    <div>
-                                        <SimpleSelect
-                                            id={uuid()}
-                                            hideResetButton='true'
-                                            style={{ textAlign: 'left' }}
-                                            options={typesDropDown}
-                                            placeholder="Solid"
-                                            theme="default"
-                                            onValueChange={() => { }}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={label}>A:</td>
-                                <td style={td}>d</td>
-                            </tr>
-                            <tr>
-                                <td style={label}>B:</td>
-                                <td style={td}>e</td>
-                            </tr>
-                            <tr>
-                                <td style={label}>C:</td>
-                                <td style={td}>f</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                </span>
+                            </td>
+                            <td style={td}>Color</td>
+                        </tr>
+                        <tr>
+                            <td style={label}>Style:</td>
+                            <td style={td}>
+                                <div>
+                                    <SimpleSelect
+                                        id={uuid()}
+                                        hideResetButton='true'
+                                        style={{ textAlign: 'left' }}
+                                        options={typesDropDown}
+                                        placeholder="Solid"
+                                        theme="default"
+                                        onValueChange={() => { }}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style={label}>A:</td>
+                            <td style={td}>d</td>
+                        </tr>
+                        <tr>
+                            <td style={label}>B:</td>
+                            <td style={td}>e</td>
+                        </tr>
+                        <tr>
+                            <td style={label}>C:</td>
+                            <td style={td}>f</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -71,16 +69,16 @@ function createOptions(pointer, output) {
 }
 
 const td = {
-    border: '2px black solid'
+    border: '1px black solid'
 }
 
 const dotCell = {
-    border: '2px black solid',
+    border: '1px black solid',
     alignContents: 'center',
 }
 
 const label = {
-    border: '2px black solid',
+    border: '1px black solid',
     textAlign: 'right',
     paddingRight: '4px',
 }
