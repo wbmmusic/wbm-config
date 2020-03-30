@@ -31,13 +31,12 @@
   <link rel="stylesheet" href="selectize.css" />
 
   <meta name="description" content="Application for configuring your WBM Tek devices">
-  <title>Config App</title>
+  <title id="version">Config App</title>
 
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <p id="version" style="color: rgb(255, 255, 255); margin: 0px; padding: 0px;"></p>
   <div id="root"></div>
 
   <div id="notification" class="hidden">
@@ -56,7 +55,7 @@
     ipcRenderer.send('app_version');
     ipcRenderer.on('app_version', (event, arg) => {
       ipcRenderer.removeAllListeners('app_version');
-      version.innerText = 'Version ' + arg.version;
+      version.innerText = 'WBM Config App --- v' + arg.version;
     });
 
     const notification = document.getElementById('notification');
