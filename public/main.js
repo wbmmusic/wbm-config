@@ -72,6 +72,10 @@ autoUpdater.on('update-downloaded', () => {
   win.webContents.send('update_downloaded');
 });
 
+autoUpdater.on('download-progress', (progressObj) => {
+  win.webContents.send('update_downloaded', progressObj.percent);
+});
+
 autoUpdater.on('error', () => {
   win.webContents.send('update_error');
 });
