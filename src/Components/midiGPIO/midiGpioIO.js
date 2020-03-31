@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+import $ from 'jquery'
 
 export class midiGpioIO extends Component {
+    handleClick = (e) => {
+        console.log('this is:', e);
+    }
+
     render() {
         return (
             <div>
@@ -29,8 +34,14 @@ export class midiGpioIO extends Component {
                                             <td><div style={iobtn}>TS</div></td>
                                             <td><div style={iobtn}>TRS</div></td>
                                         </tr>
+
                                     </tbody>
                                 </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button onMouseDown={this.handleClick}>Click me</button>
                             </td>
                         </tr>
                     </tbody>
