@@ -12,10 +12,9 @@ export class download extends Component {
 
     render() {
         return (
-            <div style={{ textAlign: 'left', textIndent: '5px' }}>
-                A status bar: <canvas id="myCanvas" width="100" height="4" style={{ border: '1px black solid' }}>
+            <div style={{textAlign: 'left', textIndent: '5px'}}>
+                A progress bar: <canvas id="myCanvas" width="100" height="4" style={{border: '1px black solid'}}>
                 </canvas>
-                <div id="port-list"></div>
             </div>
         )
     }
@@ -25,6 +24,7 @@ let c
 let ctx
 let place = 0
 let timer
+
 
 function drawProgress() {
 

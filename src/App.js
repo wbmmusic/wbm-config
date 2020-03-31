@@ -74,9 +74,7 @@ export class App extends Component {
             <Route exact path='/mtcDisplay' component={mtcDisplay} />
             <Route exact path='/midiAB' component={midiAB} />
             <Route exact path='/about' component={About} />
-            <Route exact path='/'>
-              <Download />
-            </Route>
+            <Route exact path='/' component={Download} />
           </div>
         </div>
       </Router>
