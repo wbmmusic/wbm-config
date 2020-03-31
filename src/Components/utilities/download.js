@@ -13,7 +13,7 @@ export class download extends Component {
     render() {
         return (
             <div style={{ textAlign: 'left', textIndent: '5px' }}>
-                Download: <canvas id="myCanvas" width="100" height="4" style={{ border: '1px black solid' }}>
+                A ststud bar: <canvas id="myCanvas" width="100" height="4" style={{ border: '1px black solid' }}>
                 </canvas>
                 <div id="port-list"></div>
             </div>

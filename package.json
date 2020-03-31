@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "author": "Marece Williams",
   "description": "App for configuring WBM Tek devices",
   "homepage": "./",
@@ -64,7 +64,9 @@
       "electron/*"
     ],
     "mac": {
-      "icon": "public/logo.icns"
+      "icon": "public/logo.icns",
+      "hardenedRuntime": true,
+      "entitlements": "./build/entitlements.mac.inherit.plist"
     },
     "win": {
       "icon": "public/favicon.ico"
