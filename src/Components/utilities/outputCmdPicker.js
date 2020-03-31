@@ -14,10 +14,9 @@ export class outputCmdPicker extends Component {
     }
     render() {
         return (
-            <div>
                 <div style={mainDiv}>
                     <table id="pickerTable" style={{ width: "100%" }}>
-                        <tbody>
+                        <tbody style={{ width: "100%" }}>
                             <tr>
                                 <td colSpan="2" style={pickerTitle}>Command Picker</td>
                             </tr>
@@ -97,7 +96,6 @@ export class outputCmdPicker extends Component {
                     </table>
                 </div>
 
-            </div>
         )
     }
 }
