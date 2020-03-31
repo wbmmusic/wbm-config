@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "author": "Marece Williams",
   "description": "App for configuring WBM Tek devices",
   "homepage": "./",
@@ -64,6 +64,7 @@
       "electron/*"
     ],
     "mac": {
+      "gatekeeperAssess": "true",
       "icon": "public/logo.icns"
     },
     "win": {
