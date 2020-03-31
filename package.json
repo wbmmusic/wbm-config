@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "author": "Marece Williams",
   "description": "App for configuring WBM Tek devices",
   "homepage": "./",
@@ -58,6 +58,7 @@
     "appId": "com.reactbits.reactelectron",
     "electronVersion": "8.2.0",
     "copyright": "WBM Tek",
+    "extends": null,
     "files": [
       "build/**/*",
       "electron/*"
