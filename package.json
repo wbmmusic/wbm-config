@@ -67,9 +67,6 @@
       "gatekeeperAssess": "true",
       "icon": "public/logo.icns",
     },
-    "dmg": {
-      "icon": "public/dmg.icns"
-    },
     "win": {
       "icon": "public/favicon.ico"
     }
