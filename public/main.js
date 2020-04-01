@@ -3,7 +3,6 @@ const path = require('path')
 const url = require('url')
 const { autoUpdater } = require('electron-updater');
 
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
@@ -18,7 +17,6 @@ function createWindow() {
     },
   })
 
-
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, '/../build/index.html'),
     protocol: 'file:',
@@ -26,7 +24,6 @@ function createWindow() {
   });
   win.loadURL(startUrl);
   //win.maximize()
-
 
   // Emitted when the window is closed.
   win.on('closed', () => {

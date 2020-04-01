@@ -3,7 +3,6 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Header from './Components/layout/header'
 import Todos from './Components/Todos'
-import MidiLightChannel from './Components/midiLight/midiLightChannel'
 import AddTodo from './Components/AddTodo'
 import midiLight from './Components/midiLight/midiLight'
 import midiGpio from './Components/midiGPIO/midiGpio'
@@ -12,8 +11,8 @@ import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
 import Download from './Components/utilities/download'
+import Matraces from './Components/utilities/matraces'
 
-import { v4 as uuid } from "uuid";
 import axios from 'axios';
 
 export class App extends Component {
@@ -42,7 +41,6 @@ export class App extends Component {
   delTodo = (id) => {
     axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
       .then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
-
   }
 
   //Add Todo
@@ -52,13 +50,12 @@ export class App extends Component {
       completed: false
     })
       .then(res => this.setState({ todos: [...this.state.todos, res.data] }));
-
   }
 
   render() {
     return (
       <Router>
-        <div className="App">
+        <div className="App" style={{height: "70vh"}}>
           <div className="container">
             <Header />
             <Route exact path="/todo" render={props => (
@@ -74,7 +71,11 @@ export class App extends Component {
             <Route exact path='/mtcDisplay' component={mtcDisplay} />
             <Route exact path='/midiAB' component={midiAB} />
             <Route exact path='/about' component={About} />
-            <Route exact path='/' component={Download} />
+            <Route exact path='/'>
+              <Download />
+              <br />
+              <Matraces cols="5" rows="4" />
+            </Route>
           </div>
         </div>
       </Router>

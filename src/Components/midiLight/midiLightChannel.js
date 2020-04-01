@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import OutputCmdPicker from './../utilities/outputCmdPicker'
-import MidiLightLED, { midiLightLED } from './midiLightLED'
+import MidiLightLED from './midiLightLED'
 import { v4 as uuid } from 'uuid';
 
 export class midiLightChannel extends Component {
