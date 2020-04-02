@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
+import MatrixCell from './matrixCell'
+import { v4 as uuid } from 'uuid';
+
 
 export class matrix extends Component {
     state = {
         cols: this.props.cols,
         rows: this.props.rows,
         count: 0,
-        color: 'blue',
-        patches: [
-            {
-                id: 0,
-                selected: false
-            }
-        ]
+        patches: []
     }
 
     onClick() {
@@ -27,19 +24,16 @@ export class matrix extends Component {
             let rowID = `row${i}`
             let cell = []
             for (var idx = 0; idx < this.state.cols; idx++) {
-                let cellID = `cell${i}-${idx}`
-                cell.push(<td
-                    key={cellID}
-                    id={cellID}
-                    onClick={this.onClick.bind(this)}
-                    style={td}></td>)
+                let cellID = `row${i} col${idx}`
+                cell.push(<MatrixCell key={uuid()} />)
+
+                    this.state.patches.indexOf({id: cellID}) === -1 ? this.state.patches.push({id: cellID}) : console.log("This item already exists");
             }
             rows.push(<tr key={i} id={rowID} style={rowstyle}>{cell}</tr>)
         }
         return (
             <table style={theTable}>
                 <tbody>
-                    {this.state.count}
                     {rows}
                 </tbody>
             </table>
@@ -47,26 +41,12 @@ export class matrix extends Component {
     }
 }
 
-const td = {
-    //border: "1px black solid",
-    width: "14px",
-    minWidth: "14px",
-    height: "14px",
-    minHeight: "14px",
-    backgroundColor: "#333",
-}
-
 const rowstyle = {
-    //border: "1px black solid",
     display: "block",
-    //backgroundColor: "green",
     lineHeight: '1px',
-    maxHeight: '18px',
 }
 
 const theTable = {
-    //border: "1px black solid",
-    //backgroundColor: "red",
     display: "block",
     tableLayout: "fixed",
 }
