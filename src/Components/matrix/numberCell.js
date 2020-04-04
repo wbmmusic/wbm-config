@@ -57,7 +57,8 @@ export class numberCell extends Component {
                 textAlign: 'center',
                 fontSize: '10px',
                 width: '14px',
-                height: '14px'
+                height: '14px',
+                cursor: 'context-menu',
             }} >
                 {this.props.number}
         </ td>

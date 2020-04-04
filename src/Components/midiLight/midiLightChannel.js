@@ -18,8 +18,13 @@ export class midiLightChannel extends Component {
                                         </tr>
                                         <tr>
                                             <td style={tblcell}>
-                                                Name:
-                                            <input id={uuid()} style={{ margin: '3px', textIndent:'4px' }} defaultValue='Name this LED' />
+                                                <input id={uuid()} style={{
+                                                    margin: '3px',
+                                                    textIndent: '4px',
+                                                    textAlign: 'center',
+                                                    width: '95%'
+                                                }}
+                                                    defaultValue='Name this LED' />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -41,6 +46,7 @@ export class midiLightChannel extends Component {
 
 const tblcell = {
     textAlign: 'center',
+    width: '300px'
 }
 
 const mainDiv = {

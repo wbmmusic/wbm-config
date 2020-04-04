@@ -36,9 +36,11 @@ const rowstyle = {
     lineHeight: '1px',
 }
 
+/*
 const theTable = {
     display: "block",
     tableLayout: "fixed",
 }
+*/
 
 export default outNumbers

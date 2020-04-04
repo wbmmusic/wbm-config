@@ -8,7 +8,7 @@ import midiButton from './Components/midiButton/midiButton'
 import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
-import Matraces from './Components/matrix/matraces'
+//import Matraces from './Components/matrix/matraces'
 import SaveNopen from './Components/utilities/saveNopen'
 
 import axios from 'axios';

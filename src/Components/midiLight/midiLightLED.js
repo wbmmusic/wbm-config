@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import { SimpleSelect } from "react-selectize";
+import Select from 'react-select'
 import { v4 as uuid } from 'uuid';
 
+
 export class midiLightLED extends Component {
+
     render() {
+
         return (
             <div style={mainDiv}>
                 LED Options
                 <table style={{ width: '100%' }}>
+                    <col width="1px" />
                     <tbody>
                         <tr>
                             <td style={dotCell}>
@@ -21,14 +25,14 @@ export class midiLightLED extends Component {
                             <td style={label}>Style:</td>
                             <td style={td}>
                                 <div>
-                                    <SimpleSelect
+                                    <Select
                                         id={uuid()}
-                                        hideResetButton='true'
-                                        style={{ textAlign: 'left' }}
                                         options={typesDropDown}
-                                        placeholder="Solid"
-                                        theme="default"
-                                        onValueChange={() => { }}
+                                        defaultValue={{
+                                            label: allTypes[0],
+                                            value: 0,
+                                        }}
+                                    //onValueChange={() => { }}
                                     />
                                 </div>
                             </td>

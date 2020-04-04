@@ -23,7 +23,7 @@ export class midiGpio extends Component {
     render() {
         return (
             <div>
-                <h2>MIDI GPIO</h2>
+                <b style={{display: 'block'}}>MIDI GPIO</b>
                 {this.createTable()}
             </div>
         )

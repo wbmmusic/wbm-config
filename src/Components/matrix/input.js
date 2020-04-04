@@ -25,6 +25,7 @@ const td = {
     //display: 'inline-block',
     //backgroundColor: 'red',
     verticalAlign: 'middle',
+    cursor: 'context-menu',
 }
 
 export default input

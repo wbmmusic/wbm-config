@@ -62,6 +62,7 @@ const rowstyle = {
     //border: "1px black solid",
 }
 
+/*
 const theTable = {
     //border: "1px black solid",
     overflow: 'auto',
@@ -69,13 +70,14 @@ const theTable = {
     backgroundColor: '#444',
     display: 'block',
 }
+*/
 
 const griditemheader = {
     height: '75px',
     minHeight: '75px',
 
     position: 'sticky',
-    position: '-webkit-sticky',
+    //position: '-webkit-sticky',
     background: 'rgb(180, 180, 180)',
     top: '0'
 }

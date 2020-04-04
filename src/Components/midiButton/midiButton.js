@@ -23,7 +23,7 @@ export class midiButton extends Component {
     render() {
         return (
             <div>
-                <h2>MIDI Button</h2>
+                <b style={{display: 'block'}}>MIDI Button</b>
                 {this.createTable()}
             </div>
         )

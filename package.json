@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "author": "Marece Williams",
   "description": "App for configuring WBM Tek devices",
   "homepage": "./",
@@ -20,7 +20,7 @@
     "react-file-picker": "0.0.6",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "react-selectize": "^3.0.1",
+    "react-select": "^3.1.0",
     "react-transition-group": "^1.2.1",
     "uuid": "^7.0.2"
   },
@@ -77,6 +77,7 @@
   },
   "devDependencies": {
     "electron": "^8.2.0",
-    "electron-builder": "^22.4.1"
+    "electron-builder": "^22.4.1",
+    "electron-react-devtools": "^0.5.3"
   }
 }

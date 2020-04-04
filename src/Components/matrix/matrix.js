@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import MatrixCell from './matrixCell'
 import { v4 as uuid } from 'uuid';
 
-
 export class matrix extends Component {
     state = {
         cols: this.props.cols,

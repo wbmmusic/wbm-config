@@ -5,7 +5,7 @@ import MidiGpioIO from './midiGpioIO'
 export class midiGpioChannel extends Component {
     render() {
         return (
-            <div style={{minWidth: '200px'}}>
+            <div style={{width: '300px'}}>
                 <table style={{width: '100%'}}>
                     <tbody>
                         <tr>

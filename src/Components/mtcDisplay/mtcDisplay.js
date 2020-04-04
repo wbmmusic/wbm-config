@@ -4,7 +4,7 @@ export class mtcDisplay extends Component {
     render() {
         return (
             <div>
-                <h2>MTC Display</h2>
+                <b style={{display: 'block'}}>MTC Display</b>
                 <table style={{ width: '100%', height: '100px', border: '2px black solid' }}>
                     <tbody>
                         <tr>

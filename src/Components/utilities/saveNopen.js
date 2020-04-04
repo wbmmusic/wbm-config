@@ -1,4 +1,4 @@
-import React, { Component, useRef } from 'react'
+import React, { Component } from 'react'
 import Download from '../utilities/download'
 
 export class saveNopen extends Component {

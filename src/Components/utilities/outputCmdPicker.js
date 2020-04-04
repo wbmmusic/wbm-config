@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SimpleSelect } from "react-selectize";
+import Select from 'react-select'
 import { v4 as uuid } from 'uuid';
 //import $ from 'jquery'
 //import ReactDOM from 'react-dom'
@@ -7,94 +7,108 @@ import { v4 as uuid } from 'uuid';
 export class outputCmdPicker extends Component {
     state = {
         id: 'picker',
-        type: 'Note On',
-        channel: 1,
-        byte1: 0,
+        type: ['Note On', 0],
+        channel: 11,
+        byte1: 67,
         byte2: 127,
     }
+
     render() {
         return (
-                <div style={mainDiv}>
-                    <table id="pickerTable" style={{ width: "100%" }}>
-                        <tbody style={{ width: "100%" }}>
-                            <tr>
-                                <td colSpan="2" style={pickerTitle}>Command Picker</td>
-                            </tr>
-                            <tr>
-                                <td style={td}>
-                                    <div id="typeLbl" style={label}>Type:</div>
-                                </td>
-                                <td style={td}>
-                                    <div id="typeDiv">
-                                        <SimpleSelect
-                                            key={uuid()}
-                                            hideResetButton='true'
-                                            style={{ textAlign: 'left' }}
-                                            options={typesDropDown}
-                                            placeholder={this.state.type}
-                                            theme="default"
-                                            onValueChange={() => { }}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={td}>
-                                    <div id="byte0Lbl" style={label}></div>
-                                </td>
-                                <td style={td}>
-                                    <div id="byte0Div">
-                                        <SimpleSelect
-                                            id={uuid()}
-                                            hideResetButton='true'
-                                            style={{ textAlign: 'left' }}
-                                            options={oneSixteen}
-                                            placeholder="Channel"
-                                            theme="default"
-                                            onValueChange={() => { }}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={td}>
-                                    <div id="byte1Lbl" style={label}></div>
-                                </td>
-                                <td style={td}>
-                                    <div id="byte1Div">
-                                        <SimpleSelect
-                                            id={uuid()}
-                                            hideResetButton='true'
-                                            style={{ textAlign: 'left' }}
-                                            options={noteDropDown}
-                                            placeholder="Note"
-                                            theme="default"
-                                            onValueChange={() => { }}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={td}>
-                                    <div id="byte2Lbl" style={label}></div>
-                                </td>
-                                <td style={td}>
-                                    <div id="byte2Div">
-                                        <SimpleSelect
-                                            id={uuid()}
-                                            hideResetButton='true'
-                                            style={{ textAlign: 'left' }}
-                                            options={one127}
-                                            placeholder="Velocity"
-                                            theme="default"
-                                            onValueChange={() => { }}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div style={mainDiv}>
+                <table id="pickerTable" style={{ width: "100%" }}>
+                <col width="1px" />
+                    <tbody style={{ width: "100%" }}>
+                        <tr>
+                            <td colSpan="2" style={pickerTitle}>Command Picker</td>
+                        </tr>
+                        <tr>
+                            <td style={td}>
+                                <div id="typeLbl" style={label}>Type:</div>
+                            </td>
+                            <td style={td}>
+                                <div id="typeDiv">
+                                    <Select
+                                        key={uuid()}
+                                        hideResetButton='true'
+                                        style={{ textAlign: 'left' }}
+                                        options={typesDropDown}
+                                        defaultValue={{
+                                            label: this.state.type[0],
+                                            value: this.state.type[1]
+                                        }}
+                                        theme="default"
+                                        onValueChange={() => { }}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style={td}>
+                                <div id="byte0Lbl" style={label}>CH:</div>
+                            </td>
+                            <td style={td}>
+                                <div id="byte0Div">
+                                    <Select
+                                        id={uuid()}
+                                        hideResetButton='true'
+                                        style={{ textAlign: 'left' }}
+                                        options={oneSixteen}
+                                        defaultValue={{
+                                            label: this.state.channel,
+                                            value: this.state.channel,
+                                        }}
+                                        theme="default"
+                                        onValueChange={() => { }}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style={td}>
+                                <div id="byte1Lbl" style={label}>Note:</div>
+                            </td>
+                            <td style={td}>
+                                <div id="byte1Div">
+                                    <Select
+                                        id={uuid()}
+                                        hideResetButton='true'
+                                        style={{ textAlign: 'left' }}
+                                        options={noteDropDown}
+                                        defaultValue={{
+                                            label: noteDropDown[this.state.byte1].label,
+                                            value: noteDropDown[this.state.byte1].value,
+                                        }}
+                                        theme="default"
+                                        onValueChange={() => { }}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style={td}>
+                                <div id="byte2Lbl" style={label}>Vel:</div>
+                            </td>
+                            <td style={td}>
+                                <div id="byte2Div">
+                                    <Select
+                                        id={uuid()}
+                                        hideResetButton='true'
+                                        style={{ textAlign: 'left' }}
+                                        options={one127}
+                                        defaultValue={{
+                                            label: this.state.byte2,
+                                            value: this.state.byte2 - 1,
+                                        }}
+                                        theme="default"
+                                        onValueChange={() => { }}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
         )
     }
@@ -113,13 +127,14 @@ const td = {
 }
 
 const pickerTitle = {
-    border: '1px black solid',
+    //border: '1px black solid',
     padding: '2px',
     textAlign: 'center',
 }
 
 const label = {
     textAlign: 'right',
+    paddingLeft: '5px'
 }
 
 //drawPicker()
@@ -210,8 +225,9 @@ for (i = 0; i < 128; i++) {
 
 let range16 = []
 for (i = 0; i < 16; i++) {
-    range16[i] = (i + 1)
+    range16[i] = (i+1)
 }
+console.log(range16)
 
 let ccNames = []
 for (i = 0; i < 128; i++) {
@@ -244,8 +260,5 @@ function createOptions(pointer, output) {
 
     //console.log(output)
 }
-
-
-
 
 export default outputCmdPicker
