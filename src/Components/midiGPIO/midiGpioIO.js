@@ -1,6 +1,26 @@
 import React, { Component } from 'react'
 
 export class midiGpioIO extends Component {
+    state = {
+        inColor: 'red'
+    }
+
+    handleIoInclick = () => {
+        console.log('In Click')
+    }
+
+    handleIoOutclick = () => {
+        console.log('Out Click')
+    }
+
+    handleTSclick = () => {
+        console.log('TS Click')
+    }
+
+    handleTRSclick = () => {
+        console.log('TRS Click')
+    }
+
     render() {
         return (
             <div>
@@ -13,8 +33,20 @@ export class midiGpioIO extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td><div style={iobtn}>IN</div></td>
-                                            <td><div style={iobtn}>OUT</div></td>
+                                            <td>
+                                                <div
+                                                    onMouseDown={this.handleIoInclick}
+                                                    style={iobtn}>
+                                                    IN
+                                                    </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    onMouseDown={this.handleIoOutclick}
+                                                    style={iobtn}>
+                                                    OUT
+                                                    </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -26,8 +58,20 @@ export class midiGpioIO extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td><div style={iobtn}>TS</div></td>
-                                            <td><div style={iobtn}>TRS</div></td>
+                                            <td>
+                                                <div
+                                                    onMouseDown={this.handleTSclick}
+                                                    style={iobtn}>
+                                                    TS
+                                                    </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    onMouseDown={this.handleTRSclick}
+                                                    style={iobtn}>
+                                                    TRS
+                                                    </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -44,8 +88,8 @@ export class midiGpioIO extends Component {
 const iobtn = {
     border: '1px blue solid',
     padding: '0px 6px',
-    backgroundColor: 'lightblue',
     displey: 'inline-block',
+    cursor: 'context-menu'
 }
 
 const td = {

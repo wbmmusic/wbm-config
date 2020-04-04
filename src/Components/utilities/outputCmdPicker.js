@@ -227,7 +227,6 @@ let range16 = []
 for (i = 0; i < 16; i++) {
     range16[i] = (i+1)
 }
-console.log(range16)
 
 let ccNames = []
 for (i = 0; i < 128; i++) {
@@ -257,8 +256,6 @@ function createOptions(pointer, output) {
     for (var i = 0; i < output.length; i++) {
         output[i].label = String(output[i].label)
     }
-
-    //console.log(output)
 }
 
 export default outputCmdPicker
