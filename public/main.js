@@ -49,6 +49,7 @@ app.on('activate', () => {
   }
 })
 
+
 function checkYo() {
   autoUpdater.checkForUpdatesAndNotify();
 }

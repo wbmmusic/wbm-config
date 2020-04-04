@@ -2,16 +2,14 @@ import React, { Component } from 'react'
 import { HashRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Header from './Components/layout/header'
-import Todos from './Components/Todos'
-import AddTodo from './Components/AddTodo'
 import midiLight from './Components/midiLight/midiLight'
 import midiGpio from './Components/midiGPIO/midiGpio'
 import midiButton from './Components/midiButton/midiButton'
 import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
-import Download from './Components/utilities/download'
-import Matraces from './Components/utilities/matraces'
+import Matraces from './Components/matrix/matraces'
+import SaveNopen from './Components/utilities/saveNopen'
 
 import axios from 'axios';
 
@@ -55,27 +53,16 @@ export class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App" style={{height: "70vh"}}>
+        <div className="App" style={{ height: "70vh" }}>
           <div className="container">
             <Header />
-            <Route exact path="/todo" render={props => (
-              <React.Fragment>
-                <AddTodo addTodo={this.addTodo} />
-                <Todos todos={this.state.todos} markComplete={this.markComplete}
-                  delTodo={this.delTodo} />
-              </React.Fragment>
-            )} />
             <Route exact path='/midiLight' component={midiLight} />
             <Route exact path='/midiGpio' component={midiGpio} />
             <Route exact path='/midiButton' component={midiButton} />
             <Route exact path='/mtcDisplay' component={mtcDisplay} />
             <Route exact path='/midiAB' component={midiAB} />
-            <Route exact path='/about' component={About} />
-            <Route exact path='/'>
-              <Download />
-              <br />
-              <Matraces cols="5" rows="4" />
-            </Route>
+            <Route exact path='/about' component={SaveNopen} />
+            <Route exact path='/' component={About} />
           </div>
         </div>
       </Router>
