@@ -84,7 +84,7 @@ const dotCell = {
 const label = {
     border: '1px black solid',
     textAlign: 'right',
-    paddingRight: '4px',
+    paddingLeft: '5px'
 }
 
 const dot = {

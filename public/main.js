@@ -1,7 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const url = require('url')
 const { autoUpdater } = require('electron-updater');
+var fs = require('fs');
 
 app.commandLine.appendSwitch('high-dpi-support', 1)
 app.commandLine.appendSwitch('force-device-scale-factor', 1)
@@ -13,8 +14,8 @@ let win
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 900,
+    height: 700,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -65,6 +66,12 @@ ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
 });
 
+ipcMain.on('MOUNTED', () => {
+  console.log('Got The Message')
+});
+
+
+
 autoUpdater.on('update-available', () => {
   win.webContents.send('update_available');
 });
@@ -76,3 +83,52 @@ autoUpdater.on('update-downloaded', () => {
 autoUpdater.on('error', () => {
   win.webContents.send('update_error');
 });
+
+
+
+
+///////////////////// FILE OPEN AND SAVE //////////////////////////////
+ipcMain.on('OPEN', (event, arg) => {
+  console.log(arg) // prints "ping"
+  dialog.showOpenDialog(win, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Config File', extensions: ['wbmtek'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  }).then(result => {
+    if (result.canceled) {
+      console.log('CANCLED')
+    } else {
+      console.log(result.filePaths)
+      fs.readFile(result.filePaths[0], function (err, data) {
+        console.log(data.toString())
+        event.reply('asynchronous-reply', data.toString())
+      });
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
+ipcMain.on('SAVE', (event, arg, fileData) => {
+  console.log(arg) // prints "ping"
+  dialog.showSaveDialog(win, {
+    properties: ['createDirectory', 'showOverwriteConfirmation'],
+    filters: [{ name: 'Config File', extensions: ['wbmtek'] },]
+  }).then(result => {
+    if (result.canceled) {
+      console.log('CANCLED')
+    } else {
+      console.log(result.filePath)
+      fs.writeFile(result.filePath, fileData, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+        event.reply('itSaved', 'yup')
+      });
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+})
+///////////////////////////////////////////////////////////////////////

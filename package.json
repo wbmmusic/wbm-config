@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "author": "Marece Williams",
   "description": "App for configuring WBM Tek devices",
   "homepage": "./",
@@ -63,13 +63,25 @@
     ],
     "mac": {
       "gatekeeperAssess": "true",
-      "icon": "public/logo.icns"
+      "icon": "public/logo.icns",
+      "fileAssociations": [
+        {
+          "ext": "wbmtek",
+          "icon": "public/wbmtekicn.icns"
+        }
+      ]
     },
     "dmg": {
       "icon": "public/dmg.icns"
     },
     "win": {
-      "icon": "public/favicon.ico"
+      "icon": "public/favicon.ico",
+      "fileAssociations": [
+        {
+          "ext": "wbmtek",
+          "icon": "public/wbmtekicn.ico"
+        }
+      ]
     }
   },
   "devDependencies": {

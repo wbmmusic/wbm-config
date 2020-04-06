@@ -9,45 +9,11 @@ import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
 //import Matraces from './Components/matrix/matraces'
-import SaveNopen from './Components/utilities/saveNopen'
-
-import axios from 'axios';
+import Files from './Components/utilities/Files'
 
 export class App extends Component {
   state = {
     todos: []
-  }
-
-  componentDidMount() {
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
-      .then(res => this.setState({ todos: res.data }))
-  }
-
-  //Toggle Complete 
-  markComplete = (id) => {
-    this.setState({
-      todos: this.state.todos.map(todo => {
-        if (todo.id === id) {
-          todo.completed = !todo.completed
-        }
-        return todo
-      })
-    });
-  }
-
-  //Delete Todo
-  delTodo = (id) => {
-    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-      .then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
-  }
-
-  //Add Todo
-  addTodo = (title) => {
-    axios.post('https://jsonplaceholder.typicode.com/todos', {
-      title,
-      completed: false
-    })
-      .then(res => this.setState({ todos: [...this.state.todos, res.data] }));
   }
 
   render() {
@@ -61,7 +27,7 @@ export class App extends Component {
             <Route exact path='/midiButton' component={midiButton} />
             <Route exact path='/mtcDisplay' component={mtcDisplay} />
             <Route exact path='/midiAB' component={midiAB} />
-            <Route exact path='/about' component={SaveNopen} />
+            <Route exact path='/files' component={Files} />
             <Route exact path='/' component={About} />
           </div>
         </div>
