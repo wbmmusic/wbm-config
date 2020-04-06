@@ -9,7 +9,42 @@ app.commandLine.appendSwitch('force-device-scale-factor', 1)
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win = null
+
+
+////////  SINGLE INSTANCE
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (win) {
+      if (win.isMinimized()) win.restore()
+      win.focus()
+    }
+  })
+
+  // Create myWindow, load the rest of the app, etc...
+  app.on('ready', () => {
+    createWindow()
+  })
+}
+/////////////////////////////////////
+
+
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', () => {
+  if (win === null) {
+    createWindow()
+  }
+})
 
 function createWindow() {
   // Create the browser window.
@@ -37,21 +72,6 @@ function createWindow() {
   checkYo()
   setInterval(checkYo, 60000)
 }
-
-app.on('ready', createWindow)
-
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', () => {
-  if (win === null) {
-    createWindow()
-  }
-})
 
 
 function checkYo() {
