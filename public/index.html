@@ -15,10 +15,10 @@
   .hidden {
     display: none;
   }
-  body{
+
+  body {
     background-color: rgb(100, 100, 100);
   }
-
 </style>
 
 <head>
@@ -68,7 +68,7 @@
       message.innerText = 'A new update is available. Downloading now...';
       notification.classList.remove('hidden');
     });
-    
+
     ipcRenderer.on('update_downloaded', () => {
       ipcRenderer.removeAllListeners('update_downloaded');
       message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
@@ -82,6 +82,7 @@
       notification.classList.remove('hidden');
     });
 
+  
     function closeNotification() {
       notification.classList.add('hidden');
     }

@@ -11,6 +11,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "electron-rebuild": "^1.10.1",
     "electron-updater": "^4.2.5",
     "foreman": "^3.0.1",
     "jquery": "^3.4.1",
@@ -19,6 +20,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
+    "serialport": "^8.0.7",
+    "usb-detection": "^4.7.0",
     "uuid": "^7.0.2"
   },
   "scripts": {
@@ -30,7 +33,9 @@
     "electron": "electron .",
     "ebuild": "yarn build && node_modules/.bin/build",
     "package": "electron-builder build -c.extraMetadata.main=build/main.js --publish never",
-    "deploy": "electron-builder build -c.extraMetadata.main=build/main.js --publish always"
+    "deploy": "electron-builder build -c.extraMetadata.main=build/main.js --publish always",
+    "rebuild": "electron-rebuild -f -w serialport",
+    "install": "electron-rebuild"
   },
   "repository": {
     "type": "git",

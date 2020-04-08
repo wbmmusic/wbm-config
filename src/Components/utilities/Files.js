@@ -10,10 +10,9 @@ export class Files extends Component {
                 <br />
                 <textarea
                     style={inp}
-                    id="textInput">
-                    Type something in here | 
-                    Then save it | 
-                    Then open it
+                    id="textInput"
+                    defaultValue="Type something in here | Then save it |  Then open it"
+                >
                 </textarea>
             </div>
         )
@@ -34,7 +33,7 @@ function save() {
 
 ipcRenderer.on('asynchronous-reply', (event, arg) => {
     var input = document.getElementById('textInput')
-    console.log(arg) // prints "pong"
+    console.log('Reading File') // prints "pong"
     input.value = ''
     input.value = arg
 })

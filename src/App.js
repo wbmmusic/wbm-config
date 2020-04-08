@@ -8,8 +8,11 @@ import midiButton from './Components/midiButton/midiButton'
 import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
+import Serial from './Components/utilities/serial'
 //import Matraces from './Components/matrix/matraces'
 import Files from './Components/utilities/Files'
+
+const { ipcRenderer } = window.require('electron')
 
 export class App extends Component {
   state = {
@@ -28,6 +31,7 @@ export class App extends Component {
             <Route exact path='/mtcDisplay' component={mtcDisplay} />
             <Route exact path='/midiAB' component={midiAB} />
             <Route exact path='/files' component={Files} />
+            <Route exact path='/about' component={Serial} />
             <Route exact path='/' component={About} />
           </div>
         </div>
@@ -35,6 +39,14 @@ export class App extends Component {
     )
   }
 }
+
+ipcRenderer.on('add', (e, arg) => {
+  console.log('USB Add ' + arg)
+});
+
+ipcRenderer.on('remove', (e, arg) => {
+  console.log('USB Remove ' + arg)
+});
 
 export default App;
 

@@ -1,9 +1,12 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const SerialPort = require('serialport')
+var usbDetect = require('usb-detection');
 const path = require('path')
 const url = require('url')
 const { autoUpdater } = require('electron-updater');
 var fs = require('fs');
 
+//WINDOW SCALING BYPASS
 app.commandLine.appendSwitch('high-dpi-support', 1)
 app.commandLine.appendSwitch('force-device-scale-factor', 1)
 
@@ -11,8 +14,7 @@ app.commandLine.appendSwitch('force-device-scale-factor', 1)
 // be closed automatically when the JavaScript object is garbage collected.
 let win = null
 
-
-////////  SINGLE INSTANCE
+////////  SINGLE INSTANCE //////////
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) {
   app.quit()
@@ -30,7 +32,7 @@ if (!gotTheLock) {
     createWindow()
   })
 }
-/////////////////////////////////////
+///////////////////////////////////////
 
 
 // Quit when all windows are closed.
@@ -71,6 +73,10 @@ function createWindow() {
 
   checkYo()
   setInterval(checkYo, 60000)
+
+  usbDetect.startMonitoring();
+  usbDetect.on('add', function (device) { win.webContents.send('add', device.serialNumber); });
+  usbDetect.on('remove', function (device) { win.webContents.send('remove', device.serialNumber); });
 }
 
 
@@ -144,7 +150,7 @@ ipcMain.on('SAVE', (event, arg, fileData) => {
       fs.writeFile(result.filePath, fileData, function (err) {
         if (err) throw err;
         console.log('Saved!');
-        event.reply('itSaved', 'yup')
+        event.reply('itSaved', 'File Saved')
       });
     }
   }).catch(err => {
@@ -152,3 +158,21 @@ ipcMain.on('SAVE', (event, arg, fileData) => {
   })
 })
 ///////////////////////////////////////////////////////////////////////
+ipcMain.on('ports', (event, arg, fileData) => {
+  console.log('Port Request');
+  listPorts(event)
+})
+
+function listPorts(event) {
+  SerialPort.list().then(
+    ports => {
+      ports.forEach(port => {
+        //console.log(`${port.comName}\t${port.pnpId || ''}\t${port.manufacturer || ''}`)
+        event.reply('port', `${port.comName} |\t${port.serialNumber || ''} |\t${port.manufacturer || ''}`)
+      })
+    },
+    err => {
+      console.error('Error listing ports', err)
+    }
+  )
+}

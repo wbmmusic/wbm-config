@@ -11,7 +11,9 @@ export class midiLightLED extends Component {
             <div style={mainDiv}>
                 LED Options
                 <table style={{ width: '100%' }}>
-                    <col width="1px" />
+                    <colgroup>
+                        <col width="1px" />
+                    </colgroup>
                     <tbody>
                         <tr>
                             <td style={dotCell}>

@@ -8,16 +8,70 @@ export class outputCmdPicker extends Component {
     state = {
         id: 'picker',
         type: ['Note On', 0],
+        command: 0,
         channel: 11,
         byte1: 67,
         byte2: 127,
     }
 
+    makeCmd = (type, chnl) => {
+        let tmpCmd = 'Hello'
+        if (type === 'Note On') {
+            tmpCmd = 144 + chnl
+            console.log('Type = ' + this.state.type[0] + ' | chnl = ' + this.state.channel)
+            console.log('tmpCmd=' + tmpCmd)
+            console.log(tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Note Off') {
+            tmpCmd = 128 + chnl
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Control Change') {
+            tmpCmd = 176 + chnl
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Program Change') {
+            tmpCmd = 192 + chnl
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Sys Ex') {
+            tmpCmd = 'XXX'
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Song Select') {
+            tmpCmd = 243
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Start') {
+            tmpCmd = 250
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Continue') {
+            tmpCmd = 251
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'Stop') {
+            tmpCmd = 252
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else if (type === 'System Reset') {
+            tmpCmd = 255
+            console.log('tmpCmd=' + tmpCmd)
+            this.setState({ command: tmpCmd })
+        } else {
+            console.log('ERROR - Command Picker makeCmd didnt recognize this command type ' + type)
+        }
+    }
+
+
     render() {
+
         return (
             <div style={mainDiv}>
                 <table id="pickerTable" style={{ width: "100%" }}>
-                <col width="1px" />
+                    <colgroup>
+                        <col width="1px" />
+                    </colgroup>
                     <tbody style={{ width: "100%" }}>
                         <tr>
                             <td colSpan="2" style={pickerTitle}>Command Picker</td>
@@ -38,7 +92,10 @@ export class outputCmdPicker extends Component {
                                             value: this.state.type[1]
                                         }}
                                         theme="default"
-                                        onValueChange={() => { }}
+                                        onChange={(e) => {
+                                            this.setState({ type: [e.label, e.value] })
+                                            this.makeCmd(e.label, this.state.channel - 1)
+                                        }}
                                     />
                                 </div>
                             </td>
@@ -59,7 +116,10 @@ export class outputCmdPicker extends Component {
                                             value: this.state.channel,
                                         }}
                                         theme="default"
-                                        onValueChange={() => { }}
+                                        onChange={(e) => {
+                                            this.setState({ channel: e.value + 1 })
+                                            this.makeCmd(this.state.type[0], e.value)
+                                        }}
                                     />
                                 </div>
                             </td>
@@ -80,7 +140,9 @@ export class outputCmdPicker extends Component {
                                             value: noteDropDown[this.state.byte1].value,
                                         }}
                                         theme="default"
-                                        onValueChange={() => { }}
+                                        onChange={(e) => {
+                                            this.setState({ byte1: e.value })
+                                        }}
                                     />
                                 </div>
                             </td>
@@ -101,17 +163,28 @@ export class outputCmdPicker extends Component {
                                             value: this.state.byte2 - 1,
                                         }}
                                         theme="default"
-                                        onValueChange={() => { }}
+                                        onChange={(e) => {
+                                            this.setState({ byte2: e.value })
+                                        }}
                                     />
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                {decimalToHexString(this.state.command)} | {decimalToHexString(this.state.byte1)} | {decimalToHexString(this.state.byte2)}
             </div>
 
         )
     }
+}
+
+function decimalToHexString(number) {
+    if (number < 0) {
+        number = 0xFFFFFFFF + number + 1;
+    }
+
+    return number.toString(16).toUpperCase();
 }
 
 const mainDiv = {
@@ -225,7 +298,7 @@ for (i = 0; i < 128; i++) {
 
 let range16 = []
 for (i = 0; i < 16; i++) {
-    range16[i] = (i+1)
+    range16[i] = (i + 1)
 }
 
 let ccNames = []
