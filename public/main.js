@@ -1,10 +1,18 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog
+} = require('electron')
+const os = require('os');
 const SerialPort = require('serialport')
 var usbDetect = require('usb-detection');
 const path = require('path')
 const url = require('url')
 const { autoUpdater } = require('electron-updater');
 var fs = require('fs');
+
+const { spawn } = require('child_process');
 
 //WINDOW SCALING BYPASS
 app.commandLine.appendSwitch('high-dpi-support', 1)
@@ -68,6 +76,7 @@ function createWindow() {
 
   // Emitted when the window is closed.
   win.on('closed', () => {
+    usbDetect.stopMonitoring()
     win = null
   })
 
@@ -96,8 +105,6 @@ ipcMain.on('MOUNTED', () => {
   console.log('Got The Message')
 });
 
-
-
 autoUpdater.on('update-available', () => {
   win.webContents.send('update_available');
 });
@@ -109,9 +116,6 @@ autoUpdater.on('update-downloaded', () => {
 autoUpdater.on('error', () => {
   win.webContents.send('update_error');
 });
-
-
-
 
 ///////////////////// FILE OPEN AND SAVE //////////////////////////////
 ipcMain.on('OPEN', (event, arg) => {
@@ -158,9 +162,15 @@ ipcMain.on('SAVE', (event, arg, fileData) => {
   })
 })
 ///////////////////////////////////////////////////////////////////////
+
 ipcMain.on('ports', (event, arg, fileData) => {
   console.log('Port Request');
   listPorts(event)
+})
+
+ipcMain.on('app-is-up', function () {
+  log('App Is Up!')
+  getNetInfo()
 })
 
 function listPorts(event) {
@@ -175,4 +185,44 @@ function listPorts(event) {
       console.error('Error listing ports', err)
     }
   )
+}
+
+function log(msg) {
+  win.webContents.send('mainlog', msg)
+}
+
+function getNetInfo() {
+  let child
+  log('In getNetInfo()')
+  if (os.platform() === 'win32') {
+    log('Detected Windows')
+    //let child = spawn('ipconfig', ['/all']);
+    child = spawn('ipconfig');
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', (chunk) => {
+      // data from standard output is here as buffers
+      log(chunk);
+    });
+    // since these are streams, you can pipe them elsewhere
+    //child.stderr.pipe(dest);
+    child.on('close', (code) => {
+      log(`child process exited with code ${code}`);
+      child = null
+    });
+  } else if (os.platform() === 'darwin') {
+    log('Detected macOSX')
+    //let child = spawn('ipconfig', ['/all']);
+    child = spawn('ifconfig');
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', (chunk) => {
+      // data from standard output is here as buffers
+      log(chunk);
+    });
+    // since these are streams, you can pipe them elsewhere
+    //child.stderr.pipe(dest);
+    child.on('close', (code) => {
+      log(`child process exited with code ${code}`);
+      child = null
+    });
+  }
 }

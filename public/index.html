@@ -82,7 +82,13 @@
       notification.classList.remove('hidden');
     });
 
-  
+    ipcRenderer.on('mainlog', (event, arg) => {
+      console.log('main.js: '+arg) // prints "pong"
+    })
+
+    ipcRenderer.send('app-is-up')
+
+
     function closeNotification() {
       notification.classList.add('hidden');
     }
