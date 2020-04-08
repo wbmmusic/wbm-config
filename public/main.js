@@ -77,8 +77,8 @@ function createWindow() {
   usbDetect.startMonitoring();
   usbDetect.on('add', function (device) { win.webContents.send('add', device.serialNumber); });
   usbDetect.on('remove', function (device) { win.webContents.send('remove', device.serialNumber); });
+  //usbDetect.find(vid, function(err, devices) { console.log('find', devices, err); });
 }
-
 
 function checkYo() {
   autoUpdater.checkForUpdatesAndNotify();

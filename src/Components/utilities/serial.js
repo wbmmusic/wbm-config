@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { v4 as uuid } from 'uuid';
-
 const { ipcRenderer } = window.require('electron')
-
 
 export class serial extends Component {
     state = {
@@ -23,10 +21,7 @@ export class serial extends Component {
             console.log(arg)
             this.fillLine(arg)
         });
-
-
     }
-
 
     render() {
         return (
@@ -44,7 +39,6 @@ export class serial extends Component {
                 </ul>
             </div>
         )
-
     }
 }
 
