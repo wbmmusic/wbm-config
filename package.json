@@ -11,7 +11,6 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
-    "electron-rebuild": "^1.10.1",
     "electron-updater": "^4.2.5",
     "foreman": "^3.0.1",
     "jquery": "^3.4.1",
@@ -92,6 +91,7 @@
   "devDependencies": {
     "electron": "^8.2.0",
     "electron-builder": "^22.4.1",
-    "electron-react-devtools": "^0.5.3"
+    "electron-react-devtools": "^0.5.3",
+    "electron-rebuild": "^1.10.1"
   }
 }
