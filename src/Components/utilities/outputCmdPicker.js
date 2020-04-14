@@ -63,13 +63,6 @@ export class outputCmdPicker extends Component {
 
 
     render() {
-        let byte0data = []
-        let byte1data = []
-        let byte2data = []
-        let b0lbl = []
-        let b1lbl = []
-        let b2lbl = []
-        let outputDisplay = []
 
         if (this.state.type[0] === 'Note On' || this.state.type[0] === 'Note Off' || this.state.type[0] === 'Control Change') {
             //console.log('NOn NOf CC')
@@ -101,7 +94,7 @@ export class outputCmdPicker extends Component {
                     decimalToHexString(this.state.byte1)
                 ]
             }
-            if (this.state.showByte0 === false || this.state.showByte1 === false || this.state.showByte2 === true) {
+            if (!this.state.showByte0 || !this.state.showByte1 || this.state.showByte2) {
                 console.log('Setting States')
                 b2lbl = []
                 this.setState((state) => {
@@ -162,7 +155,7 @@ export class outputCmdPicker extends Component {
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={oneSixteen}
-                        defaultValue={{
+                        value={{
                             label: this.state.channel,
                             value: this.state.channel,
                         }}
@@ -181,13 +174,13 @@ export class outputCmdPicker extends Component {
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
-                        defaultValue={{
+                        value={{
                             label: one127[this.state.byte0].label,
                             value: one127[this.state.byte0].value,
                         }}
                         theme="default"
                         onChange={(e) => {
-                            this.setState({ 
+                            this.setState({
                                 byte0: e.value
                             })
                         }}
@@ -202,6 +195,9 @@ export class outputCmdPicker extends Component {
                         style={{ width: '97%' }}
                     ></input>
                 ]
+            } else {
+                b0lbl = []
+                byte0data = []
             }
 
         } else {
@@ -218,7 +214,7 @@ export class outputCmdPicker extends Component {
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={noteDropDown}
-                        defaultValue={{
+                        value={{
                             label: noteDropDown[this.state.byte1].label,
                             value: noteDropDown[this.state.byte1].value,
                         }}
@@ -236,7 +232,7 @@ export class outputCmdPicker extends Component {
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={ccDropDown}
-                        defaultValue={{
+                        value={{
                             label: ccDropDown[this.state.byte1].label,
                             value: ccDropDown[this.state.byte1].value,
                         }}
@@ -254,7 +250,7 @@ export class outputCmdPicker extends Component {
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
-                        defaultValue={{
+                        value={{
                             label: one127[this.state.byte1].label,
                             value: one127[this.state.byte1].value,
                         }}
@@ -264,6 +260,9 @@ export class outputCmdPicker extends Component {
                         }}
                     />
                 ]
+            } else {
+                b1lbl = []
+                byte1data = []
             }
 
         } else {
@@ -274,26 +273,46 @@ export class outputCmdPicker extends Component {
         if (this.state.showByte2) {
             if (this.state.type[0] === 'Note On' || this.state.type[0] === 'Note Off') {
                 b2lbl = ['Vel:']
+                byte2data = [
+                    <Select
+                        id={uuid()}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={one127}
+                        value={{
+                            label: this.state.byte2,
+                            value: this.state.byte2 - 1,
+                        }}
+                        theme="default"
+                        onChange={(e) => {
+                            this.setState({ byte2: e.value })
+                        }}
+                    />
+                ]
             } else if (this.state.type[0] === 'Control Change') {
+                console.log('IN HERE CC YUP')
                 b2lbl = ['Val:']
+                byte2data = [
+                    <Select
+                        id={uuid()}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={one127}
+                        value={{
+                            label: this.state.byte2,
+                            value: this.state.byte2 - 1,
+                        }}
+                        theme="default"
+                        onChange={(e) => {
+                            this.setState({ byte2: e.value })
+                        }}
+                    />
+                ]
+            } else {
+                b2lbl = []
+                byte2data = []
             }
 
-            byte2data = [
-                <Select
-                    id={uuid()}
-                    hideResetButton='true'
-                    style={{ textAlign: 'left' }}
-                    options={one127}
-                    defaultValue={{
-                        label: this.state.byte2,
-                        value: this.state.byte2 - 1,
-                    }}
-                    theme="default"
-                    onChange={(e) => {
-                        this.setState({ byte2: e.value })
-                    }}
-                />
-            ]
 
         } else {
             b2lbl = []
@@ -321,7 +340,7 @@ export class outputCmdPicker extends Component {
                                         hideResetButton='true'
                                         style={{ textAlign: 'left' }}
                                         options={typesDropDown}
-                                        defaultValue={{
+                                        value={{
                                             label: this.state.type[0],
                                             value: this.state.type[1]
                                         }}
@@ -372,6 +391,14 @@ export class outputCmdPicker extends Component {
         )
     }
 }
+
+let byte0data = []
+let byte1data = []
+let byte2data = []
+let b0lbl = []
+let b1lbl = []
+let b2lbl = []
+let outputDisplay = []
 
 function decimalToHexString(number) {
     if (number < 0) {
