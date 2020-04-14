@@ -10,61 +10,295 @@ export class outputCmdPicker extends Component {
         type: ['Note On', 0],
         command: 0,
         channel: 11,
+        byte0: 0,
         byte1: 67,
         byte2: 127,
+        showByte0: true,
+        showByte1: true,
+        showByte2: true,
+    }
+
+    componentDidMount() {
+        this.setState({ command: this.makeCmd(this.state.type[0], this.state.channel) })
     }
 
     makeCmd = (type, chnl) => {
         let tmpCmd = 'Hello'
         if (type === 'Note On') {
             tmpCmd = 144 + chnl
-            console.log('Type = ' + this.state.type[0] + ' | chnl = ' + this.state.channel)
-            console.log('tmpCmd=' + tmpCmd)
-            console.log(tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'Note Off') {
             tmpCmd = 128 + chnl
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'Control Change') {
             tmpCmd = 176 + chnl
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'Program Change') {
             tmpCmd = 192 + chnl
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'Sys Ex') {
-            tmpCmd = 'XXX'
-            console.log('tmpCmd=' + tmpCmd)
+            tmpCmd = 'SYSEX'
             this.setState({ command: tmpCmd })
         } else if (type === 'Song Select') {
             tmpCmd = 243
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'Start') {
             tmpCmd = 250
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'Continue') {
             tmpCmd = 251
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'Stop') {
             tmpCmd = 252
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else if (type === 'System Reset') {
             tmpCmd = 255
-            console.log('tmpCmd=' + tmpCmd)
             this.setState({ command: tmpCmd })
         } else {
             console.log('ERROR - Command Picker makeCmd didnt recognize this command type ' + type)
         }
+
+        return tmpCmd
     }
 
 
     render() {
+        let byte0data = []
+        let byte1data = []
+        let byte2data = []
+        let b0lbl = []
+        let b1lbl = []
+        let b2lbl = []
+        let outputDisplay = []
+
+        if (this.state.type[0] === 'Note On' || this.state.type[0] === 'Note Off' || this.state.type[0] === 'Control Change') {
+            //console.log('NOn NOf CC')
+            outputDisplay = [
+                decimalToHexString(this.state.command), ' | ',
+                decimalToHexString(this.state.byte1), ' | ',
+                decimalToHexString(this.state.byte2)
+            ]
+            if (!this.state.showByte0 || !this.state.showByte1 || !this.state.showByte2) {
+                //console.log('Setting States')
+                this.setState((state) => {
+                    return {
+                        showByte0: true,
+                        showByte1: true,
+                        showByte2: true
+                    }
+                })
+            }
+        } else if (this.state.type[0] === 'Program Change' || this.state.type[0] === 'Song Select') {
+            //console.log('PC SYSEX SS')
+            if (this.state.type[0] === 'Song Select') {
+                outputDisplay = [
+                    decimalToHexString(this.state.command), ' | ',
+                    decimalToHexString(this.state.byte0)
+                ]
+            } else {
+                outputDisplay = [
+                    decimalToHexString(this.state.command), ' | ',
+                    decimalToHexString(this.state.byte1)
+                ]
+            }
+            if (this.state.showByte0 === false || this.state.showByte1 === false || this.state.showByte2 === true) {
+                console.log('Setting States')
+                b2lbl = []
+                this.setState((state) => {
+                    return {
+                        showByte0: true,
+                        showByte1: true,
+                        showByte2: false
+                    }
+                })
+            }
+        } else if (this.state.type[0] === 'Sys Ex') {
+            //console.log('PC SYSEX SS')
+            outputDisplay = [
+                decimalToHexString(this.state.command)
+            ]
+            if (this.state.showByte0 === false || this.state.showByte1 === true || this.state.showByte2 === true) {
+                //console.log('Setting States')
+                b1lbl = []
+                b2lbl = []
+                this.setState((state) => {
+                    return {
+                        showByte0: true,
+                        showByte1: false,
+                        showByte2: false
+                    }
+                })
+            }
+        } else if (this.state.type[0] === 'System Reset' || this.state.type[0] === 'Start' ||
+            this.state.type[0] === 'Continue' || this.state.type[0] === 'Stop') {
+            //console.log('SYS RST START CONT STOP')
+            outputDisplay = [
+                decimalToHexString(this.state.command)
+            ]
+            if (this.state.showByte0 || this.state.showByte1 || this.state.showByte2) {
+                //console.log('Setting States')
+                b0lbl = []
+                b1lbl = []
+                b2lbl = []
+                this.setState((state) => {
+                    return {
+                        showByte0: false,
+                        showByte1: false,
+                        showByte2: false
+                    }
+                })
+            }
+        }
+
+        if (this.state.showByte0) {
+            if (this.state.type[0] === 'Note On' ||
+                this.state.type[0] === 'Note Off' ||
+                this.state.type[0] === 'Control Change' ||
+                this.state.type[0] === 'Program Change') {
+                b0lbl = ['CH:']
+                byte0data = [
+                    <Select
+                        id={uuid()}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={oneSixteen}
+                        defaultValue={{
+                            label: this.state.channel,
+                            value: this.state.channel,
+                        }}
+                        theme="default"
+                        onChange={(e) => {
+                            this.setState({ channel: e.value + 1 })
+                            this.makeCmd(this.state.type[0], e.value)
+                        }}
+                    />
+                ]
+            } else if (this.state.type[0] === 'Song Select') {
+                b0lbl = ['Song:']
+                byte0data = [
+                    <Select
+                        id={uuid()}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={one127}
+                        defaultValue={{
+                            label: one127[this.state.byte0].label,
+                            value: one127[this.state.byte0].value,
+                        }}
+                        theme="default"
+                        onChange={(e) => {
+                            this.setState({ 
+                                byte0: e.value
+                            })
+                        }}
+                    />
+                ]
+            } else if (this.state.type[0] === 'Sys Ex') {
+                b0lbl = ['DATA:']
+                byte0data = [
+                    <input
+                        type='text'
+                        value='Enter HEX data here'
+                        style={{ width: '97%' }}
+                    ></input>
+                ]
+            }
+
+        } else {
+            b0lbl = []
+            byte0data = []
+        }
+
+        if (this.state.showByte1) {
+            if (this.state.type[0] === 'Note On' || this.state.type[0] === 'Note Off') {
+                b1lbl = ['Note:']
+                byte1data = [
+                    <Select
+                        id={uuid()}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={noteDropDown}
+                        defaultValue={{
+                            label: noteDropDown[this.state.byte1].label,
+                            value: noteDropDown[this.state.byte1].value,
+                        }}
+                        theme="default"
+                        onChange={(e) => {
+                            this.setState({ byte1: e.value })
+                        }}
+                    />
+                ]
+            } else if (this.state.type[0] === 'Control Change') {
+                b1lbl = ['CC#:']
+                byte1data = [
+                    <Select
+                        id={uuid()}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={ccDropDown}
+                        defaultValue={{
+                            label: ccDropDown[this.state.byte1].label,
+                            value: ccDropDown[this.state.byte1].value,
+                        }}
+                        theme="default"
+                        onChange={(e) => {
+                            this.setState({ byte1: e.value })
+                        }}
+                    />
+                ]
+            } else if (this.state.type[0] === 'Program Change') {
+                b1lbl = ['PGM#:']
+                byte1data = [
+                    <Select
+                        id={uuid()}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={one127}
+                        defaultValue={{
+                            label: one127[this.state.byte1].label,
+                            value: one127[this.state.byte1].value,
+                        }}
+                        theme="default"
+                        onChange={(e) => {
+                            this.setState({ byte1: e.value })
+                        }}
+                    />
+                ]
+            }
+
+        } else {
+            b1lbl = []
+            byte1data = []
+        }
+
+        if (this.state.showByte2) {
+            if (this.state.type[0] === 'Note On' || this.state.type[0] === 'Note Off') {
+                b2lbl = ['Vel:']
+            } else if (this.state.type[0] === 'Control Change') {
+                b2lbl = ['Val:']
+            }
+
+            byte2data = [
+                <Select
+                    id={uuid()}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127}
+                    defaultValue={{
+                        label: this.state.byte2,
+                        value: this.state.byte2 - 1,
+                    }}
+                    theme="default"
+                    onChange={(e) => {
+                        this.setState({ byte2: e.value })
+                    }}
+                />
+            ]
+
+        } else {
+            b2lbl = []
+            byte2data = []
+        }
 
         return (
             <div style={mainDiv}>
@@ -102,77 +336,37 @@ export class outputCmdPicker extends Component {
                         </tr>
                         <tr>
                             <td style={td}>
-                                <div id="byte0Lbl" style={label}>CH:</div>
+                                <div id="byte0Lbl" style={label}>{b0lbl}</div>
                             </td>
                             <td style={td}>
                                 <div id="byte0Div">
-                                    <Select
-                                        id={uuid()}
-                                        hideResetButton='true'
-                                        style={{ textAlign: 'left' }}
-                                        options={oneSixteen}
-                                        defaultValue={{
-                                            label: this.state.channel,
-                                            value: this.state.channel,
-                                        }}
-                                        theme="default"
-                                        onChange={(e) => {
-                                            this.setState({ channel: e.value + 1 })
-                                            this.makeCmd(this.state.type[0], e.value)
-                                        }}
-                                    />
+                                    {byte0data}
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td style={td}>
-                                <div id="byte1Lbl" style={label}>Note:</div>
+                                <div id="byte1Lbl" style={label}>{b1lbl}</div>
                             </td>
                             <td style={td}>
                                 <div id="byte1Div">
-                                    <Select
-                                        id={uuid()}
-                                        hideResetButton='true'
-                                        style={{ textAlign: 'left' }}
-                                        options={noteDropDown}
-                                        defaultValue={{
-                                            label: noteDropDown[this.state.byte1].label,
-                                            value: noteDropDown[this.state.byte1].value,
-                                        }}
-                                        theme="default"
-                                        onChange={(e) => {
-                                            this.setState({ byte1: e.value })
-                                        }}
-                                    />
+                                    {byte1data}
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td style={td}>
-                                <div id="byte2Lbl" style={label}>Vel:</div>
+                                <div id="byte2Lbl" style={label}>{b2lbl}</div>
                             </td>
                             <td style={td}>
                                 <div id="byte2Div">
-                                    <Select
-                                        id={uuid()}
-                                        hideResetButton='true'
-                                        style={{ textAlign: 'left' }}
-                                        options={one127}
-                                        defaultValue={{
-                                            label: this.state.byte2,
-                                            value: this.state.byte2 - 1,
-                                        }}
-                                        theme="default"
-                                        onChange={(e) => {
-                                            this.setState({ byte2: e.value })
-                                        }}
-                                    />
+                                    {byte2data}
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                {decimalToHexString(this.state.command)} | {decimalToHexString(this.state.byte1)} | {decimalToHexString(this.state.byte2)}
+                {outputDisplay}
             </div>
 
         )
@@ -209,8 +403,6 @@ const label = {
     textAlign: 'right',
     paddingLeft: '5px'
 }
-
-//drawPicker()
 
 var allTypes = ['Note On', 'Note Off', 'Control Change',
     'Program Change', 'Sys Ex', 'Song Select', 'Start',

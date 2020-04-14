@@ -170,7 +170,7 @@ ipcMain.on('ports', (event, arg, fileData) => {
 
 ipcMain.on('app-is-up', function () {
   log('App Is Up!')
-  getNetInfo()
+  //getNetInfo()
 })
 
 function listPorts(event) {
