@@ -14,8 +14,9 @@ var fs = require('fs');
 
 const { spawn } = require('child_process');
 
-
+let colorPickerWindow
 var colorPickerOpen = false
+var clPckrCh = 0
 
 
 //WINDOW SCALING BYPASS
@@ -43,12 +44,13 @@ if (!gotTheLock) {
   app.on('ready', () => {
     createWindow()
 
-    
-    var clPckrCh = 0
+
+
     ipcMain.on('showColorPicker', function (event, ch, nm) {
       console.log("Color Picker " + ch)
-      clPckrCh = ch
+
       if (!colorPickerOpen) {
+        clPckrCh = ch
         colorPickerWindow = new BrowserWindow(
           {
             width: 180,
@@ -80,7 +82,25 @@ if (!gotTheLock) {
         colorPickerWindow.on('closed', function () {
           colorPickerOpen = false
         });
-      } else {
+      } else if (ch !== clPckrCh) {
+        clPckrCh = ch
+        colorPickerWindow.close()
+
+        colorPickerWindow = new BrowserWindow(
+          {
+            width: 180,
+            height: 420,
+            frame: false,
+            transparent: true,
+            alwaysOnTop: true,
+            resizable: false,
+            titleBarStyle: "customButtonsOnHover",
+            webPreferences: {
+              nodeIntegration: true
+            }
+          }
+        );
+
         colorPickerWindow.loadURL(url.format({
           pathname: path.join(__dirname, 'colorPicker.html'),
           protocol: 'file',
@@ -95,6 +115,11 @@ if (!gotTheLock) {
         colorPickerWindow.on('closed', function () {
           colorPickerOpen = false
         });
+
+      } else if (ch === clPckrCh) {
+        colorPickerOpen = false
+        clPckrCh = 0
+        colorPickerWindow.close()
       }
 
     })
@@ -148,10 +173,10 @@ function createWindow() {
   win.on('closed', () => {
     usbDetect.stopMonitoring()
     win = null
-    if(colorPickerOpen){
+    if (colorPickerOpen) {
       colorPickerWindow.close()
     }
-    
+
   })
 
   checkYo()
