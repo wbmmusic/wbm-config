@@ -48,7 +48,8 @@
         <canvas id="brightnessBar" height="10px" width="130px"></canvas>
         <br>
         <div style="text-align: center; display: block; padding-top: 15px;">
-            <button onmousedown="okBtn()">OK</button>
+            <button onmousedown="okBtn()">Apply</button>
+            <button onmousedown="cancelBtn()">Cancel</button>
         </div>
     </div>
 </body>
@@ -210,6 +211,10 @@
     }
 
     function okBtn() {
+        window.close()
+    }
+
+    function cancelBtn() {
         window.close()
     }
 

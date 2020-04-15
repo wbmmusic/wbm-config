@@ -32,7 +32,7 @@ export class midiLightLED extends Component {
                             <td style={dotCell}>
                                 <span style={dot} onMouseDown={this.clrPckr}></span>
                             </td>
-                            <td style={td}>Color</td>
+                            <td style={td}>Color / Brightness</td>
                         </tr>
                         <tr>
                             <td style={label}>Style:</td>

@@ -152,6 +152,7 @@ export class outputCmdPicker extends Component {
                 byte0data = [
                     <Select
                         id={uuid()}
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={oneSixteen}
@@ -211,6 +212,7 @@ export class outputCmdPicker extends Component {
                 byte1data = [
                     <Select
                         id={uuid()}
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={noteDropDown}
@@ -229,6 +231,7 @@ export class outputCmdPicker extends Component {
                 byte1data = [
                     <Select
                         id={uuid()}
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={ccDropDown}
@@ -247,6 +250,7 @@ export class outputCmdPicker extends Component {
                 byte1data = [
                     <Select
                         id={uuid()}
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
@@ -276,6 +280,7 @@ export class outputCmdPicker extends Component {
                 byte2data = [
                     <Select
                         id={uuid()}
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
