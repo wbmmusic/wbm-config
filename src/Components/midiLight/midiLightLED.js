@@ -1,12 +1,25 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 import { v4 as uuid } from 'uuid';
-
+const { ipcRenderer } = window.require('electron')
 
 export class midiLightLED extends Component {
+    state = {
+        name: this.props.name,
+        channel: this.props.channel
+    }
+
+    clrPckr = () => {
+        ipcRenderer.send('showColorPicker', this.state.channel, this.state.name)
+    }
+
+    componentDidUpdate() {
+        if (this.state.name !== this.props.name) {
+            this.setState({ name: this.props.name })
+        }
+    }
 
     render() {
-
         return (
             <div style={mainDiv}>
                 LED Options
@@ -17,9 +30,7 @@ export class midiLightLED extends Component {
                     <tbody>
                         <tr>
                             <td style={dotCell}>
-                                <span style={dot}>
-
-                                </span>
+                                <span style={dot} onMouseDown={this.clrPckr}></span>
                             </td>
                             <td style={td}>Color</td>
                         </tr>
@@ -70,7 +81,6 @@ function createOptions(pointer, output) {
     for (var i = 0; i < output.length; i++) {
         output[i].label = String(output[i].label)
     }
-
     //console.log(output)
 }
 
@@ -106,6 +116,5 @@ const mainDiv = {
     borderRadius: '10px',
     margin: '4px',
 }
-
 
 export default midiLightLED

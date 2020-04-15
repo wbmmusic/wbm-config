@@ -14,6 +14,10 @@ var fs = require('fs');
 
 const { spawn } = require('child_process');
 
+
+var colorPickerOpen = false
+
+
 //WINDOW SCALING BYPASS
 app.commandLine.appendSwitch('high-dpi-support', 1)
 app.commandLine.appendSwitch('force-device-scale-factor', 1)
@@ -38,6 +42,72 @@ if (!gotTheLock) {
   // Create myWindow, load the rest of the app, etc...
   app.on('ready', () => {
     createWindow()
+
+    
+    var clPckrCh = 0
+    ipcMain.on('showColorPicker', function (event, ch, nm) {
+      console.log("Color Picker " + ch)
+      clPckrCh = ch
+      if (!colorPickerOpen) {
+        colorPickerWindow = new BrowserWindow(
+          {
+            width: 180,
+            height: 420,
+            frame: false,
+            transparent: true,
+            alwaysOnTop: true,
+            resizable: false,
+            titleBarStyle: "customButtonsOnHover",
+            webPreferences: {
+              nodeIntegration: true
+            }
+          }
+        );
+
+        colorPickerWindow.setMenuBarVisibility(false)
+
+        colorPickerWindow.loadURL(url.format({
+          pathname: path.join(__dirname, 'colorPicker.html'),
+          protocol: 'file',
+          slashes: true
+        }));
+
+        colorPickerWindow.webContents.on('did-finish-load', function () {
+          colorPickerOpen = true
+          colorPickerWindow.send('channel', ch, nm)
+        });
+
+        colorPickerWindow.on('closed', function () {
+          colorPickerOpen = false
+        });
+      } else {
+        colorPickerWindow.loadURL(url.format({
+          pathname: path.join(__dirname, 'colorPicker.html'),
+          protocol: 'file',
+          slashes: true
+        }));
+
+        colorPickerWindow.webContents.on('did-finish-load', function () {
+          colorPickerOpen = true
+          colorPickerWindow.send('channel', ch, nm)
+        });
+
+        colorPickerWindow.on('closed', function () {
+          colorPickerOpen = false
+        });
+      }
+
+    })
+
+    ipcMain.on('nameChange', (event, chnl, name) => {
+      if (colorPickerOpen && chnl === clPckrCh) {
+        //log('SEND')
+        colorPickerWindow.webContents.send('nameToPicker', name)
+      }
+
+    })
+
+
   })
 }
 ///////////////////////////////////////
@@ -78,6 +148,10 @@ function createWindow() {
   win.on('closed', () => {
     usbDetect.stopMonitoring()
     win = null
+    if(colorPickerOpen){
+      colorPickerWindow.close()
+    }
+    
   })
 
   checkYo()

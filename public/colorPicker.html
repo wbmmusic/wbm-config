@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Color Picker</title>
+    <style>
+        body {
+            color: rgb(197, 197, 197);
+        }
+
+        button {
+            text-align: center;
+            background-color: rgb(200, 200, 200);
+            margin-left: 2px;
+            margin-right: 2px;
+
+        }
+
+        .colorPickerDiv {
+            border: 5px rgb(209, 209, 209) solid;
+            border-radius: 5px;
+            display: inline-block;
+            padding: 10px;
+            background-color: rgb(34, 34, 34);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="colorPickerDiv" style="user-select: none;">
+        <div id="channelNumber" style="-webkit-app-region: drag;"></div>
+        <br>
+        <canvas id="colorSlider" height="80px" width="130px" style="padding-bottom: 10px;"></canvas>
+        <br>
+        Color
+        <br>
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="white" onclick="checkAddress(this)"
+            style="margin-top: 10px;">
+        <label for="vehicle1"> White</label><br>
+        <input type="range" min="0" max="100" value="30" id="hRange" style="margin-top: 10px;">
+        <br>
+        <canvas id="colorBar" height="10px" width="130px"></canvas>
+        <br><br>
+        Brightness
+        <br>
+        <input type="range" min="0" max="100" value="100" id="bRange" style="margin-top: 10px;">
+        <br>
+        <canvas id="brightnessBar" height="10px" width="130px"></canvas>
+        <br>
+        <div style="text-align: center; display: block; padding-top: 15px;">
+            <button onmousedown="okBtn()">OK</button>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+
+    var curBright = 100
+    var curColor = 30
+    var white = 0
+    var channel = 0
+
+    hBox(curColor, 1, (curBright / 100))
+    drwaColorBar()
+    drawBrightnessBar()
+
+    function drawBrightnessBar() {
+        var canvas = document.getElementById('brightnessBar');
+        var ctx = canvas.getContext('2d');
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+
+        var cWidth = imageData.width
+        var cHeight = imageData.height
+        var hCnt = 0
+        var pointer = 0
+
+        for (var d = 0; d < cHeight; d++) {
+            var hCnt = 0
+            for (var i = 0; i < (cWidth * 4); i += 4) {
+
+                var RedGreenBlue = hslToRgb(0, 0, (hCnt / cWidth))
+
+                data[pointer] = RedGreenBlue[0];     // red
+                data[pointer + 1] = RedGreenBlue[1]; // green
+                data[pointer + 2] = RedGreenBlue[2]; // blue
+                data[pointer + 3] = 255; // blue
+                pointer = (pointer + 4)
+                hCnt++
+            }
+        }
+
+        imageData.data = data
+
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    function drwaColorBar() {
+        var canvas = document.getElementById('colorBar');
+        var ctx = canvas.getContext('2d');
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+
+        var cWidth = imageData.width
+        var cHeight = imageData.height
+        var hCnt = 0
+        var pointer = 0
+
+        for (var d = 0; d < cHeight; d++) {
+            var hCnt = 0
+            for (var i = 0; i < (cWidth * 4); i += 4) {
+
+                var RedGreenBlue = hslToRgb((hCnt / cWidth), 1, .5)
+
+                data[pointer] = RedGreenBlue[0];     // red
+                data[pointer + 1] = RedGreenBlue[1]; // green
+                data[pointer + 2] = RedGreenBlue[2]; // blue
+                data[pointer + 3] = 255; // blue
+                pointer = (pointer + 4)
+                hCnt++
+            }
+        }
+
+        imageData.data = data
+
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    function hBox(hue, sat, bright) {
+        var canvas = document.getElementById('colorSlider');
+        var ctx = canvas.getContext('2d');
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+
+        for (var i = 0; i < data.length; i += 4) {
+
+            var RedGreenBlue = hslToRgb((hue / 100), sat, (bright / 2))
+
+            data[i] = RedGreenBlue[0];     // red
+            data[i + 1] = RedGreenBlue[1]; // green
+            data[i + 2] = RedGreenBlue[2]; // blue
+            data[i + 3] = 255; // blue
+        }
+
+        imageData.data = data
+
+        ipcRenderer.send('selectedColor', RedGreenBlue, channel)
+
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    var slider = document.getElementById('hRange');
+    slider.addEventListener('input', function () {
+        curColor = slider.value
+        if (white == 1) {
+            hBox(curColor, 0, (curBright / 50))
+        } else {
+            hBox(curColor, 1, (curBright / 100))
+        }
+    });
+
+    var bslider = document.getElementById('bRange');
+    bslider.addEventListener('input', function () {
+        curBright = bslider.value
+        if (white == 1) {
+            hBox(curColor, 0, (curBright / 50))
+        } else {
+            hBox(curColor, 1, (curBright / 100))
+        }
+    });
+
+    function checkAddress(checkbox) {
+        if (checkbox.checked) {
+            white = 1
+            hBox(curColor, 0, (curBright / 50))
+        } else {
+            white = 0
+            hBox(curColor, 1, (curBright / 100))
+        }
+
+    }
+
+    function hslToRgb(h, s, l) {
+        var r, g, b;
+
+        if (s == 0) {
+            r = g = b = l; // achromatic
+        } else {
+            var hue2rgb = function hue2rgb(p, q, t) {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            }
+
+            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            var p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+
+    function okBtn() {
+        window.close()
+    }
+
+    ipcRenderer.on('channel', function (event, ch, nm) {
+        console.log("Channel " + ch)
+        channel = ch
+        document.getElementById('channelNumber').innerHTML = 'LED ' + (channel) + '<br>' + nm
+    })
+
+    ipcRenderer.on('nameToPicker', function (event, nm) {
+        document.getElementById('channelNumber').innerHTML = 'LED ' + (channel) + '<br>' + nm
+    })
+
+</script>

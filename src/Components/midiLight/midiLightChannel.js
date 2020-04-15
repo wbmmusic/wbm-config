@@ -2,8 +2,24 @@ import React, { Component } from 'react'
 import OutputCmdPicker from './../utilities/outputCmdPicker'
 import MidiLightLED from './midiLightLED'
 import { v4 as uuid } from 'uuid';
+const { ipcRenderer } = window.require('electron')
 
 export class midiLightChannel extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            channel: this.props.channel,
+            name: 'Name this LED'
+        }
+
+        this.handleName = this.handleName.bind(this);
+    }
+
+    handleName(e){
+        this.setState({name: e.target.value})
+        ipcRenderer.send('nameChange', this.state.channel, e.target.value)
+    }
+
     render() {
         return (
             <div style={mainDiv}>
@@ -14,7 +30,7 @@ export class midiLightChannel extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td style={tblcell}><b>LED #{this.props.channel}</b></td>
+                                            <td style={tblcell}><b>LED #{this.state.channel}</b></td>
                                         </tr>
                                         <tr>
                                             <td style={tblcell}>
@@ -24,7 +40,9 @@ export class midiLightChannel extends Component {
                                                     textAlign: 'center',
                                                     width: '95%'
                                                 }}
-                                                    defaultValue='Name this LED' />
+                                                    defaultValue={this.state.name}
+                                                    onChange={this.handleName}
+                                                />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -32,7 +50,11 @@ export class midiLightChannel extends Component {
                             </td>
                         </tr>
                         <tr>
-                            <td style={tblcell}><MidiLightLED /></td>
+                            <td style={tblcell}><MidiLightLED
+                                channel={this.state.channel}
+                                name={this.state.name}
+                            />
+                            </td>
                         </tr>
                         <tr>
                             <td style={tblcell}><OutputCmdPicker /></td>
