@@ -15,7 +15,7 @@ var filePath
 if (isMac) {
   filePath = path.join(__dirname, '/bossacmac');
 } else {
-  filePath ='public/bossacwin';
+  filePath = 'public/bossacwin';
 }
 
 //Firmware stuff
@@ -186,10 +186,10 @@ if (!gotTheLock) {
         clPckrCh = ch
         colorPickerWindow = new BrowserWindow(
           {
-            width: 180,
-            height: 420,
-            frame: false,
-            transparent: true,
+            width: 300,
+            height: 460,
+            //frame: false,
+            //transparent: true,
             alwaysOnTop: true,
             resizable: false,
             titleBarStyle: "customButtonsOnHover",
@@ -217,22 +217,6 @@ if (!gotTheLock) {
         });
       } else if (ch !== clPckrCh) {
         clPckrCh = ch
-        colorPickerWindow.close()
-
-        colorPickerWindow = new BrowserWindow(
-          {
-            width: 180,
-            height: 420,
-            frame: false,
-            transparent: true,
-            alwaysOnTop: true,
-            resizable: false,
-            titleBarStyle: "customButtonsOnHover",
-            webPreferences: {
-              nodeIntegration: true
-            }
-          }
-        );
 
         colorPickerWindow.loadURL(url.format({
           pathname: path.join(__dirname, 'colorPicker.html'),
@@ -403,7 +387,6 @@ ipcMain.on('app-is-up', function () {
   usbDetect.find(1003, function (err, devices) { findAtmelDevices(devices, err) });
   //getNetInfo()
 })
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -741,32 +724,43 @@ function selectDeviceAndFWfile() {
     devList[i] = conDevs[i].info.serialNumber
   }
   let dev = dialog.showMessageBoxSync(win, {
-    type: 'question',
-    buttons: devList
+    type: 'none',
+    buttons: devList,
+    title: 'Firmware Uploader',
+    message: 'Select A Device To Upload Firmware To',
+    cancelId: 9999
   })
-  log('IN FIRMWARE SELECT') // prints "ping"
-  dialog.showOpenDialog(win, {
-    properties: ['openFile'],
-    filters: [
-      { name: 'Config File', extensions: ['gpiofw'] }
-    ]
-  }).then(result => {
-    if (result.canceled) {
-      log('FIRMWARE SELECT CANCELED')
-    } else {
-      if (firmwareUpload) {
-        log('CANT UPLOAD FIRMWARE - UPLOAD ALREADY IN PROGRESS')
+  log('msg box output = ' + dev)
+
+  if (dev !== 9999) {
+    log('IN FIRMWARE SELECT') // prints "ping"
+    dialog.showOpenDialog(win, {
+      properties: ['openFile'],
+      filters: [
+        { name: 'Config File', extensions: ['gpiofw'] }
+      ]
+    }).then(result => {
+      if (result.canceled) {
+        log('FIRMWARE SELECT CANCELED')
       } else {
-        log(result.filePaths[0])
-        pathToFirmware = result.filePaths[0]
-        firmwareUpload = true
-        conDevs[dev].port.write('WBM FIRMWARE REBOOT COMMAND')
-        //uploadFirmware(conDevs[dev].ports.path, result.filePaths[0])
+        if (firmwareUpload) {
+          log('CANT UPLOAD FIRMWARE - UPLOAD ALREADY IN PROGRESS')
+        } else {
+          log(result.filePaths[0])
+          pathToFirmware = result.filePaths[0]
+          firmwareUpload = true
+          conDevs[dev].port.write('WBM FIRMWARE REBOOT COMMAND')
+          //uploadFirmware(conDevs[dev].ports.path, result.filePaths[0])
+        }
       }
-    }
-  }).catch(err => {
-    log(err)
-  })
+    }).catch(err => {
+      log(err)
+    })
+  }else{
+    log('Canceled')
+  }
+
+
 }
 
 ipcMain.on('uploadFirm', (event) => {
