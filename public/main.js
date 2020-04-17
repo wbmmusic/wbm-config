@@ -13,7 +13,7 @@ const { execFile } = require('child_process');
 //Get Path to bossa
 var filePath
 if (isMac) {
-  filePath = path.join(__dirname, '/bossac');
+  filePath = path.join(__dirname, '/bossacmac');
 } else {
   filePath ='public/bossac';
 }
