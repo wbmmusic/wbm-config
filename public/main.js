@@ -183,6 +183,7 @@ if (!gotTheLock) {
       log("Color Picker " + ch)
 
       if (!colorPickerOpen) {
+        colorPickerOpen = true
         clPckrCh = ch
         colorPickerWindow = new BrowserWindow(
           {
@@ -192,6 +193,7 @@ if (!gotTheLock) {
             //transparent: true,
             alwaysOnTop: true,
             resizable: false,
+            backgroundColor: 'black',
             titleBarStyle: "customButtonsOnHover",
             webPreferences: {
               nodeIntegration: true
@@ -232,11 +234,6 @@ if (!gotTheLock) {
         colorPickerWindow.on('closed', function () {
           colorPickerOpen = false
         });
-
-      } else if (ch === clPckrCh) {
-        colorPickerOpen = false
-        clPckrCh = 0
-        colorPickerWindow.close()
       }
 
     })
@@ -762,8 +759,6 @@ function selectDeviceAndFWfile() {
   } else {
     log('Canceled')
   }
-
-
 }
 
 ipcMain.on('uploadFirm', (event) => {
