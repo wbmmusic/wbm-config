@@ -86,8 +86,7 @@
       console.log('main.js: '+arg) // prints "pong"
     })
 
-    ipcRenderer.send('app-is-up')
-
+    ipcRenderer.send('react-is-up')
 
     function closeNotification() {
       notification.classList.add('hidden');

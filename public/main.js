@@ -26,7 +26,6 @@ let firmwareUpload = false
 //SERIAL PORT
 const SerialPort = require('serialport')
 const Regex = require('@serialport/parser-regex')
-var port
 ///////////////////////////////////////////////
 
 //Auto Updater
@@ -114,6 +113,18 @@ var menuTemplate = [
       }
     ]
   },
+  // { role: 'Developer' }
+  {
+    label: 'Developer',
+    submenu: [
+      {
+        label: 'Fimrware Upload',
+        click: async () => {
+          selectDeviceAndFWfile()
+        }
+      }
+    ]
+  },
   {
     role: 'help',
     submenu: [
@@ -156,105 +167,91 @@ app.commandLine.appendSwitch('force-device-scale-factor', 1)
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+////////////////// App Startup ///////////////////////////////////////////////////////////////////
 let win
-
 ////////  SINGLE INSTANCE //////////
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) {
   app.quit()
-} else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (win) {
-      if (win.isMinimized()) win.restore()
-      win.focus()
-    }
-  })
-
-  // Create myWindow, load the rest of the app, etc...
-  app.on('ready', () => {
-    //log("-APP IS READY");
-    createWindow()
-
-    ipcMain.on('showColorPicker', function (event, ch, nm) {
-      log("Color Picker " + ch)
-
-      if (!colorPickerOpen) {
-        colorPickerOpen = true
-        clPckrCh = ch
-        colorPickerWindow = new BrowserWindow(
-          {
-            width: 300,
-            height: 460,
-            //frame: false,
-            //transparent: true,
-            alwaysOnTop: true,
-            resizable: false,
-            backgroundColor: 'black',
-            titleBarStyle: "customButtonsOnHover",
-            webPreferences: {
-              nodeIntegration: true
-            }
-          }
-        );
-
-        colorPickerWindow.setMenuBarVisibility(false)
-
-        colorPickerWindow.loadURL(url.format({
-          pathname: path.join(__dirname, 'colorPicker.html'),
-          protocol: 'file',
-          slashes: true
-        }));
-
-        colorPickerWindow.webContents.on('did-finish-load', function () {
-          colorPickerOpen = true
-          colorPickerWindow.send('channel', ch, nm)
-        });
-
-        colorPickerWindow.on('closed', function () {
-          colorPickerOpen = false
-        });
-      } else if (ch !== clPckrCh) {
-        clPckrCh = ch
-
-        colorPickerWindow.loadURL(url.format({
-          pathname: path.join(__dirname, 'colorPicker.html'),
-          protocol: 'file',
-          slashes: true
-        }));
-
-        colorPickerWindow.webContents.on('did-finish-load', function () {
-          colorPickerOpen = true
-          colorPickerWindow.send('channel', ch, nm)
-        });
-
-        colorPickerWindow.on('closed', function () {
-          colorPickerOpen = false
-        });
-
-      } else if (ch === clPckrCh) {
-        /*
-        colorPickerOpen = false
-        clPckrCh = 0
-        colorPickerWindow.close()
-        */
-      }
-
-    })
-
-    ipcMain.on('nameChange', (event, chnl, name) => {
-      if (colorPickerOpen && chnl === clPckrCh) {
-        //log('SEND')
-        colorPickerWindow.webContents.send('nameToPicker', name)
-      }
-    })
-  })
 }
-///////////////////////////////////////
 
+app.on('second-instance', (event, commandLine, workingDirectory) => {
+  // Someone tried to run a second instance, we should focus our window.
+  if (win) {
+    if (win.isMinimized()) win.restore()
+    win.focus()
+  }
+})
+//////  END SINGLE INSTANCE ////////
+
+// Create myWindow, load the rest of the app, etc...
+app.on('ready', () => {
+  //log("-APP IS READY");
+  createWindow()
+})
+///////////////////////
+
+////////// Color Picker Window //////////
+ipcMain.on('showColorPicker', function (event, ch, nm) {
+  log("Color Picker " + ch)
+
+  if (!colorPickerOpen) {
+    colorPickerOpen = true
+    clPckrCh = ch
+    colorPickerWindow = new BrowserWindow(
+      {
+        width: 300,
+        height: 460,
+        //frame: false,
+        //transparent: true,
+        alwaysOnTop: true,
+        resizable: false,
+        backgroundColor: 'black',
+        titleBarStyle: "customButtonsOnHover",
+        webPreferences: {
+          nodeIntegration: true
+        }
+      }
+    );
+
+    colorPickerWindow.setMenuBarVisibility(false)
+
+    colorPickerWindow.loadURL(url.format({
+      pathname: path.join(__dirname, 'colorPicker.html'),
+      protocol: 'file',
+      slashes: true
+    }));
+
+    colorPickerWindow.webContents.on('did-finish-load', function () {
+      colorPickerOpen = true
+      colorPickerWindow.send('channel', ch, nm)
+    });
+
+    colorPickerWindow.on('closed', function () {
+      colorPickerOpen = false
+    });
+  } else if (ch !== clPckrCh) {
+    clPckrCh = ch
+
+    colorPickerWindow.send('channel', ch, nm)
+
+  } else if (ch === clPckrCh) {
+    /*
+    colorPickerOpen = false
+    clPckrCh = 0
+    colorPickerWindow.close()
+    */
+  }
+
+})
+
+ipcMain.on('nameChange', (event, chnl, name) => {
+  if (colorPickerOpen && chnl === clPckrCh) {
+    //log('SEND')
+    colorPickerWindow.webContents.send('nameToPicker', name)
+  }
+})
+/////////////////////////////////////////
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -303,6 +300,25 @@ function createWindow() {
 
 }
 
+let reactState = false
+ipcMain.on('react-is-up', function () {
+  //When react refreshes this is called
+  //We only let it get called the first time
+  if (!reactState) {
+    reactState = true
+    log('App Is Up!')
+    log('PATH BELOW to Bossac')
+    log(filePath)
+
+    //On boot look for any devices that are already connected
+    usbDetect.find(1003, function (err, devices) { findAtmelDevices(devices, err) });
+    //getNetInfo()
+  }
+})
+////////////////// END App Startup ///////////////////////////////////////////////////////////////
+
+
+///////////////////////// AUTO UPDATE /////////////////////////////////
 function checkYo() {
   autoUpdater.checkForUpdatesAndNotify();
 }
@@ -313,10 +329,6 @@ ipcMain.on('app_version', (event) => {
 
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
-});
-
-ipcMain.on('MOUNTED', () => {
-  log('Got The Message')
 });
 
 autoUpdater.on('update-available', () => {
@@ -330,6 +342,8 @@ autoUpdater.on('update-downloaded', () => {
 autoUpdater.on('error', () => {
   win.webContents.send('update_error');
 });
+///////////////////////// END AUTO UPDATE /////////////////////////////
+
 
 ///////////////////// FILE OPEN AND SAVE //////////////////////////////
 ipcMain.on('OPEN', (event, arg) => {
@@ -375,22 +389,7 @@ ipcMain.on('SAVE', (event, arg, fileData) => {
     log(err)
   })
 })
-///////////////////////////////////////////////////////////////////////
-
-ipcMain.on('ports', (event, arg, fileData) => {
-  log('Port Request')
-  //listPorts(event)
-})
-
-ipcMain.on('app-is-up', function () {
-  log('App Is Up!')
-  log('PATH BELOW to Bossac')
-  log(filePath)
-
-  //On boot look for any devices that are already connected
-  usbDetect.find(1003, function (err, devices) { findAtmelDevices(devices, err) });
-  //getNetInfo()
-})
+/////////////////// END FILE OPEN AND SAVE ////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -703,7 +702,7 @@ function showDeviceInfo(serNum) {
 }
 
 
-///// FIRMWARE
+////////////////////////// FIRMWARE UPLOAD /////////////////////////////////////////
 function uploadFirmware(port, path) {
   log('In getNetInfo()')
 
@@ -722,6 +721,7 @@ function uploadFirmware(port, path) {
   });
 }
 
+//THIS IS WHERE IT ALL STARTS
 function selectDeviceAndFWfile() {
   let devList = []
   devList.push('cancel')
@@ -767,11 +767,7 @@ function selectDeviceAndFWfile() {
     log('Canceled')
   }
 }
-
-ipcMain.on('uploadFirm', (event) => {
-  selectDeviceAndFWfile()
-})
-///////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////// END FIRMWARE UPLOAD /////////////////////////////////////
 
 
 function log(msg) {

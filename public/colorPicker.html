@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Color Picker</title>
+    <title id="theTitle">Color Picker</title>
     <style>
         body {
             color: rgb(197, 197, 197);
@@ -223,11 +223,12 @@
     ipcRenderer.on('channel', function (event, ch, nm) {
         console.log("Channel " + ch)
         channel = ch
-        document.getElementById('channelNumber').innerHTML = 'LED ' + (channel) + '<br>' + nm
+        document.getElementById('channelNumber').innerHTML = 'LED ' + channel + '<br>' + nm
+        document.getElementById('theTitle').innerHTML = 'LED ' + channel + ' Color'
     })
 
     ipcRenderer.on('nameToPicker', function (event, nm) {
-        document.getElementById('channelNumber').innerHTML = 'LED ' + (channel) + '<br>' + nm
+        document.getElementById('channelNumber').innerHTML = 'LED ' + channel + '<br>' + nm
     })
 
 </script>

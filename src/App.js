@@ -8,7 +8,7 @@ import midiButton from './Components/midiButton/midiButton'
 import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
-import Serial from './Components/utilities/serial'
+import DevInfo from './Components/utilities/DevInfo'
 //import Matraces from './Components/matrix/matraces'
 import Files from './Components/utilities/Files'
 
@@ -31,7 +31,7 @@ export class App extends Component {
             <Route exact path='/mtcDisplay' component={mtcDisplay} />
             <Route exact path='/midiAB' component={midiAB} />
             <Route exact path='/files' component={Files} />
-            <Route exact path='/about' component={Serial} />
+            <Route exact path='/about' component={DevInfo} />
             <Route exact path='/' component={About} />
           </div>
         </div>
