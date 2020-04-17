@@ -39,7 +39,7 @@
         <input type="checkbox" id="vehicle1" name="vehicle1" value="white" onclick="checkAddress(this)"
             style="margin-top: 10px;">
         <label for="vehicle1"> White</label><br>
-        <input type="range" min="0" max="100" value="30" id="hRange" style="margin-top: 10px;">
+        <input type="range" min="0" max="360" value="30" id="hRange" style="margin-top: 10px;">
         <br>
         <canvas id="colorBar" height="10px" width="130px"></canvas>
         <br><br>
@@ -63,11 +63,11 @@
     const { ipcRenderer } = electron;
 
     var curBright = 100
-    var curColor = 30
+    var curColor
     var white = 0
     var channel = 0
+    var theColor = []
 
-    hBox(curColor, 1, (curBright / 100))
     drwaColorBar()
     drawBrightnessBar()
 
@@ -141,7 +141,10 @@
 
         for (var i = 0; i < data.length; i += 4) {
 
-            var RedGreenBlue = hslToRgb((hue / 100), sat, (bright / 2))
+            var HSLtemp = [hue / 360, sat / 100, bright / 100]
+            var RedGreenBlue = hslToRgb((hue / 360), sat / 100, (bright / 100))
+            var HSL = [hue, sat, bright]
+            //console.log(HSLtemp)
 
             data[i] = RedGreenBlue[0];     // red
             data[i + 1] = RedGreenBlue[1]; // green
@@ -149,20 +152,22 @@
             data[i + 3] = 255; // blue
         }
 
+        console.log('Hue = ' + hue + ' Sat = ' + sat + ' bright = ' + bright)
+
         imageData.data = data
 
-        ipcRenderer.send('selectedColor', RedGreenBlue, channel)
-
         ctx.putImageData(imageData, 0, 0);
+
+        ipcRenderer.send('selectedColor', RedGreenBlue, channel, HSL)
     }
 
     var slider = document.getElementById('hRange');
     slider.addEventListener('input', function () {
         curColor = slider.value
         if (white == 1) {
-            hBox(curColor, 0, (curBright / 50))
+            hBox(curColor, 0, 50)
         } else {
-            hBox(curColor, 1, (curBright / 100))
+            hBox(curColor, 100, 50)
         }
     });
 
@@ -170,19 +175,19 @@
     bslider.addEventListener('input', function () {
         curBright = bslider.value
         if (white == 1) {
-            hBox(curColor, 0, (curBright / 50))
+            hBox(curColor, 0, (curBright))
         } else {
-            hBox(curColor, 1, (curBright / 100))
+            hBox(curColor, 100, (curBright / 2))
         }
     });
 
     function checkAddress(checkbox) {
         if (checkbox.checked) {
             white = 1
-            hBox(curColor, 0, (curBright / 50))
+            hBox(curColor, 0, (curBright))
         } else {
             white = 0
-            hBox(curColor, 1, (curBright / 100))
+            hBox(curColor, 100, (curBright / 2))
         }
 
     }
@@ -220,15 +225,20 @@
         window.close()
     }
 
-    ipcRenderer.on('channel', function (event, ch, nm) {
+    ipcRenderer.on('channel', function (event, ch, nm, clr) {
         console.log("Channel " + ch)
         channel = ch
-        document.getElementById('channelNumber').innerHTML = 'LED ' + channel + '<br>' + nm
-        document.getElementById('theTitle').innerHTML = 'LED ' + channel + ' Color'
+        theColor = clr
+        document.getElementById('channelNumber').innerHTML = 'LED ' + (channel) + '<br>' + nm
+        hBox(clr[0], clr[1], clr[2])
+        console.log('Here = ' + clr)
+        curColor = clr[0]
+        document.getElementById('hRange').value = clr[0]
+        document.getElementById('bRange').value = clr[2] * 2
     })
 
     ipcRenderer.on('nameToPicker', function (event, nm) {
-        document.getElementById('channelNumber').innerHTML = 'LED ' + channel + '<br>' + nm
+        document.getElementById('channelNumber').innerHTML = 'LED ' + (channel) + '<br>' + nm
     })
 
 </script>

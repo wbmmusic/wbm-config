@@ -192,7 +192,7 @@ app.on('ready', () => {
 ///////////////////////
 
 ////////// Color Picker Window //////////
-ipcMain.on('showColorPicker', function (event, ch, nm) {
+ipcMain.on('showColorPicker', function (event, ch, nm, clr) {
   log("Color Picker " + ch)
 
   if (!colorPickerOpen) {
@@ -201,11 +201,11 @@ ipcMain.on('showColorPicker', function (event, ch, nm) {
     colorPickerWindow = new BrowserWindow(
       {
         width: 300,
-        height: 460,
+        height: 470,
         //frame: false,
         //transparent: true,
         alwaysOnTop: true,
-        resizable: false,
+        //resizable: false,
         backgroundColor: 'black',
         titleBarStyle: "customButtonsOnHover",
         webPreferences: {
@@ -224,7 +224,7 @@ ipcMain.on('showColorPicker', function (event, ch, nm) {
 
     colorPickerWindow.webContents.on('did-finish-load', function () {
       colorPickerOpen = true
-      colorPickerWindow.send('channel', ch, nm)
+      colorPickerWindow.send('channel', ch, nm, clr)
     });
 
     colorPickerWindow.on('closed', function () {
@@ -233,7 +233,11 @@ ipcMain.on('showColorPicker', function (event, ch, nm) {
   } else if (ch !== clPckrCh) {
     clPckrCh = ch
 
-    colorPickerWindow.send('channel', ch, nm)
+    colorPickerWindow.send('channel', ch, nm, clr)
+
+    colorPickerWindow.on('closed', function () {
+      colorPickerOpen = false
+    });
 
   } else if (ch === clPckrCh) {
     /*
@@ -250,6 +254,13 @@ ipcMain.on('nameChange', (event, chnl, name) => {
     //log('SEND')
     colorPickerWindow.webContents.send('nameToPicker', name)
   }
+})
+
+ipcMain.on('selectedColor', (event, rgb, chnl, HSL) => {
+  //log('SelectedColor')
+  //log(rgb)
+  //log(chnl)
+  win.send('colorFromPicker', rgb, chnl, HSL)
 })
 /////////////////////////////////////////
 

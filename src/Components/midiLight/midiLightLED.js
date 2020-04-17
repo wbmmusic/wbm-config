@@ -4,20 +4,48 @@ import { v4 as uuid } from 'uuid';
 const { ipcRenderer } = window.require('electron')
 
 export class midiLightLED extends Component {
-    state = {
-        name: this.props.name,
-        channel: this.props.channel
+    constructor(props) {
+        super(props)
+        this.state = {
+            name: this.props.name,
+            channel: this.props.channel,
+            color: [200, 100, 50] //HSL
+        }
     }
 
+
     clrPckr = () => {
-        ipcRenderer.send('showColorPicker', this.state.channel, this.state.name)
+        ipcRenderer.send('showColorPicker', this.state.channel, this.state.name, this.state.color)
+    }
+
+    componentDidMount() {
+        ipcRenderer.on('colorFromPicker', (event, rgb, chnl, HSL) => {
+
+            if (chnl === this.state.channel) {
+
+                this.setState({ color: [parseInt(HSL[0]), HSL[1], HSL[2]] });
+                //console.log(this.state.color)
+                //console.log('SelectedColor')
+                //console.log(rgb)
+                //console.log(chnl)
+            }
+        })
     }
 
     componentDidUpdate() {
         if (this.state.name !== this.props.name) {
             this.setState({ name: this.props.name })
         }
+
+        if (this.state.channel !== this.props.channel) {
+            this.setState({ channel: this.props.channel })
+        }
+
+        //console.log(this.state.color)
     }
+
+    chnl = this.props.channel
+
 
     render() {
         return (
@@ -30,7 +58,20 @@ export class midiLightLED extends Component {
                     <tbody>
                         <tr>
                             <td style={dotCell}>
-                                <span style={dot} onMouseDown={this.clrPckr}></span>
+                                <span style={{
+                                    height: '30px',
+                                    width: '90%',
+                                    backgroundColor: 'hsl(' +
+                                        this.state.color[0] + ',' +
+                                        this.state.color[1] + '%,' +
+                                        this.state.color[2] + '%' +
+                                        ')',
+                                    /*borderRadius: '100%',*/
+                                    borderRadius: '10px',
+                                    display: 'inline-block',
+                                    margin: '3px',
+                                    verticalAlign: "middle"
+                                }} onMouseDown={this.clrPckr}></span>
                             </td>
                             <td style={td}>Color / Brightness</td>
                         </tr>
@@ -71,6 +112,7 @@ export class midiLightLED extends Component {
 
 let allTypes = ['Solid', 'Flash', 'Blink', 'Breath']
 let typesDropDown = []
+let chnl
 createOptions(allTypes, typesDropDown)
 
 function createOptions(pointer, output) {
@@ -99,16 +141,6 @@ const label = {
     paddingLeft: '5px'
 }
 
-const dot = {
-    height: '30px',
-    width: '90%',
-    backgroundColor: 'magenta',
-    /*borderRadius: '100%',*/
-    display: 'inline-block',
-    margin: '3px',
-    verticalAlign: "middle",
-}
-
 const mainDiv = {
     backgroundColor: 'lightgrey',
     padding: '8px',
@@ -116,5 +148,6 @@ const mainDiv = {
     borderRadius: '10px',
     margin: '4px',
 }
+
 
 export default midiLightLED
