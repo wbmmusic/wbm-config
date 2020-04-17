@@ -720,15 +720,11 @@ function uploadFirmware(port, path) {
 
 function selectDeviceAndFWfile() {
   let devList = []
+  devList.push('cancel')
   for (var i = 0; i < conDevs.length; i++) {
-    devList[i] = conDevs[i].info.serialNumber
+    devList.push(conDevs[i].info.serialNumber)
   }
 
-  var listening = true
-  if (devList.length === 0) {
-    devList = ['cancel']
-    listening = false
-  }
 
   let dev = dialog.showMessageBoxSync(win, {
     type: 'none',
@@ -739,7 +735,7 @@ function selectDeviceAndFWfile() {
   })
   log('msg box output = ' + dev)
 
-  if (dev !== 9999 && listening) {
+  if (dev > 0) {
     log('IN FIRMWARE SELECT') // prints "ping"
     dialog.showOpenDialog(win, {
       properties: ['openFile'],
@@ -756,7 +752,7 @@ function selectDeviceAndFWfile() {
           log(result.filePaths[0])
           pathToFirmware = result.filePaths[0]
           firmwareUpload = true
-          conDevs[dev].port.write('WBM FIRMWARE REBOOT COMMAND')
+          conDevs[dev - 1].port.write('WBM FIRMWARE REBOOT COMMAND')
           //uploadFirmware(conDevs[dev].ports.path, result.filePaths[0])
         }
       }
