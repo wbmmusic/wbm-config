@@ -234,6 +234,13 @@ if (!gotTheLock) {
         colorPickerWindow.on('closed', function () {
           colorPickerOpen = false
         });
+
+      } else if (ch === clPckrCh) {
+        /*
+        colorPickerOpen = false
+        clPckrCh = 0
+        colorPickerWindow.close()
+        */
       }
 
     })
