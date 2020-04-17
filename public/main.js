@@ -15,7 +15,7 @@ var filePath
 if (isMac) {
   filePath = path.join(__dirname, '/bossacmac');
 } else {
-  filePath ='public/bossac';
+  filePath ='public/bossacwin';
 }
 
 //Firmware stuff
