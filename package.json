@@ -80,6 +80,9 @@
     },
     "win": {
       "icon": "public/favicon.ico",
+      "extraFiles": [
+        "public/bossac.exe"
+      ],
       "fileAssociations": [
         {
           "ext": "wbmtek",

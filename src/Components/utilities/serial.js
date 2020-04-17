@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { v4 as uuid } from 'uuid';
 const { ipcRenderer } = window.require('electron')
 
+    
+
 export class serial extends Component {
     state = {
         portsx: []
@@ -37,11 +39,18 @@ export class serial extends Component {
                 }}>
                     {this.state.portsx}
                 </ul>
+                <br/>
+                <button onMouseDown={uploadFirm}>Upload Firmware</button>
             </div>
         )
     }
 }
 
 let serports = []
+
+function uploadFirm() {
+    console.log('UPLOAD FIRM SENT')
+    ipcRenderer.send('uploadFirm')
+}
 
 export default serial

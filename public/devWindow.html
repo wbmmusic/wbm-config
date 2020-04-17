@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    body {
+        background-color: white
+    }
+
+    .devTable {
+        width: 100%;
+        text-align: left;
+    }
+
+    td {
+        padding: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    th {
+        text-indent: 5px;
+    }
+
+    tr {
+        border-bottom: 1pt solid black;
+    }
+</style>
+
+<head>
+    <title id="titleBar">Document</title>
+</head>
+
+<body>
+    <h2>DEVICE INFO</h2>
+    <table class="devTable">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <th>Model</th>
+                <th>Serial#</th>
+                <th>Firmware</th>
+            </tr>
+            <tr class="border_bottom">
+                <td id="nameSlot"></td>
+                <td id="modelSlot"></td>
+                <td id="serNumSlot"></td>
+                <td id="fwSlot"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
+<script>
+    const { ipcRenderer } = require('electron')
+    let diviceInfo = []
+    ipcRenderer.send('whoSpawnedDevice')
+
+    ipcRenderer.on('thisDevice', (event, arg) => {
+        console.log(arg)
+        nameSlot.innerHTML = arg.UserName
+        modelSlot.innerHTML = arg.Model
+        serNumSlot.innerHTML = arg.serialNumber
+        fwSlot.innerHTML = arg.firmware
+        titleBar.innerHTML=arg.UserName
+    })
+</script>
