@@ -723,6 +723,13 @@ function selectDeviceAndFWfile() {
   for (var i = 0; i < conDevs.length; i++) {
     devList[i] = conDevs[i].info.serialNumber
   }
+
+  var listening = true
+  if (devList.length === 0) {
+    devList = ['cancel']
+    listening = false
+  }
+
   let dev = dialog.showMessageBoxSync(win, {
     type: 'none',
     buttons: devList,
@@ -732,7 +739,7 @@ function selectDeviceAndFWfile() {
   })
   log('msg box output = ' + dev)
 
-  if (dev !== 9999) {
+  if (dev !== 9999 && listening) {
     log('IN FIRMWARE SELECT') // prints "ping"
     dialog.showOpenDialog(win, {
       properties: ['openFile'],
@@ -756,7 +763,7 @@ function selectDeviceAndFWfile() {
     }).catch(err => {
       log(err)
     })
-  }else{
+  } else {
     log('Canceled')
   }
 
