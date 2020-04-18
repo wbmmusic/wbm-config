@@ -6,7 +6,6 @@
     <style>
         body {
             color: rgb(197, 197, 197);
-            background-color: black;
         }
 
         button {
@@ -23,7 +22,6 @@
             display: inline-block;
             padding: 10px;
             background-color: rgb(34, 34, 34);
-            margin: 0px 55px;
         }
     </style>
 </head>
@@ -139,6 +137,7 @@
         var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         var data = imageData.data;
 
+
         for (var i = 0; i < data.length; i += 4) {
 
             var HSLtemp = [hue / 360, sat / 100, bright / 100]
@@ -165,7 +164,7 @@
     slider.addEventListener('input', function () {
         curColor = slider.value
         if (white == 1) {
-            hBox(curColor, 0, 50)
+            hBox(curColor, 0, curBright)
         } else {
             hBox(curColor, 100, 50)
         }
@@ -222,6 +221,7 @@
     }
 
     function cancelBtn() {
+        ipcRenderer.send('selectedColor', 'RedGreenBlue', channel, theColor)
         window.close()
     }
 

@@ -200,13 +200,13 @@ ipcMain.on('showColorPicker', function (event, ch, nm, clr) {
     clPckrCh = ch
     colorPickerWindow = new BrowserWindow(
       {
-        width: 300,
-        height: 470,
-        //frame: false,
-        //transparent: true,
+        width: 180,
+        height: 420,
+        frame: false,
+        transparent: true,
         alwaysOnTop: true,
-        //resizable: false,
-        backgroundColor: 'black',
+        resizable: false,
+        //backgroundColor: 'black',
         titleBarStyle: "customButtonsOnHover",
         webPreferences: {
           nodeIntegration: true
