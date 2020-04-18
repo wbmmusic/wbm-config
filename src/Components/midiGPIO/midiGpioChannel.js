@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import OutputCmdPicker from './../utilities/outputCmdPicker'
-import MidiGpioIO from './midiGpioIO'
 import { v4 as uuid } from 'uuid';
 
 export class midiGpioChannel extends Component {

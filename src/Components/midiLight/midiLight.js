@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import MidiLightChannel from './midiLightChannel'
 import { v4 as uuid } from 'uuid';
 
-const { ipcRenderer } = window.require('electron')
-
-
 export class midiLight extends Component {
     createTable = () => {
         let table = []

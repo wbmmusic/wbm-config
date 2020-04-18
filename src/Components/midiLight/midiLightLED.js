@@ -112,7 +112,6 @@ export class midiLightLED extends Component {
 
 let allTypes = ['Solid', 'Flash', 'Blink', 'Breath']
 let typesDropDown = []
-let chnl
 createOptions(allTypes, typesDropDown)
 
 function createOptions(pointer, output) {
