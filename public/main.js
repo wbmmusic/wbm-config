@@ -324,9 +324,38 @@ ipcMain.on('react-is-up', function () {
     //On boot look for any devices that are already connected
     usbDetect.find(1003, function (err, devices) { findAtmelDevices(devices, err) });
     //getNetInfo()
+
+    showWhatsNew()
   }
 })
 ////////////////// END App Startup ///////////////////////////////////////////////////////////////
+
+////////// WHATS NEW //////////
+let whatsNewWin
+function showWhatsNew(){
+  whatsNewWin = new BrowserWindow({
+    width: 600,
+    height: 500,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  })
+
+  whatsNewWin.setAlwaysOnTop(true, "floating", 1);
+  whatsNewWin.setMenuBarVisibility(false)
+
+  whatsNewWin.loadURL(url.format({
+    pathname: path.join(__dirname, 'whatsNew.html'),
+    protocol: 'file',
+    slashes: true
+  }));
+
+  // Emitted when the window is closed.
+  whatsNewWin.on('closed', () => {
+    whatsNewWin = null
+  })
+}
+///////////////////////////////
 
 
 ///////////////////////// AUTO UPDATE /////////////////////////////////

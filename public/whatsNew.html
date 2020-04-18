@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    body {
+        background-color: rgb(233, 233, 233);
+    }
+</style>
+
+<head>
+    <title>What's New</title>
+</head>
+
+<body>
+
+    <div style="padding: 10px;">
+
+        <h3>V 0.0.78</h3>
+        <li>Added this "What's New" window</li>
+        <li>Started on MIDI Button UI</li>
+
+        <h3>V 0.0.77</h3>
+        <li>Some things</li>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+
+    function closeNew() {
+        console.log('saldhdslk')
+        ipcRenderer.send('close-whats-new')
+    }
+</script>
