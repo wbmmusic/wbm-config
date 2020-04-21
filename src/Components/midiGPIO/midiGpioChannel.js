@@ -50,6 +50,7 @@ export class midiGpioChannel extends Component {
         this.setState({
             pickerDisplay: [
                 <OutputCmdPicker
+                    key={uuid()}
                     getStructure={this.getStructure}
                     statex={this.state.tipPickerData}
                     channel={this.state.channel}
@@ -99,19 +100,22 @@ export class midiGpioChannel extends Component {
     }
 
     ringSel = (e) => {
-        console.log('Ring Selected')
-        this.setState({
-            pickerDisplay: [
-                <OutputCmdPicker
-                    getStructure={this.getStructure}
-                    statex={this.state.ringPickerData}
-                    channel={this.state.channel}
-                    id={uuid()}
-                    key={uuid()}
-                />
-            ]
-        })
-        this.setState({ pickRing: true })
+
+        if (this.state.trs) {
+            console.log('Ring Selected')
+            this.setState({
+                pickerDisplay: [
+                    <OutputCmdPicker
+                        getStructure={this.getStructure}
+                        statex={this.state.ringPickerData}
+                        channel={this.state.channel}
+                        id={uuid()}
+                        key={uuid()}
+                    />
+                ]
+            })
+            this.setState({ pickRing: true })
+        }
     }
 
     render() {
@@ -204,7 +208,7 @@ export class midiGpioChannel extends Component {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td colSpan="2">
                                                 {this.state.pickerDisplay}
                                             </td>
                                         </tr>

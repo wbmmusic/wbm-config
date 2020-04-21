@@ -21,6 +21,7 @@ export class midiGpio extends Component {
             table.push(
                 <div style={chnl} key={uuid()}>
                     <MidiGpioChannel
+                        key={uuid()}
                         channel={i + 1}
                         id={i + 1}
                     />

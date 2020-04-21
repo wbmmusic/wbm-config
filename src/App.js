@@ -5,7 +5,7 @@ import Header from './Components/layout/header'
 import midiLight from './Components/midiLight/midiLight'
 import midiGpio from './Components/midiGPIO/midiGpio'
 import midiButton from './Components/midiButton/midiButton'
-import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
+import mtcBox from './Components/mtcDisplay/mtcBox'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
 import DevInfo from './Components/utilities/DevInfo'
@@ -23,11 +23,11 @@ export class App extends Component {
             <Route exact path='/midiLight' component={midiLight} />
             <Route exact path='/midiGpio' component={midiGpio} />
             <Route exact path='/midiButton' component={midiButton} />
-            <Route exact path='/mtcDisplay' component={mtcDisplay} />
+            <Route exact path='/mtcDisplay' component={mtcBox} />
             <Route exact path='/midiAB' component={midiAB} />
             <Route exact path='/files' component={Files} />
-            <Route exact path='/about' component={DevInfo} />
-            <Route exact path='/' component={About} />
+            <Route exact path='/about' component={About} />
+            <Route exact path='/' component={DevInfo} />
           </div>
         </div>
       </Router>

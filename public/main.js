@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, dialog, globalShortcut } = require('electron')
 const path = require('path')
 const url = require('url')
 
@@ -122,6 +122,12 @@ var menuTemplate = [
         click: async () => {
           selectDeviceAndFWfile()
         }
+      },
+      {
+        label: 'What\'s New',
+        click: async () => {
+          showWhatsNew()
+        }
       }
     ]
   },
@@ -188,6 +194,11 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 app.on('ready', () => {
   //log("-APP IS READY");
   createWindow()
+
+  //TOGLE DEVELOPE MENU QUICK KEY
+  globalShortcut.register('CommandOrControl+Shift+D', () => {
+    toggleDevelopeMenu()
+  })
 })
 ///////////////////////
 
@@ -332,7 +343,7 @@ ipcMain.on('react-is-up', function () {
 
 ////////// WHATS NEW //////////
 let whatsNewWin
-function showWhatsNew(){
+function showWhatsNew() {
   whatsNewWin = new BrowserWindow({
     width: 700,
     height: 500,
@@ -383,6 +394,29 @@ autoUpdater.on('error', () => {
   win.webContents.send('update_error');
 });
 ///////////////////////// END AUTO UPDATE /////////////////////////////
+
+let developeMenu
+function toggleDevelopeMenu() {
+  //Update Devices menu to represent conDevs
+  for (var i = 0; i < menuTemplate.length; i++) {
+    if (menuTemplate[i].label === 'Devices') {
+
+      if (menuTemplate[i + 1].label === 'Developer') {
+        log('Toggle Develope Menu Menu Off')
+        developeMenu = menuTemplate[i + 1]
+        menuTemplate.splice(i + 1, 1)
+      } else {
+        log('Toggle Develope Menu Menu On')
+        menuTemplate.splice(i + 1, 0, developeMenu)
+      }
+
+      //Update the menu
+      menu = Menu.buildFromTemplate(menuTemplate)
+      Menu.setApplicationMenu(menu)
+
+    }
+  }
+}
 
 
 ///////////////////// FILE OPEN AND SAVE //////////////////////////////
@@ -532,6 +566,7 @@ function createPort(path, serNum) {
 
     //Update the Devices menu to display new device
     redrawDeviceMenu()
+    win.webContents.send('devList', conDevs)
   })
 }
 
@@ -540,7 +575,7 @@ function redrawDeviceMenu() {
 
   //Update Devices menu to represent conDevs
   for (var i = 0; i < menuTemplate.length; i++) {
-    if (menuTemplate[i].label == 'Devices') {
+    if (menuTemplate[i].label === 'Devices') {
 
       //add the menu item
       try {
@@ -601,6 +636,7 @@ function usbDisconnected(device) {
 
       //Remove it from the devices menu
       redrawDeviceMenu()
+      win.webContents.send('devList', conDevs)
     }
   }
 }

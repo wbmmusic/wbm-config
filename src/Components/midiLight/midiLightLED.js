@@ -35,10 +35,10 @@ export class midiLightLED extends Component {
             if (chnl === this.state.channel) {
 
                 this.setState({ color: [parseInt(HSL[0]), HSL[1], HSL[2]] });
-                console.log(this.state.color)
-                console.log('SelectedColor')
-                console.log(rgb)
-                console.log(chnl)
+                //console.log(this.state.color)
+                //console.log('SelectedColor')
+                //console.log(rgb)
+                //console.log(chnl)
             }
         })
     }

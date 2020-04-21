@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import { v4 as uuid } from 'uuid';
 
 export function defaultStateData(id) {
     //console.log('YOYOYO' + id)
@@ -16,6 +17,8 @@ export function defaultStateData(id) {
         showByte0: true,
         showByte1: true,
         showByte2: true,
+        hexOutput: [],
+        sysex: 'Enter HEX data here'
     }
     return defaultState
 }
@@ -37,6 +40,13 @@ export class outputCmdPicker extends Component {
             //console.log('XXXA State Deffined in Picker ' + thisPickersChannel)
             this.setState(props.statex)
         }
+
+        this.enterSysex = this.enterSysex.bind(this)
+    }
+
+    enterSysex(e) {
+        this.setState({sysex: e.target.value})
+        console.log(e.target.value)
     }
 
     componentWillMount() {
@@ -45,6 +55,10 @@ export class outputCmdPicker extends Component {
 
     componentDidMount() {
         //console.log('XXXX PICKER DID MOUNT #' + thisPickersChannel)
+    }
+
+    componentWillUpdate() {
+
     }
 
     componentDidUpdate() {
@@ -189,6 +203,7 @@ export class outputCmdPicker extends Component {
                 b0lbl = ['CH:']
                 byte0data = [
                     <Select
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={oneSixteen}
@@ -227,7 +242,8 @@ export class outputCmdPicker extends Component {
                 byte0data = [
                     <input
                         type='text'
-                        value='Enter HEX data here'
+                        onChange={this.enterSysex}
+                        value={this.state.sysex}
                         style={{ width: '97%' }}
                     ></input>
                 ]
@@ -246,6 +262,7 @@ export class outputCmdPicker extends Component {
                 b1lbl = ['Note:']
                 byte1data = [
                     <Select
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={noteDropDown}
@@ -263,6 +280,7 @@ export class outputCmdPicker extends Component {
                 b1lbl = ['CC#:']
                 byte1data = [
                     <Select
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={ccDropDown}
@@ -308,6 +326,7 @@ export class outputCmdPicker extends Component {
                 b2lbl = ['Vel:']
                 byte2data = [
                     <Select
+                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}

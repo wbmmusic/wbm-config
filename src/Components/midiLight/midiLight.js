@@ -6,7 +6,7 @@ console.log('XXXX MIDI LIGHT TOP')
 
 export class midiLight extends Component {
     state = {
-        numberOfChannels: 3
+        numberOfChannels: 6
     }
 
     constructor(props) {
@@ -30,7 +30,9 @@ export class midiLight extends Component {
             //Create the parent and add the children
             console.log('XXX make chnl #' + (i + 1))
             table.push(
-                <div style={{
+                <div 
+                key={uuid()}
+                style={{
                     display: 'inline-block'
                 }}
                     channel={(i + 1)}
