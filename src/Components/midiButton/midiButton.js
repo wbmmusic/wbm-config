@@ -31,9 +31,12 @@ export class midiButton extends Component {
 }
 
 const chnl={
+    backgroundColor: 'darkgrey',
     display: 'inline-block',
-    padding: '6px',
-    //border: '2px black solid',
+    padding: '3px',
+    border: '2px black solid',
+    margin: '3px',
+    borderRadius: "10px",
 }
 
 export default midiButton

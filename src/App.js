@@ -9,16 +9,11 @@ import mtcDisplay from './Components/mtcDisplay/mtcDisplay'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
 import DevInfo from './Components/utilities/DevInfo'
-//import Matraces from './Components/matrix/matraces'
 import Files from './Components/utilities/Files'
 
-const { ipcRenderer } = window.require('electron')
 
 export class App extends Component {
-  state = {
-    todos: []
-  }
-
+  
   render() {
     return (
       <Router>
@@ -39,14 +34,6 @@ export class App extends Component {
     )
   }
 }
-
-ipcRenderer.on('add', (e, arg) => {
-  console.log('USB Add ' + arg)
-});
-
-ipcRenderer.on('remove', (e, arg) => {
-  console.log('USB Remove ' + arg)
-});
 
 export default App;
 

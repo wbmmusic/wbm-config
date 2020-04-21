@@ -3,15 +3,24 @@ import MidiGpioChannel from './midiGpioChannel'
 import { v4 as uuid } from 'uuid';
 
 export class midiGpio extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            numberOfChannels: 6,
+            channelData: []
+        }
+
+        channels = this.createTable()
+    }
+
     createTable = () => {
         let table = []
         // Outer loop to create parent
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < this.state.numberOfChannels; i++) {
             //Create the parent and add the children
             table.push(
                 <div style={chnl} key={uuid()}>
                     <MidiGpioChannel
-                        key={uuid()}
                         channel={i + 1}
                         id={i + 1}
                     />
@@ -24,14 +33,16 @@ export class midiGpio extends Component {
     render() {
         return (
             <div>
-                <b style={{display: 'block'}}>MIDI GPIO</b>
-                {this.createTable()}
+                <b style={{ display: 'block' }}>MIDI GPIO</b>
+                {channels}
             </div>
         )
     }
 }
 
-const chnl={
+let channels = []
+
+const chnl = {
     backgroundColor: 'darkgrey',
     display: 'inline-block',
     padding: '3px',

@@ -2,17 +2,42 @@ import React, { Component } from 'react'
 import MidiLightChannel from './midiLightChannel'
 import { v4 as uuid } from 'uuid';
 
+console.log('XXXX MIDI LIGHT TOP')
+
 export class midiLight extends Component {
+    state = {
+        numberOfChannels: 3
+    }
+
+    constructor(props) {
+        super(props)
+        console.log('XXXX MIDI LIGHT TOP Constructor')
+        theData = this.createTable()
+    }
+
+    componentWillMount() {
+        console.log('XXXX MIDI LIGHT TOP WILL MOUNT')
+    }
+
+    componentDidMount() {
+        console.log('XXXX MIDI LIGHT TOP DID MOUNT')
+    }
+
     createTable = () => {
-        let table = []
+        table = []
         // Outer loop to create parent
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < this.state.numberOfChannels; i++) {
             //Create the parent and add the children
+            console.log('XXX make chnl #' + (i + 1))
             table.push(
-                <div style={chnl} key={uuid()}>
+                <div style={{
+                    display: 'inline-block'
+                }}
+                    channel={(i + 1)}
+                >
                     <MidiLightChannel
-                        id={uuid()}
-                        channel={i + 1}
+                        id={'gpiochnl' + (i + 1)}
+                        channel={(i + 1)}
                     />
                 </div>
             )
@@ -23,16 +48,14 @@ export class midiLight extends Component {
     render() {
         return (
             <div>
-                <b style={{display: 'block'}}>MIDI Light</b>
-                {this.createTable()}
+                <b style={{ display: 'block' }}>MIDI Light</b>
+                {theData}
             </div>
-
         )
     }
 }
 
-const chnl = {
-    display: 'inline-block',
-}
+let theData
+let table = []
 
 export default midiLight

@@ -334,7 +334,7 @@ ipcMain.on('react-is-up', function () {
 let whatsNewWin
 function showWhatsNew(){
   whatsNewWin = new BrowserWindow({
-    width: 600,
+    width: 700,
     height: 500,
     webPreferences: {
       nodeIntegration: true,

@@ -1,29 +1,61 @@
 import React, { Component } from 'react'
-import OutputCmdPicker from './../utilities/outputCmdPicker'
+import OutputCmdPicker, { defaultStateData } from './../utilities/outputCmdPicker'
 import { v4 as uuid } from 'uuid';
 
 export class midiGpioChannel extends Component {
+    state = {
+        channel: '',
+        in: false,
+        trs: false,
+        pickerDisplay: [],
+        pickRing: false,
+        tipPickerData: defaultStateData('tip'),
+        ringPickerData: defaultStateData('ring'),
+    }
+
     constructor(props) {
         super(props)
-        this.state = {
-            channel: this.props.channel,
-            in: false,
-            trs: false,
-            pickerDisplay: [],
-            pickRing: false
-        }
-
+        this.setState({ channel: this.props.channel })
         this.inPress = this.inPress.bind(this);
         this.outPress = this.outPress.bind(this);
         this.tsPress = this.tsPress.bind(this);
         this.trsPress = this.trsPress.bind(this);
         this.tipSel = this.tipSel.bind(this);
         this.ringSel = this.ringSel.bind(this);
+
+        this.getStructure = this.getStructure.bind(this);
+
+        var temp = this.state.ringPickerData
+        temp.channel = 5
+        this.setState({ ringPickerData: temp })
+    }
+
+    getStructure = (chnl, e) => {
+        console.log('XXX GOT STRUCTURE #' + chnl)
+
+        if (chnl === 'tip') {
+            console.log('GPIO CH #' + this.state.channel + ' Tip Data Change')
+            this.setState({ tipPickerData: e })
+        } else if (chnl === 'ring') {
+            console.log('GPIO CH #' + this.state.channel + ' Ring Data Change')
+            this.setState({ ringPickerData: e })
+        }
+
+        this.setState({ pickerData: e })
+
     }
 
     componentDidMount() {
         this.setState({ channel: this.props.channel })
-        this.setState({ pickerDisplay: [ToutPick] })
+        this.setState({
+            pickerDisplay: [
+                <OutputCmdPicker
+                    getStructure={this.getStructure}
+                    statex={this.state.tipPickerData}
+                    channel={this.state.channel}
+                />
+            ]
+        })
     }
 
     inPress = (e) => {
@@ -39,8 +71,9 @@ export class midiGpioChannel extends Component {
     tsPress = (e) => {
         console.log('TS PRESS')
         this.setState({ trs: false })
-        this.setState({pickRing: false})
+        this.setState({ pickRing: false })
         rngBtn = ''
+        this.tipSel()
     }
 
     trsPress = (e) => {
@@ -51,14 +84,34 @@ export class midiGpioChannel extends Component {
 
     tipSel = (e) => {
         console.log('TIP Selected')
-        this.setState({ pickerDisplay: [ToutPick] })
-        this.setState({pickRing: false})
+        this.setState({
+            pickerDisplay: [
+                <OutputCmdPicker
+                    getStructure={this.getStructure}
+                    statex={this.state.tipPickerData}
+                    channel={this.state.channel}
+                    id={uuid()}
+                    key={uuid()}
+                />
+            ]
+        })
+        this.setState({ pickRing: false })
     }
 
     ringSel = (e) => {
         console.log('Ring Selected')
-        this.setState({ pickerDisplay: [RoutPick] })
-        this.setState({pickRing: true})
+        this.setState({
+            pickerDisplay: [
+                <OutputCmdPicker
+                    getStructure={this.getStructure}
+                    statex={this.state.ringPickerData}
+                    channel={this.state.channel}
+                    id={uuid()}
+                    key={uuid()}
+                />
+            ]
+        })
+        this.setState({ pickRing: true })
     }
 
     render() {
@@ -171,19 +224,5 @@ let rngBtn
 const tblcell = {
     textAlign: 'center',
 }
-
-let ToutPick = [
-    <OutputCmdPicker
-        id={uuid()}
-        key={uuid()}
-    />
-]
-
-let RoutPick = [
-    <OutputCmdPicker
-        id={uuid()}
-        key={uuid()}
-    />
-]
 
 export default midiGpioChannel

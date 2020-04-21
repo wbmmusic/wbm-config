@@ -1,25 +1,64 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
-import { v4 as uuid } from 'uuid';
-//import $ from 'jquery'
-//import ReactDOM from 'react-dom'
 
-export class outputCmdPicker extends Component {
-    state = {
-        id: 'picker',
+export function defaultStateData(id) {
+    //console.log('YOYOYO' + id)
+    const defaultState =
+    {
+        id: 'picker' + id,
+        parentCh: id,
         type: ['Note On', 0],
-        command: 0,
+        command: 154,
         channel: 11,
-        byte0: 0,
+        byte0: 154,
         byte1: 67,
         byte2: 127,
         showByte0: true,
         showByte1: true,
         showByte2: true,
     }
+    return defaultState
+}
+
+export class outputCmdPicker extends Component {
+    state = this.props.statex
+
+    constructor(props) {
+        //console.log('AAAAA ' + props.channel)
+        thisPickersChannel = props.channel
+        super(props)
+        //console.log('XXXX Picker Constructor #' + thisPickersChannel)
+
+        if (props.statex === undefined) {
+            //console.log('XXXA No State Def in Picker ' + thisPickersChannel)
+            this.state = defaultStateData('')
+
+        } else {
+            //console.log('XXXA State Deffined in Picker ' + thisPickersChannel)
+            this.setState(props.statex)
+        }
+    }
+
+    componentWillMount() {
+        //console.log('XXXX PICKER WILL MOUNT #' + thisPickersChannel)
+    }
 
     componentDidMount() {
-        this.setState({ command: this.makeCmd(this.state.type[0], this.state.channel) })
+        //console.log('XXXX PICKER DID MOUNT #' + thisPickersChannel)
+    }
+
+    componentDidUpdate() {
+        console.log('Picker ' + this.state.parentCh + ' Did Update')
+        if (this.props.statex !== this.state) {
+            console.log('PICKER UPDATE STATE ' + this.state.parentCh)
+            if (this.props.getStructure) {
+                this.props.getStructure(this.state.parentCh, this.state)
+                console.log(this.state)
+            }
+
+        }
+        console.log('picker ' + thisPickersChannel + ' Updated')
+        console.log(this.state)
     }
 
     makeCmd = (type, chnl) => {
@@ -60,7 +99,6 @@ export class outputCmdPicker extends Component {
 
         return tmpCmd
     }
-
 
     render() {
 
@@ -151,8 +189,6 @@ export class outputCmdPicker extends Component {
                 b0lbl = ['CH:']
                 byte0data = [
                     <Select
-                        id={uuid()}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={oneSixteen}
@@ -171,7 +207,6 @@ export class outputCmdPicker extends Component {
                 b0lbl = ['Song:']
                 byte0data = [
                     <Select
-                        id={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
@@ -211,8 +246,6 @@ export class outputCmdPicker extends Component {
                 b1lbl = ['Note:']
                 byte1data = [
                     <Select
-                        id={uuid()}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={noteDropDown}
@@ -230,8 +263,6 @@ export class outputCmdPicker extends Component {
                 b1lbl = ['CC#:']
                 byte1data = [
                     <Select
-                        id={uuid()}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={ccDropDown}
@@ -249,8 +280,6 @@ export class outputCmdPicker extends Component {
                 b1lbl = ['PGM#:']
                 byte1data = [
                     <Select
-                        id={uuid()}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
@@ -279,8 +308,6 @@ export class outputCmdPicker extends Component {
                 b2lbl = ['Vel:']
                 byte2data = [
                     <Select
-                        id={uuid()}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
@@ -295,11 +322,10 @@ export class outputCmdPicker extends Component {
                     />
                 ]
             } else if (this.state.type[0] === 'Control Change') {
-                console.log('IN HERE CC YUP')
+                console.log('IN HERE CC YUP ch: ' + thisPickersChannel)
                 b2lbl = ['Val:']
                 byte2data = [
                     <Select
-                        id={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
@@ -326,7 +352,7 @@ export class outputCmdPicker extends Component {
 
         return (
             <div style={mainDiv}>
-                <table id="pickerTable" style={{ width: "100%" }}>
+                <table id={"pickerTable" + thisPickersChannel} style={{ width: "100%" }}>
                     <colgroup>
                         <col width="1px" />
                     </colgroup>
@@ -341,7 +367,6 @@ export class outputCmdPicker extends Component {
                             <td style={td}>
                                 <div id="typeDiv">
                                     <Select
-                                        key={uuid()}
                                         hideResetButton='true'
                                         style={{ textAlign: 'left' }}
                                         options={typesDropDown}
@@ -392,11 +417,11 @@ export class outputCmdPicker extends Component {
                 </table>
                 {outputDisplay}
             </div>
-
         )
     }
 }
 
+let thisPickersChannel
 let byte0data = []
 let byte1data = []
 let byte2data = []
@@ -409,7 +434,6 @@ function decimalToHexString(number) {
     if (number < 0) {
         number = 0xFFFFFFFF + number + 1;
     }
-
     return number.toString(16).toUpperCase();
 }
 
