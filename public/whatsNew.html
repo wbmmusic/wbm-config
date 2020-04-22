@@ -13,12 +13,23 @@
 <body>
 
     <div style="padding: 10px;">
-        <h3>What's New In This Version</h3>
+        <div style="display: inline-block;">
+            <h3>What's New In This Version</h3>
+        </div>
+        <div style="right: 20px; top: 40px; display: inline-block; position: absolute;" onmousedown="dontShow()">
+            <button>Don't Show Again Until Next Update</button>
+        </div>
         <hr>
+
+        <h2>v 0.0.82</h2>
+        <li>Added "Don't Show Again Until Next Update" button to whats new page.. just closes the window for now</li>
+        <br>
+        <hr>
+
 
         <h2>v 0.0.81</h2>
         <li>Can now enter text into sysex input boxes</li>
-        <li>Created toggle developer menu quick key.  (CTRL/CMD + Shift + D ) Defaults to on for now</li>
+        <li>Created toggle developer menu quick key. (CTRL/CMD + Shift + D ) Defaults to on for now</li>
         <li>Added "what's new" to Developer menu</li>
         <li>Moved matrix to about tab</li>
         <li>Added Device Info to home</li>
@@ -32,10 +43,11 @@
         <br>
         <hr>
 
+
         <h2>v 0.0.79</h2>
         <li>More work on MIDI Button UI</li>
         <li>Lots of time spent on Command picker backend</li>
-        <br/>
+        <br />
         <b>GPIO UI</b>
         <li>Remembers command picker settings when switching between Tip and Ring in TRS mode</li>
         <li>Selects Tip picker when switching from TRS to TS with ring picker selected</li>
@@ -52,5 +64,10 @@
     function closeNew() {
         console.log('saldhdslk')
         ipcRenderer.send('close-whats-new')
+    }
+
+    function dontShow(){
+        console.log('IN DON\'T SHOW')
+        ipcRenderer.send('dont-show-whats-new')
     }
 </script>

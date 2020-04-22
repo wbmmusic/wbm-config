@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+
 const { ipcRenderer } = window.require('electron')
+
 
 export class midiLightLED extends Component {
     state = {
@@ -25,8 +27,13 @@ export class midiLightLED extends Component {
         this.clrPckr = this.clrPckr.bind(this)
     }
 
-    clrPckr = () => {
-        ipcRenderer.send('showColorPicker', this.state.channel, this.state.name, this.state.color)
+    clrPckr = (e) => {
+        if (e.buttons === 1) {
+            ipcRenderer.send('showColorPicker', this.state.channel, this.state.name, this.state.color)
+        } else if (e.buttons === 2) {
+            console.log('Right Click')
+        }
+
     }
 
     componentDidMount() {
@@ -96,7 +103,7 @@ export class midiLightLED extends Component {
                     </colgroup>
                     <tbody>
                         <tr>
-                            <td style={dotCell}>
+                            <td style={dotCell} onMouseDown={this.clrPckr}>
                                 <span style={{
                                     height: '30px',
                                     width: '90%',
@@ -110,7 +117,7 @@ export class midiLightLED extends Component {
                                     display: 'inline-block',
                                     margin: '3px',
                                     verticalAlign: "middle"
-                                }} onMouseDown={this.clrPckr}></span>
+                                }}></span>
                             </td>
                             <td style={td}>Color / Brightness</td>
                         </tr>

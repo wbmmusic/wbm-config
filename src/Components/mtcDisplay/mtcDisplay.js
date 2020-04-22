@@ -86,13 +86,14 @@ export class mtcDisplay extends Component {
 
 const digitsCell = {
     //border: '2px black solid',
-    width: '100px',
+    width: '110px',
     fontSize: '80px',
 }
 
 const spacer = {
     //border: '2px black solid',
     fontSize: '80px',
+    paddingBottom: '15px',
 }
 
 export default mtcDisplay

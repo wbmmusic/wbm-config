@@ -118,7 +118,7 @@ var menuTemplate = [
     label: 'Developer',
     submenu: [
       {
-        label: 'Fimrware Upload',
+        label: 'Firmware Upload',
         click: async () => {
           selectDeviceAndFWfile()
         }
@@ -336,14 +336,21 @@ ipcMain.on('react-is-up', function () {
     usbDetect.find(1003, function (err, devices) { findAtmelDevices(devices, err) });
     //getNetInfo()
 
+    //Check To See If Some File Exists yet
+    //If not show whats new window
     showWhatsNew()
+
+    log('Process.cwd() = ' + process.cwd())
+    
   }
 })
 ////////////////// END App Startup ///////////////////////////////////////////////////////////////
 
+
 ////////// WHATS NEW //////////
 let whatsNewWin
 function showWhatsNew() {
+
   whatsNewWin = new BrowserWindow({
     width: 700,
     height: 500,
@@ -363,9 +370,22 @@ function showWhatsNew() {
 
   // Emitted when the window is closed.
   whatsNewWin.on('closed', () => {
-    whatsNewWin = null
+
   })
 }
+
+//Don't show the whats new window again until updated
+ipcMain.on('dont-show-whats-new', () => {
+  log('dont-show-whats-new')
+  try {
+    whatsNewWin.close()
+  } catch (error) {
+
+  }
+
+  //If The file we care about has not already been created, create it
+
+})
 ///////////////////////////////
 
 
@@ -394,6 +414,7 @@ autoUpdater.on('error', () => {
   win.webContents.send('update_error');
 });
 ///////////////////////// END AUTO UPDATE /////////////////////////////
+
 
 let developeMenu
 function toggleDevelopeMenu() {
