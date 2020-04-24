@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import Slider, { Range } from 'rc-slider';
+
+import 'rc-slider/assets/index.css';
 
 const { ipcRenderer } = window.require('electron')
 
@@ -15,7 +18,8 @@ export class midiLightLED extends Component {
         },
         slot1lbl: 'Rise:',
         slot2lbl: 'Fall:',
-        slot3lbl: ''
+        slot3lbl: '',
+        sliderval: 20
     }
 
     constructor(props) {
@@ -25,6 +29,31 @@ export class midiLightLED extends Component {
         console.log(this.state)
         thisChannel = this.props.channel
         this.clrPckr = this.clrPckr.bind(this)
+
+        this.makeSlot2ui(this.state.sliderval)
+    }
+
+    makeSlot2ui = (val) => {
+        slot2ui = [
+            <table style={{ width: '100%' }}>
+                <tbody>
+                    <tr>
+                        <td style={label}>
+                            Val
+                        </td>
+                        <td style={{
+                            border: '1px solid black',
+                            width: '100%',
+                            padding: "0px 12px"
+                        }}>
+                            <div>
+                                <Slider />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ]
     }
 
     clrPckr = (e) => {
@@ -94,6 +123,7 @@ export class midiLightLED extends Component {
     chnl = thisChannel
 
     render() {
+        //console.log('RENDER ' + this.state.sliderval)
         return (
             <div style={mainDiv}>
                 LED Options
@@ -105,7 +135,7 @@ export class midiLightLED extends Component {
                         <tr>
                             <td style={dotCell} onMouseDown={this.clrPckr}>
                                 <span style={{
-                                    height: '30px',
+                                    height: '20px',
                                     width: '90%',
                                     backgroundColor: 'hsl(' +
                                         this.state.color[0] + ',' +
@@ -113,9 +143,9 @@ export class midiLightLED extends Component {
                                         this.state.color[2] + '%' +
                                         ')',
                                     /*borderRadius: '100%',*/
-                                    borderRadius: '10px',
+                                    borderRadius: '5px',
                                     display: 'inline-block',
-                                    margin: '3px',
+                                    margin: '2px 0px',
                                     verticalAlign: "middle"
                                 }}></span>
                             </td>
@@ -126,6 +156,7 @@ export class midiLightLED extends Component {
                             <td style={td}>
                                 <div>
                                     <Select
+                                        styles={styles}
                                         options={typesDropDown}
                                         value={this.state.type}
                                         onChange={(e) => {
@@ -137,11 +168,15 @@ export class midiLightLED extends Component {
                         </tr>
                         <tr>
                             <td style={label}>{this.state.slot1lbl}</td>
-                            <td style={td}>d</td>
+                            <td style={td}>
+                                {slot2ui}
+                            </td>
                         </tr>
                         <tr>
                             <td style={label}>{this.state.slot2lbl}</td>
-                            <td style={td}>e</td>
+                            <td style={td}>
+                                {slot2ui}
+                            </td>
                         </tr>
                         <tr>
                             <td style={label}>{this.state.slot3lbl}</td>
@@ -158,6 +193,8 @@ let allTypes = ['Solid', 'Flash', 'Blink', 'Breath']
 let typesDropDown = []
 let thisChannel
 createOptions(allTypes, typesDropDown)
+
+let slot2ui = []
 
 function createOptions(pointer, output) {
     for (const [value, label] of pointer.entries()) {
@@ -182,7 +219,8 @@ const dotCell = {
 const label = {
     border: '1px black solid',
     textAlign: 'right',
-    paddingLeft: '5px'
+    paddingLeft: '5px',
+    fontSize: '12px'
 }
 
 const mainDiv = {
@@ -191,7 +229,27 @@ const mainDiv = {
     maxWidth: '500px',
     borderRadius: '10px',
     margin: '4px',
+    fontSize: '12px'
 }
 
+const styles = {
+    control: base => ({
+        ...base,
+        fontSize: '12px',
+        minHeight: '15px'
+    }),
+    menu: base => ({
+        ...base,
+        fontSize: '12px'
+    }),
+    dropdownIndicator: base => ({
+        ...base,
+        padding: '0px 8px'
+    }),
+    valueContainer: base => ({
+        ...base,
+        padding: '0px 8px'
+    })
+};
 
 export default midiLightLED

@@ -168,8 +168,8 @@ var clPckrCh = 0
 
 
 //WINDOW SCALING BYPASS
-app.commandLine.appendSwitch('high-dpi-support', 1)
-app.commandLine.appendSwitch('force-device-scale-factor', 1)
+//app.commandLine.appendSwitch('high-dpi-support', 1)
+//app.commandLine.appendSwitch('force-device-scale-factor', 1)
 
 
 
@@ -212,7 +212,7 @@ ipcMain.on('showColorPicker', function (event, ch, nm, clr) {
     colorPickerWindow = new BrowserWindow(
       {
         width: 180,
-        height: 420,
+        height: 430,
         frame: false,
         transparent: true,
         alwaysOnTop: true,

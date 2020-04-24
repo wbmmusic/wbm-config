@@ -124,7 +124,10 @@ export class midiGpioChannel extends Component {
                 <table style={{ width: '100%' }}>
                     <tbody>
                         <tr key={uuid()}>
-                            <td style={tblcell}>
+                            <td style={{
+                                textAlign: 'center',
+                                fontSize: '14px'
+                            }}>
                                 <b>I/O #{this.state.channel}</b>
                             </td>
                         </tr>
@@ -133,13 +136,17 @@ export class midiGpioChannel extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td>In/Out</td>
+                                            <td style={{ fontSize: '12px' }}>In/Out</td>
                                             <td>
                                                 <button
                                                     onMouseDown={this.inPress}
                                                     style={{
+                                                        padding: '2px',
+                                                        border: '0',
+                                                        borderRadius: '4px',
                                                         width: "100%",
-                                                        backgroundColor: this.state.in ? 'green' : 'white'
+                                                        backgroundColor: this.state.in ? 'green' : 'white',
+                                                        fontSize: '12px'
                                                     }}>
                                                     IN
                                                 </button>
@@ -148,8 +155,12 @@ export class midiGpioChannel extends Component {
                                                 <button
                                                     onMouseDown={this.outPress}
                                                     style={{
+                                                        padding: '2px',
+                                                        border: '0',
+                                                        borderRadius: '4px',
                                                         width: "100%",
-                                                        backgroundColor: this.state.in ? 'white' : 'green'
+                                                        backgroundColor: this.state.in ? 'white' : 'green',
+                                                        fontSize: '12px'
                                                     }}>
                                                     OUT
                                                 </button>
@@ -157,13 +168,17 @@ export class midiGpioChannel extends Component {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>TS/TRS</td>
+                                            <td style={{ fontSize: '12px' }}>TS/TRS</td>
                                             <td>
                                                 <button
                                                     onMouseDown={this.tsPress}
                                                     style={{
+                                                        padding: '2px',
+                                                        border: '0',
+                                                        borderRadius: '4px',
                                                         width: "100%",
-                                                        backgroundColor: this.state.trs ? 'white' : 'green'
+                                                        backgroundColor: this.state.trs ? 'white' : 'green',
+                                                        fontSize: '12px'
                                                     }}>
                                                     TS
                                                 </button>
@@ -172,8 +187,12 @@ export class midiGpioChannel extends Component {
                                                 <button
                                                     onMouseDown={this.trsPress}
                                                     style={{
+                                                        padding: '2px',
+                                                        border: '0',
+                                                        borderRadius: '4px',
                                                         width: "100%",
-                                                        backgroundColor: this.state.trs ? 'green' : 'white'
+                                                        backgroundColor: this.state.trs ? 'green' : 'white',
+                                                        fontSize: '12px'
                                                     }}>
                                                     TRS
                                                 </button>
@@ -185,26 +204,39 @@ export class midiGpioChannel extends Component {
                         </tr>
                         <tr>
                             <td>
-                                <table style={{ width: '100%', border: '1px solid black' }}>
+                                <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td
-                                                style={{
-                                                    cursor: 'context-menu',
-                                                    border: '1px solid black',
-                                                    backgroundColor: this.state.pickRing ? 'white' : 'lightgreen'
-                                                }}
-                                                onMouseDown={this.tipSel}>
-                                                TIP
-                                                </td>
-                                            <td
-                                                style={{
-                                                    cursor: 'context-menu',
-                                                    border: '1px solid black',
-                                                    backgroundColor: this.state.pickRing ? 'lightgreen' : 'white'
-                                                }}
-                                                onMouseDown={this.ringSel}>
-                                                {rngBtn}
+                                            <td>
+                                                <div
+                                                    style={{
+                                                        padding: '2px',
+                                                        border: '0',
+                                                        borderRadius: '4px',
+                                                        cursor: 'context-menu',
+                                                        backgroundColor: this.state.pickRing ? 'white' : 'lightgreen',
+                                                        fontSize: '12px'
+                                                    }}
+                                                    onMouseDown={this.tipSel}>
+                                                    TIP
+
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <div
+                                                    style={{
+                                                        padding: '2px',
+                                                        border: '0',
+                                                        borderRadius: '4px',
+                                                        cursor: 'context-menu',
+                                                        backgroundColor: this.state.pickRing ? 'lightgreen' : 'white',
+                                                        fontSize: '12px'
+                                                    }}
+                                                    onMouseDown={this.ringSel}>
+                                                    {rngBtn}
+
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
@@ -224,9 +256,5 @@ export class midiGpioChannel extends Component {
 }
 
 let rngBtn
-
-const tblcell = {
-    textAlign: 'center',
-}
 
 export default midiGpioChannel

@@ -96,14 +96,7 @@ export class midiLightChannel extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td style={tblcell}><b>LED #{this.props.channel}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={tblcell}>
-                                                <button onMouseDown={this.printState}>
-                                                Print CH {this.state.channel} STATE
-                                                </button>
-                                            </td>
+                                            <td style={{fontSize: '14px'}}><b>LED #{this.props.channel}</b></td>
                                         </tr>
                                         <tr>
                                             <td style={tblcell}>
@@ -112,7 +105,8 @@ export class midiLightChannel extends Component {
                                                         margin: '3px',
                                                         textIndent: '4px',
                                                         textAlign: 'center',
-                                                        width: '95%'
+                                                        width: '95%',
+                                                        fontSize: '12px'
                                                     }}
                                                     value={this.state.name}
                                                     onChange={this.handleName}
@@ -157,6 +151,7 @@ const mainDiv = {
     border: '2px black solid',
     margin: '3px',
     borderRadius: "10px",
+    fontSize: '12px'
 }
 
 export default midiLightChannel

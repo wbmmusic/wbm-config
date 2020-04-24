@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { v4 as uuid } from 'uuid'
+
 const { ipcRenderer } = window.require('electron')
 
 export class DevInfo extends Component {

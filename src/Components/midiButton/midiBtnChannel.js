@@ -12,8 +12,8 @@ export class midiBtnChannel extends Component {
         this.handleName = this.handleName.bind(this);
     }
 
-    handleName(e){
-        this.setState({name: e.target.value})
+    handleName(e) {
+        this.setState({ name: e.target.value })
         //ipcRenderer.send('nameChange', this.state.channel, e.target.value)
     }
 
@@ -24,7 +24,7 @@ export class midiBtnChannel extends Component {
                 <table>
                     <tbody>
                         <tr>
-                            <td>
+                            <td style={{ fontSize: '14px' }}>
                                 <b>Button # {this.state.channel}</b>
                             </td>
                         </tr>
@@ -32,7 +32,8 @@ export class midiBtnChannel extends Component {
                             <td>
                                 <input
                                     style={{
-                                        textAlign: 'center'
+                                        textAlign: 'center',
+                                        fontSize: '12px'
                                     }}
                                     type='text'
                                     value={this.state.name}
@@ -41,7 +42,10 @@ export class midiBtnChannel extends Component {
                             </td>
                         </tr>
                         <tr>
-                            <td style={{ border: '1px black solid' }}>
+                            <td style={{
+                                border: '1px black solid',
+                                fontSize: '12px'
+                            }}>
                                 <p>This is where button config stuff should go..</p>
                                 <p>Momentary / Latching / etc..</p>
                             </td>
