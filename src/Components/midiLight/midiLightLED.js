@@ -30,7 +30,7 @@ export class midiLightLED extends Component {
         thisChannel = this.props.channel
         this.clrPckr = this.clrPckr.bind(this)
 
-        this.makeSlot2ui(this.state.sliderval)
+        //this.makeSlot2ui(this.state.sliderval)
     }
 
     makeSlot2ui = (val) => {
@@ -169,7 +169,7 @@ export class midiLightLED extends Component {
                         <tr>
                             <td style={label}>{this.state.slot1lbl}</td>
                             <td style={td}>
-                                {slot2ui}
+                                {slot1ui}
                             </td>
                         </tr>
                         <tr>
@@ -180,7 +180,7 @@ export class midiLightLED extends Component {
                         </tr>
                         <tr>
                             <td style={label}>{this.state.slot3lbl}</td>
-                            <td style={td}>f</td>
+                            <td style={td}>{slot3ui}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -194,7 +194,9 @@ let typesDropDown = []
 let thisChannel
 createOptions(allTypes, typesDropDown)
 
+let slot1ui = []
 let slot2ui = []
+let slot3ui = []
 
 function createOptions(pointer, output) {
     for (const [value, label] of pointer.entries()) {

@@ -20,7 +20,7 @@ export class midiLightChannel extends Component {
         this.handleName = this.handleName.bind(this);
         this.getStructure = this.getStructure.bind(this);
         this.printState = this.printState.bind(this);
-        this.setState({ channel: this.state.channel })
+        
         thePicker = this.makePicker()
     }
 
@@ -56,6 +56,7 @@ export class midiLightChannel extends Component {
 
     componentDidMount = () => {
         console.log('XXXX MIDI CHANNEL DID MOUNT #' + this.state.channel)
+        this.setState({ channel: this.state.channel })
         console.log(this.state)
     }
 

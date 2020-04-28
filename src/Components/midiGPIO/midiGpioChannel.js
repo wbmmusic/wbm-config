@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import OutputCmdPicker, { defaultStateData } from './../utilities/outputCmdPicker'
-import { v4 as uuid } from 'uuid';
 
 export class midiGpioChannel extends Component {
-    state = {
-        channel: '',
-        in: false,
-        trs: false,
-        pickerDisplay: [],
-        pickRing: false,
-        tipPickerData: defaultStateData('tip'),
-        ringPickerData: defaultStateData('ring'),
-    }
-
     constructor(props) {
         super(props)
-        this.setState({ channel: this.props.channel })
+        this.state = {
+            channel: this.props.channel,
+            in: false,
+            trs: false,
+            pickRing: false,
+            tipPickerData: defaultStateData('tip'),
+            ringPickerData: defaultStateData('ring'),
+        }
+
+        console.log('GPIO CH CONSTRUCTOR #' + this.props.channel)
+
         this.inPress = this.inPress.bind(this);
         this.outPress = this.outPress.bind(this);
         this.tsPress = this.tsPress.bind(this);
@@ -24,111 +23,163 @@ export class midiGpioChannel extends Component {
         this.ringSel = this.ringSel.bind(this);
 
         this.getStructure = this.getStructure.bind(this);
+    }
 
-        var temp = this.state.ringPickerData
-        temp.channel = 5
-        this.setState({ ringPickerData: temp })
+    printState = () => {
+        console.log(this.state)
     }
 
     getStructure = (chnl, e) => {
         console.log('XXX GOT STRUCTURE #' + chnl)
+        console.log(chnl)
+        console.log(e)
 
         if (chnl === 'tip') {
             console.log('GPIO CH #' + this.state.channel + ' Tip Data Change')
+            var tipTemp = this.state
+            tipTemp.tipPickerData = e
             this.setState({ tipPickerData: e })
+            this.props.getChanelInfo(this.state.channel, tipTemp)
+
         } else if (chnl === 'ring') {
             console.log('GPIO CH #' + this.state.channel + ' Ring Data Change')
+            var ringTemp = this.state
+            ringTemp.ringPickerData = e
             this.setState({ ringPickerData: e })
+            this.props.getChanelInfo(this.state.channel, ringTemp)
         }
-
-        this.setState({ pickerData: e })
-
     }
 
     componentDidMount() {
-        this.setState({ channel: this.props.channel })
-        this.setState({
-            pickerDisplay: [
-                <OutputCmdPicker
-                    key={uuid()}
-                    getStructure={this.getStructure}
-                    statex={this.state.tipPickerData}
-                    channel={this.state.channel}
-                />
-            ]
-        })
+        if (this.props.getChanelInfo !== undefined) {
+            if (this.state !== this.props.statex) {
+                this.props.getChanelInfo(this.state.channel, this.state)
+            }
+        }
+
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.statex !== prevState) {
+            return nextProps.statex;
+        }
+        else return null;
     }
 
     inPress = (e) => {
         console.log('IN PRESS')
         this.setState({ in: true })
+
+        if (this.props.getChanelInfo !== undefined) {
+            var inPressTemp = this.state
+            inPressTemp.in = true
+            this.props.getChanelInfo(this.state.channel, inPressTemp)
+        }
     }
 
     outPress = (e) => {
         console.log('OUT PRESS')
         this.setState({ in: false })
+
+        if (this.props.getChanelInfo !== undefined) {
+            var inPressTemp = this.state
+            inPressTemp.in = false
+            this.props.getChanelInfo(this.state.channel, inPressTemp)
+        }
     }
 
     tsPress = (e) => {
         console.log('TS PRESS')
         this.setState({ trs: false })
         this.setState({ pickRing: false })
-        rngBtn = ''
-        this.tipSel()
+
+        if (this.props.getChanelInfo !== undefined) {
+            var tsPressTemp = this.state
+            tsPressTemp.trs = false
+            tsPressTemp.pickRing = false
+            this.props.getChanelInfo(this.state.channel, tsPressTemp)
+        }
+
     }
 
     trsPress = (e) => {
         console.log('TRS PRESS')
         this.setState({ trs: true })
-        rngBtn = 'RING'
+        this.setState({ pickRing: false })
+
+        if (this.props.getChanelInfo !== undefined) {
+            var trsPressTemp = this.state
+            trsPressTemp.trs = true
+            trsPressTemp.pickRing = false
+            this.props.getChanelInfo(this.state.channel, trsPressTemp)
+        }
     }
 
     tipSel = (e) => {
         console.log('TIP Selected')
-        this.setState({
-            pickerDisplay: [
-                <OutputCmdPicker
-                    getStructure={this.getStructure}
-                    statex={this.state.tipPickerData}
-                    channel={this.state.channel}
-                    id={uuid()}
-                    key={uuid()}
-                />
-            ]
-        })
         this.setState({ pickRing: false })
+
+        if (this.props.getChanelInfo !== undefined) {
+            var tipSelTemp = this.state
+            tipSelTemp.pickRing = false
+            this.props.getChanelInfo(this.state.channel, tipSelTemp)
+        }
     }
 
     ringSel = (e) => {
-
         if (this.state.trs) {
             console.log('Ring Selected')
-            this.setState({
-                pickerDisplay: [
-                    <OutputCmdPicker
-                        getStructure={this.getStructure}
-                        statex={this.state.ringPickerData}
-                        channel={this.state.channel}
-                        id={uuid()}
-                        key={uuid()}
-                    />
-                ]
-            })
             this.setState({ pickRing: true })
+
+            if (this.props.getChanelInfo !== undefined) {
+                var ringSelTemp = this.state
+                ringSelTemp.pickRing = true
+                this.props.getChanelInfo(this.state.channel, ringSelTemp)
+            }
         }
     }
 
     render() {
+        let pickerDisplay
+        let rngBtn
+
+        if (this.state.trs) {
+            rngBtn = 'RING'
+        } else {
+            rngBtn = ''
+        }
+
+        if (this.state.pickRing) {
+            pickerDisplay = [
+                <OutputCmdPicker
+                    getStructure={this.getStructure}
+                    statex={this.state.ringPickerData}
+                    channel={'ring'}
+                />
+            ]
+
+        } else {
+            pickerDisplay = [
+                <OutputCmdPicker
+                    getStructure={this.getStructure}
+                    statex={this.state.tipPickerData}
+                    channel={'tip'}
+                />
+            ]
+        }
+
         return (
             <div style={{ width: '300px' }}>
                 <table style={{ width: '100%' }}>
                     <tbody>
-                        <tr key={uuid()}>
+                        <tr>
                             <td style={{
                                 textAlign: 'center',
                                 fontSize: '14px'
                             }}>
                                 <b>I/O #{this.state.channel}</b>
+                                <br />
+                                <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button>
                             </td>
                         </tr>
                         <tr>
@@ -245,7 +296,7 @@ export class midiGpioChannel extends Component {
                                         </tr>
                                         <tr>
                                             <td colSpan="2">
-                                                {this.state.pickerDisplay}
+                                                {pickerDisplay}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -259,9 +310,7 @@ export class midiGpioChannel extends Component {
     }
 }
 
-let rngBtn
-
-const btnTd={
+const btnTd = {
     padding: '1.5px 3px'
 }
 

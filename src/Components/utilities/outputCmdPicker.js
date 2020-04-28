@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
-import { v4 as uuid } from 'uuid';
 
 export function defaultStateData(id) {
     //console.log('YOYOYO' + id)
@@ -8,7 +7,7 @@ export function defaultStateData(id) {
     {
         id: 'picker' + id,
         parentCh: id,
-        type: ['Note On', 0],
+        type: ['None', 0],
         command: 154,
         channel: 11,
         byte0: 154,
@@ -28,93 +27,100 @@ export class outputCmdPicker extends Component {
 
     constructor(props) {
         //console.log('AAAAA ' + props.channel)
-        thisPickersChannel = props.channel
+
         super(props)
         //console.log('XXXX Picker Constructor #' + thisPickersChannel)
 
         if (props.statex === undefined) {
-            //console.log('XXXA No State Def in Picker ' + thisPickersChannel)
+            console.log('XXXA No State Def in Picker ' + this.props.channel)
             this.state = defaultStateData('')
+            this.setState({ parentCh: this.props.channel })
 
         } else {
-            //console.log('XXXA State Deffined in Picker ' + thisPickersChannel)
+            console.log('XXXA State Deffined in Picker ' + this.props.channel)
             this.setState(props.statex)
+            this.setState({ parentCh: this.props.channel })
         }
 
         this.enterSysex = this.enterSysex.bind(this)
     }
 
     enterSysex(e) {
-        this.setState({ sysex: e.target.value })
         console.log(e.target.value)
-    }
+        this.setState({ sysex: e.target.value })
 
-    componentWillMount() {
-        //console.log('XXXX PICKER WILL MOUNT #' + thisPickersChannel)
+        if (this.props.getStructure !== undefined) {
+            let tempSysEx = this.state
+            tempSysEx.sysex = e.target.value
+            this.props.getStructure(this.state.parentCh, tempSysEx)
+        }
+        
     }
 
     componentDidMount() {
-        //console.log('XXXX PICKER DID MOUNT #' + thisPickersChannel)
-    }
-
-    componentWillUpdate() {
-
-    }
-
-    componentDidUpdate() {
-        console.log('Picker ' + this.state.parentCh + ' Did Update')
-        if (this.props.statex !== this.state) {
-            console.log('PICKER UPDATE STATE ' + this.state.parentCh)
-            if (this.props.getStructure) {
+        if (this.props.getStructure !== undefined) {
+            if (this.props.statex !== this.state) {
                 this.props.getStructure(this.state.parentCh, this.state)
-                console.log(this.state)
             }
-
         }
-        console.log('picker ' + thisPickersChannel + ' Updated')
-        console.log(this.state)
+    }
+
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.statex !== prevState) {
+            return nextProps.statex;
+        }
+        else return null;
+    }
+
+    componentWillUnmount() {
+        console.log('PICKER UNMOUNT')
     }
 
     makeCmd = (type, chnl) => {
         let tmpCmd = 'Hello'
+        let wasGood = true
+
         if (type === 'Note On') {
             tmpCmd = 144 + chnl
-            this.setState({ command: tmpCmd })
         } else if (type === 'Note Off') {
             tmpCmd = 128 + chnl
-            this.setState({ command: tmpCmd })
         } else if (type === 'Control Change') {
             tmpCmd = 176 + chnl
-            this.setState({ command: tmpCmd })
         } else if (type === 'Program Change') {
             tmpCmd = 192 + chnl
-            this.setState({ command: tmpCmd })
         } else if (type === 'Sys Ex') {
             tmpCmd = 'SYSEX'
-            this.setState({ command: tmpCmd })
         } else if (type === 'Song Select') {
             tmpCmd = 243
-            this.setState({ command: tmpCmd })
         } else if (type === 'Start') {
             tmpCmd = 250
-            this.setState({ command: tmpCmd })
         } else if (type === 'Continue') {
             tmpCmd = 251
-            this.setState({ command: tmpCmd })
         } else if (type === 'Stop') {
             tmpCmd = 252
-            this.setState({ command: tmpCmd })
         } else if (type === 'System Reset') {
             tmpCmd = 255
-            this.setState({ command: tmpCmd })
         } else {
+            wasGood = false
             console.log('ERROR - Command Picker makeCmd didnt recognize this command type ' + type)
+        }
+
+        if (wasGood) {
+            this.setState({ command: tmpCmd })
         }
 
         return tmpCmd
     }
 
     render() {
+        let byte0data = []
+        let byte1data = []
+        let byte2data = []
+        let b0lbl = []
+        let b1lbl = []
+        let b2lbl = []
+        let outputDisplay = []
 
         if (this.state.type[0] === 'Note On' || this.state.type[0] === 'Note Off' || this.state.type[0] === 'Control Change') {
             //console.log('NOn NOf CC')
@@ -126,6 +132,18 @@ export class outputCmdPicker extends Component {
             if (!this.state.showByte0 || !this.state.showByte1 || !this.state.showByte2) {
                 //console.log('Setting States')
                 this.setState((state) => {
+
+
+                    if (this.props.getStructure !== undefined) {
+                        let tempSetShowBytes = this.state
+
+                        tempSetShowBytes.showByte0 = true
+                        tempSetShowBytes.showByte1 = true
+                        tempSetShowBytes.showByte2 = true
+
+                        this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                    }
+
                     return {
                         showByte0: true,
                         showByte1: true,
@@ -150,6 +168,16 @@ export class outputCmdPicker extends Component {
                 console.log('Setting States')
                 b2lbl = []
                 this.setState((state) => {
+
+                    if (this.props.getStructure !== undefined) {
+                        let tempSetShowBytes = this.state
+
+                        tempSetShowBytes.showByte0 = true
+                        tempSetShowBytes.showByte1 = true
+                        tempSetShowBytes.showByte2 = false
+
+                        this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                    }
                     return {
                         showByte0: true,
                         showByte1: true,
@@ -167,11 +195,24 @@ export class outputCmdPicker extends Component {
                 b1lbl = []
                 b2lbl = []
                 this.setState((state) => {
+
+                    if (this.props.getStructure !== undefined) {
+                        let tempSetShowBytes = this.state
+
+                        tempSetShowBytes.showByte0 = true
+                        tempSetShowBytes.showByte1 = false
+                        tempSetShowBytes.showByte2 = false
+
+                        this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                    }
+
                     return {
                         showByte0: true,
                         showByte1: false,
                         showByte2: false
                     }
+
+
                 })
             }
         } else if (this.state.type[0] === 'System Reset' || this.state.type[0] === 'Start' ||
@@ -186,6 +227,18 @@ export class outputCmdPicker extends Component {
                 b1lbl = []
                 b2lbl = []
                 this.setState((state) => {
+
+
+                    if (this.props.getStructure !== undefined) {
+                        let tempSetShowBytes = this.state
+
+                        tempSetShowBytes.showByte0 = false
+                        tempSetShowBytes.showByte1 = false
+                        tempSetShowBytes.showByte2 = false
+
+                        this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                    }
+
                     return {
                         showByte0: false,
                         showByte1: false,
@@ -204,7 +257,6 @@ export class outputCmdPicker extends Component {
                 byte0data = [
                     <Select
                         styles={styles}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={oneSixteen}
@@ -216,11 +268,22 @@ export class outputCmdPicker extends Component {
                         onChange={(e) => {
                             this.setState({ channel: e.value + 1 })
                             this.makeCmd(this.state.type[0], e.value)
+
+                            if (this.props.getStructure !== undefined) {
+                                let tempChChange = this.state
+                                tempChChange.channel = e.value + 1
+                                tempChChange.command = this.makeCmd(this.state.type[0], e.value)
+                                this.props.getStructure(this.state.parentCh, tempChChange)
+                            }
                         }}
                     />
                 ]
             } else if (this.state.type[0] === 'Song Select') {
                 b0lbl = ['Song:']
+                let point = this.state.byte0
+                if (point > 127) {
+                    point = 0
+                }
                 byte0data = [
                     <Select
                         styles={styles}
@@ -228,8 +291,8 @@ export class outputCmdPicker extends Component {
                         style={{ textAlign: 'left' }}
                         options={one127}
                         value={{
-                            label: one127[this.state.byte0].label,
-                            value: one127[this.state.byte0].value,
+                            label: one127[point].label,
+                            value: one127[point].value,
                         }}
                         theme="default"
                         onChange={(e) => {
@@ -265,7 +328,6 @@ export class outputCmdPicker extends Component {
                 byte1data = [
                     <Select
                         styles={styles}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={noteDropDown}
@@ -284,7 +346,6 @@ export class outputCmdPicker extends Component {
                 byte1data = [
                     <Select
                         styles={styles}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={ccDropDown}
@@ -332,7 +393,6 @@ export class outputCmdPicker extends Component {
                 byte2data = [
                     <Select
                         styles={styles}
-                        key={uuid()}
                         hideResetButton='true'
                         style={{ textAlign: 'left' }}
                         options={one127}
@@ -347,7 +407,7 @@ export class outputCmdPicker extends Component {
                     />
                 ]
             } else if (this.state.type[0] === 'Control Change') {
-                console.log('IN HERE CC YUP ch: ' + thisPickersChannel)
+                console.log('IN HERE CC YUP ch: ' + this.props.channel)
                 b2lbl = ['Val:']
                 byte2data = [
                     <Select
@@ -378,13 +438,15 @@ export class outputCmdPicker extends Component {
 
         return (
             <div style={mainDiv}>
-                <table id={"pickerTable" + thisPickersChannel} style={{ width: "100%" }}>
+                <table id={"pickerTable" + this.props.channel} style={{ width: "100%" }}>
                     <colgroup>
                         <col width="1px" />
                     </colgroup>
                     <tbody style={{ width: "100%" }}>
                         <tr>
-                            <td colSpan="2" style={pickerTitle}>Command Picker</td>
+                            <td colSpan="2" style={pickerTitle}>
+                                Command Picker
+                            </td>
                         </tr>
                         <tr>
                             <td style={td}>
@@ -403,8 +465,16 @@ export class outputCmdPicker extends Component {
                                         }}
                                         theme="default"
                                         onChange={(e) => {
+                                            console.log('HHHEEERRRRREEEEE')
+                                            console.log(e)
                                             this.setState({ type: [e.label, e.value] })
                                             this.makeCmd(e.label, this.state.channel - 1)
+                                            if (this.props.getStructure !== undefined) {
+                                                let tempTypeChange = this.state
+                                                tempTypeChange.type = [e.label, e.value]
+                                                tempTypeChange.command = this.makeCmd(e.label, this.state.channel - 1)
+                                                this.props.getStructure(this.state.parentCh, tempTypeChange)
+                                            }
                                         }}
                                     />
                                 </div>
@@ -447,15 +517,6 @@ export class outputCmdPicker extends Component {
         )
     }
 }
-
-let thisPickersChannel
-let byte0data = []
-let byte1data = []
-let byte2data = []
-let b0lbl = []
-let b1lbl = []
-let b2lbl = []
-let outputDisplay = []
 
 function decimalToHexString(number) {
     if (number < 0) {
@@ -509,7 +570,7 @@ const label = {
     fontSize: '12px'
 }
 
-var allTypes = ['Note On', 'Note Off', 'Control Change',
+var allTypes = ['None', 'Note On', 'Note Off', 'Control Change',
     'Program Change', 'Sys Ex', 'Song Select', 'Start',
     'Continue', 'Stop', 'System Reset'
 ]
@@ -603,22 +664,18 @@ for (i = 0; i < 128; i++) {
     ccNames[i] = i + ' - ' + ccNameList[i]
 }
 
-let ccDropDown = []
-createOptions(ccNames, ccDropDown)
+let ccDropDown = createOptions(ccNames)
 
-let oneSixteen = []
-createOptions(range16, oneSixteen)
+let oneSixteen = createOptions(range16)
 
-let noteDropDown = []
-createOptions(noteNames, noteDropDown)
+let noteDropDown = createOptions(noteNames)
 
-let one127 = []
-createOptions(range127, one127)
+let one127 = createOptions(range127)
 
-let typesDropDown = []
-createOptions(allTypes, typesDropDown)
+let typesDropDown = createOptions(allTypes)
 
-function createOptions(pointer, output) {
+function createOptions(pointer) {
+    let output = []
     for (const [value, label] of pointer.entries()) {
         output.push({ label, value })
     }
@@ -626,6 +683,8 @@ function createOptions(pointer, output) {
     for (var i = 0; i < output.length; i++) {
         output[i].label = String(output[i].label)
     }
+
+    return output
 }
 
 export default outputCmdPicker

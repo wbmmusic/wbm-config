@@ -192,6 +192,17 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 
 // Create myWindow, load the rest of the app, etc...
 app.on('ready', () => {
+
+  // Using require
+  const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+
+  installExtension(REACT_DEVELOPER_TOOLS).then((name) => {
+    console.log(`Added Extension:  ${name}`);
+  })
+    .catch((err) => {
+      console.log('An error occurred: ', err);
+    });
+
   //log("-APP IS READY");
   createWindow()
 
@@ -341,7 +352,7 @@ ipcMain.on('react-is-up', function () {
     showWhatsNew()
 
     log('Process.cwd() = ' + process.cwd())
-    
+
   }
 })
 ////////////////// END App Startup ///////////////////////////////////////////////////////////////
@@ -456,7 +467,7 @@ ipcMain.on('OPEN', (event, arg) => {
       log(result.filePaths)
       fs.readFile(result.filePaths[0], function (err, data) {
         log(data.toString())
-        event.reply('asynchronous-reply', data.toString())
+        event.reply('asynchronous-reply', data)
       });
     }
   }).catch(err => {
@@ -469,6 +480,47 @@ ipcMain.on('SAVE', (event, arg, fileData) => {
   dialog.showSaveDialog(win, {
     properties: ['createDirectory', 'showOverwriteConfirmation'],
     filters: [{ name: 'Config File', extensions: ['wbmtek'] },]
+  }).then(result => {
+    if (result.canceled) {
+      log('CANCLED')
+    } else {
+      log(result.filePath)
+      fs.writeFile(result.filePath, fileData, function (err) {
+        if (err) throw err;
+        log('Saved!');
+        event.reply('itSaved', 'File Saved')
+      });
+    }
+  }).catch(err => {
+    log(err)
+  })
+})
+
+ipcMain.on('fileOpen', (event, extension) => {
+  dialog.showOpenDialog(win, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Config File', extensions: [extension] },
+    ]
+  }).then(result => {
+    if (result.canceled) {
+      log('CANCLED')
+    } else {
+      log(result.filePaths)
+      fs.readFile(result.filePaths[0], function (err, data) {
+        event.reply('asynchronous-reply', data.toString())
+      });
+    }
+  }).catch(err => {
+    log(err)
+  })
+})
+
+ipcMain.on('fileSaveAs', (event, extension, fileData) => {
+  log('GOT A SAVE AS COMMAND') // prints "ping"
+  dialog.showSaveDialog(win, {
+    properties: ['createDirectory', 'showOverwriteConfirmation'],
+    filters: [{ name: 'Config File', extensions: [extension] },]
   }).then(result => {
     if (result.canceled) {
       log('CANCLED')

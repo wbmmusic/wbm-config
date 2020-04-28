@@ -31,6 +31,7 @@ function save() {
     //ipcRenderer.send('TEST', 'This is a test message')
 }
 
+/*
 ipcRenderer.on('asynchronous-reply', (event, arg) => {
     var input = document.getElementById('textInput')
     console.log('Reading File') // prints "pong"
@@ -38,11 +39,13 @@ ipcRenderer.on('asynchronous-reply', (event, arg) => {
     input.value = arg
 })
 
+
 ipcRenderer.on('itSaved', (event, arg) => {
     var input = document.getElementById('textInput')
     console.log(arg) // prints "pong"
     input.value = ''
 })
+*/
 
 const inp = {
     width: 'calc(100vw - 80px)',
