@@ -69,10 +69,15 @@ export class midiLightLED extends Component {
             if (chnl === this.state.channel) {
 
                 this.setState({ color: [parseInt(HSL[0]), HSL[1], HSL[2]] });
-                //console.log(this.state.color)
-                //console.log('SelectedColor')
-                //console.log(rgb)
-                //console.log(chnl)
+
+                if (this.props.getStructure !== undefined) {
+                    let tempGetColor = this.state
+                    tempGetColor.color = [parseInt(HSL[0]), HSL[1], HSL[2]]
+
+                    this.props.getStructure(this.state.parentCh, tempGetColor)
+                }
+
+
             }
         })
 
@@ -86,14 +91,12 @@ export class midiLightLED extends Component {
         }
     }
 
-    /*
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.statex !== prevState) {
             return nextProps.statex;
         }
         else return null;
     }
-    */
 
     typeChange(e) {
         this.setState({ type: e })

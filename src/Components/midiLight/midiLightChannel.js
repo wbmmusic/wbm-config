@@ -129,7 +129,6 @@ export class midiLightChannel extends Component {
                                     getStructure={this.getLedStructure}
                                     statex={this.state.ledData}
                                     channel={this.state.channel}
-                                    name={this.state.name}
                                 />
                             </td>
                         </tr>

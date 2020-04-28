@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.87",
+  "version": "0.0.88",
   "author": "Marece Williams",
   "description": "App for configuring WBM Tek devices",
   "homepage": "./",
@@ -73,6 +73,14 @@
         {
           "ext": "wbmtek",
           "icon": "public/wbmtekicn.icns"
+        },
+        {
+          "ext": "wbmlight",
+          "icon": "public/wbmlight.icns"
+        },
+        {
+          "ext": "wbmgpio",
+          "icon": "public/wbmgpio.icns"
         }
       ]
     },
@@ -88,6 +96,14 @@
         {
           "ext": "wbmtek",
           "icon": "public/wbmtekicn.ico"
+        },
+        {
+          "ext": "wbmlight",
+          "icon": "public/wbmlight.ico"
+        },
+        {
+          "ext": "wbmgpio",
+          "icon": "public/wbmgpio.ico"
         }
       ]
     }
