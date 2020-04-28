@@ -193,15 +193,21 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 // Create myWindow, load the rest of the app, etc...
 app.on('ready', () => {
 
-  // Using require
-  const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+  try {
+    // Using require
+    const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 
-  installExtension(REACT_DEVELOPER_TOOLS).then((name) => {
-    console.log(`Added Extension:  ${name}`);
-  })
-    .catch((err) => {
-      console.log('An error occurred: ', err);
-    });
+    installExtension(REACT_DEVELOPER_TOOLS).then((name) => {
+      console.log(`Added Extension:  ${name}`);
+    })
+      .catch((err) => {
+        console.log('An error occurred: ', err);
+      });
+  } catch (error) {
+
+  }
+
+
 
   //log("-APP IS READY");
   createWindow()
