@@ -8,29 +8,27 @@ const { ipcRenderer } = window.require('electron')
 
 
 export class midiLightLED extends Component {
-    state = {
-        name: this.props.name,
-        channel: this.props.channel,
-        color: [200, 100, 50], //HSL
-        type: {
-            label: 'Solid',
-            value: 0
-        },
-        slot1lbl: 'Rise:',
-        slot2lbl: 'Fall:',
-        slot3lbl: '',
-        sliderval: 20
-    }
-
     constructor(props) {
         super(props)
 
-        console.log('LIGHT ' + this.props.channel)
-        console.log(this.state)
-        thisChannel = this.props.channel
+        this.state = {
+            name: this.props.name,
+            channel: this.props.channel,
+            color: [200, 100, 50], //HSL
+            type: {
+                label: 'Solid',
+                value: 0
+            },
+            slot1lbl: 'Rise:',
+            slot2lbl: 'Fall:',
+            slot3lbl: '',
+            sliderval: 20
+        }
+
+        //console.log('LED ' + this.props.channel)
         this.clrPckr = this.clrPckr.bind(this)
 
-        //this.makeSlot2ui(this.state.sliderval)
+        this.makeSlot2ui(this.state.sliderval)
     }
 
     makeSlot2ui = (val) => {
@@ -77,6 +75,8 @@ export class midiLightLED extends Component {
                 //console.log(chnl)
             }
         })
+
+        this.props.getStructure(this.state.channel, this.state)
     }
 
     componentDidUpdate() {
@@ -84,43 +84,95 @@ export class midiLightLED extends Component {
             this.setState({ name: this.props.name })
             console.log('LED NAME CHANGE')
         }
-
-
-        //console.log(this.state.color)
     }
 
+    /*
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.statex !== prevState) {
+            return nextProps.statex;
+        }
+        else return null;
+    }
+    */
+
     typeChange(e) {
-        console.log(e)
         this.setState({ type: e })
+        let tempSetShowBytes = this.state
+        tempSetShowBytes.type = e
 
         if (e.label === 'Solid') {
-            this.setState({
-                slot1lbl: 'Rise:',
-                slot2lbl: 'Fall:',
-                slot3lbl: ''
+            this.setState((state) => {
+
+                if (this.props.getStructure !== undefined) {
+                    tempSetShowBytes.slot1lbl = 'Rise'
+                    tempSetShowBytes.slot2lbl = 'Fall'
+                    tempSetShowBytes.slot3lbl = ''
+
+                    this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                }
+
+                return {
+                    slot1lbl: 'Rise:',
+                    slot2lbl: 'Fall:',
+                    slot3lbl: ''
+                }
             })
+
         } else if (e.label === 'Flash') {
-            this.setState({
-                slot1lbl: 'Durtn:',
-                slot2lbl: 'Rise:',
-                slot3lbl: 'Fall:'
+            this.setState((state) => {
+
+                if (this.props.getStructure !== undefined) {
+                    tempSetShowBytes.slot1lbl = 'Durtn:'
+                    tempSetShowBytes.slot2lbl = 'Rise:'
+                    tempSetShowBytes.slot3lbl = 'Fall:'
+
+                    this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                }
+
+                return {
+                    slot1lbl: 'Durtn:',
+                    slot2lbl: 'Rise:',
+                    slot3lbl: 'Fall:'
+                }
             })
+
         } else if (e.label === 'Blink') {
-            this.setState({
-                slot1lbl: 'Freq:',
-                slot2lbl: 'Len:',
-                slot3lbl: 'Fall:'
+            this.setState((state) => {
+
+                if (this.props.getStructure !== undefined) {
+                    tempSetShowBytes.slot1lbl = 'Freq:'
+                    tempSetShowBytes.slot2lbl = 'Len:'
+                    tempSetShowBytes.slot3lbl = 'Fall:'
+
+                    this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                }
+
+                return {
+                    slot1lbl: 'Freq:',
+                    slot2lbl: 'Len:',
+                    slot3lbl: 'Fall:'
+                }
             })
+
         } else if (e.label === 'Breath') {
-            this.setState({
-                slot1lbl: 'Freq:',
-                slot2lbl: 'Low:',
-                slot3lbl: ''
+            this.setState((state) => {
+
+                if (this.props.getStructure !== undefined) {
+                    tempSetShowBytes.slot1lbl = 'Freq:'
+                    tempSetShowBytes.slot2lbl = 'Low:'
+                    tempSetShowBytes.slot3lbl = ''
+
+                    this.props.getStructure(this.state.parentCh, tempSetShowBytes)
+                }
+
+                return {
+                    slot1lbl: 'Freq:',
+                    slot2lbl: 'Low:',
+                    slot3lbl: ''
+                }
             })
         }
     }
-
-    chnl = thisChannel
 
     render() {
         //console.log('RENDER ' + this.state.sliderval)
@@ -191,7 +243,6 @@ export class midiLightLED extends Component {
 
 let allTypes = ['Solid', 'Flash', 'Blink', 'Breath']
 let typesDropDown = []
-let thisChannel
 createOptions(allTypes, typesDropDown)
 
 let slot1ui = []
@@ -209,6 +260,9 @@ function createOptions(pointer, output) {
     //console.log(output)
 }
 
+
+
+//STYLE///////////////////////////////////////////////
 const td = {
     border: '1px black solid'
 }
@@ -253,5 +307,6 @@ const styles = {
         padding: '0px 8px'
     })
 };
+///////////////////////////////////////////////STYLE//
 
 export default midiLightLED

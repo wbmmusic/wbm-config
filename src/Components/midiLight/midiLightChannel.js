@@ -1,93 +1,94 @@
 import React, { Component } from 'react'
-import OutputCmdPicker, {defaultStateData} from './../utilities/outputCmdPicker'
+import OutputCmdPicker, { defaultStateData } from './../utilities/outputCmdPicker'
 import MidiLightLED from './midiLightLED'
 const { ipcRenderer } = window.require('electron')
-
-console.log('XXXX Channel')
 
 export class midiLightChannel extends Component {
     state = {
         channel: this.props.channel,
         name: 'Name this LED',
-        pickerData: defaultStateData(this.props.channel)
+        pickerData: defaultStateData(this.props.channel),
+        ledData: []
     }
 
 
     constructor(props) {
         super(props);
-        console.log('YXXX channel Constructor #' + this.state.channel)
-        console.log(this.state.pickerData)
+        //console.log('YXXX channel Constructor #' + this.state.channel)
+        //console.log(this.state.pickerData)
         this.handleName = this.handleName.bind(this);
-        this.getStructure = this.getStructure.bind(this);
+        this.getPickerStructure = this.getPickerStructure.bind(this);
         this.printState = this.printState.bind(this);
-        
-        thePicker = this.makePicker()
     }
 
-    getStructure = (chnl, e) => {
-        console.log('XXX GOT STRUCTURE #' + chnl)
-        if (chnl === this.state.channel) {
-            console.log('GOT TEMPLATE FOR ' + chnl)
-            console.log(e)
-            if (this.state.pickerData !== e) {
-                console.log('Setting the state of ' + this.state.channel)
-                this.setState({ pickerData: e })
-                console.log(e)
-            }
-        }
+
+    getLedStructure = (chnl, e) => {
+        //console.log('XXX GOT STRUCTURE #' + chnl)
+        this.setState({ ledData: e })
+
+        let tempLedState = this.state
+        tempLedState.ledData = e
+        this.props.getChanelInfo(this.state.channel, tempLedState)
+    }
+
+    getPickerStructure = (chnl, e) => {
+        //console.log('XXX GOT STRUCTURE #' + chnl)
+        this.setState({ pickerData: e })
+
+        let tempUpdateState = this.state
+        tempUpdateState.pickerData = e
+        this.props.getChanelInfo(this.state.channel, tempUpdateState)
     }
 
     handleName = (e) => {
-        console.log('HHHH'+ this.state.channel)
         this.setState({ name: e.target.value })
-        
+
+        if (this.props.getChanelInfo !== undefined) {
+            let tempNameState = this.state
+            tempNameState.name = e.target.value
+            this.props.getChanelInfo(this.state.channel, tempNameState)
+        }
+
         ipcRenderer.send('nameChange', this.state.channel, e.target.value)
     }
 
-    componentDidUpdate = () => {
-        console.log('Channel ' + this.state.channel + ' UPDATED')
-        console.log(this.state)
-
-        if (this.props.statex !== this.state.pickerData) {
-            this.setState(this.props.statex)
-            console.log('ch ' + this.state.channel + ' no match')
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.statex !== prevState) {
+            return nextProps.statex;
         }
-    }
-
-    componentDidMount = () => {
-        console.log('XXXX MIDI CHANNEL DID MOUNT #' + this.state.channel)
-        this.setState({ channel: this.state.channel })
-        console.log(this.state)
-    }
-
-    componentWillMount = () => {
-        console.log('XXXX MIDI CHANNEL WILL MOUNT #' + this.props.channel)
-        if (this.state !== this.props.statex) {
-            this.setState(this.props.statex)
-        }
-
-        console.log('Channel ' + this.state.channel + ' Will Mount')
+        else return null;
     }
 
     makePicker = () => {
-        console.log('Make Picker ' + this.state.channel)
-        console.log(this.state)
+        //console.log('Make Picker ' + this.state.channel)
         return (
             <OutputCmdPicker
                 statex={this.state.pickerData}
-                getStructure={this.getStructure}
+                getStructure={this.getPickerStructure}
                 channel={this.state.channel}//////////////////////////////////////////////
             />
         )
     }
 
     printState = () => {
-        console.log('SSSS Print chnl state')
         console.log('Print CH #' + this.state.channel + ' STATE')
         console.log(this.state)
     }
 
+    componentDidMount() {
+        //console.log('MIDI LIGHT CHANNEL DID MOUNT #' + this.state.channel)
+
+        if (this.props.getChanelInfo !== undefined) {
+            if (this.state !== this.props.statex) {
+                this.props.getChanelInfo(this.state.channel, this.state)
+            }
+        }
+
+
+    }
+
     render() {
+
         return (
             <div style={mainDiv}>
                 <table>
@@ -97,7 +98,11 @@ export class midiLightChannel extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td style={{fontSize: '14px'}}><b>LED #{this.props.channel}</b></td>
+                                            <td style={{ fontSize: '14px' }}>
+                                                <b>LED #{this.props.channel}</b>
+                                                <br />
+                                                <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style={tblcell}>
@@ -121,6 +126,8 @@ export class midiLightChannel extends Component {
                         <tr>
                             <td style={tblcell}>
                                 <MidiLightLED
+                                    getStructure={this.getLedStructure}
+                                    statex={this.state.ledData}
                                     channel={this.state.channel}
                                     name={this.state.name}
                                 />
@@ -128,7 +135,7 @@ export class midiLightChannel extends Component {
                         </tr>
                         <tr>
                             <td style={tblcell}>
-                                {thePicker}
+                                {this.makePicker()}
                             </td>
                         </tr>
                     </tbody>
@@ -137,8 +144,6 @@ export class midiLightChannel extends Component {
         )
     }
 }
-
-let thePicker
 
 const tblcell = {
     textAlign: 'center',

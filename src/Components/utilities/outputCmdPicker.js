@@ -23,21 +23,20 @@ export function defaultStateData(id) {
 }
 
 export class outputCmdPicker extends Component {
-    state = this.props.statex
+    
 
     constructor(props) {
-        //console.log('AAAAA ' + props.channel)
-
         super(props)
+        this.state = this.props.statex
         //console.log('XXXX Picker Constructor #' + thisPickersChannel)
 
         if (props.statex === undefined) {
-            console.log('XXXA No State Def in Picker ' + this.props.channel)
+            //console.log('XXXA No State Def in Picker ' + this.props.channel)
             this.state = defaultStateData('')
             this.setState({ parentCh: this.props.channel })
 
         } else {
-            console.log('XXXA State Deffined in Picker ' + this.props.channel)
+            //console.log('XXXA State Deffined in Picker ' + this.props.channel)
             this.setState(props.statex)
             this.setState({ parentCh: this.props.channel })
         }
