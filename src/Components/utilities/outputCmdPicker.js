@@ -23,7 +23,7 @@ export function defaultStateData(id) {
 }
 
 export class outputCmdPicker extends Component {
-    
+
 
     constructor(props) {
         super(props)
@@ -53,7 +53,7 @@ export class outputCmdPicker extends Component {
             tempSysEx.sysex = e.target.value
             this.props.getStructure(this.state.parentCh, tempSysEx)
         }
-        
+
     }
 
     componentDidMount() {
@@ -295,9 +295,13 @@ export class outputCmdPicker extends Component {
                         }}
                         theme="default"
                         onChange={(e) => {
-                            this.setState({
-                                byte0: e.value
-                            })
+                            this.setState({ byte0: e.value })
+
+                            if (this.props.getStructure !== undefined) {
+                                let tempSongChange = this.state
+                                tempSongChange.byte0 = e.value
+                                this.props.getStructure(this.state.parentCh, tempSongChange)
+                            }
                         }}
                     />
                 ]
@@ -337,6 +341,12 @@ export class outputCmdPicker extends Component {
                         theme="default"
                         onChange={(e) => {
                             this.setState({ byte1: e.value })
+
+                            if (this.props.getStructure !== undefined) {
+                                let tempNoteChange = this.state
+                                tempNoteChange.byte1 = e.value
+                                this.props.getStructure(this.state.parentCh, tempNoteChange)
+                            }
                         }}
                     />
                 ]
@@ -355,6 +365,12 @@ export class outputCmdPicker extends Component {
                         theme="default"
                         onChange={(e) => {
                             this.setState({ byte1: e.value })
+
+                            if (this.props.getStructure !== undefined) {
+                                let tempCcChange = this.state
+                                tempCcChange.byte1 = e.value
+                                this.props.getStructure(this.state.parentCh, tempCcChange)
+                            }
                         }}
                     />
                 ]
@@ -373,6 +389,12 @@ export class outputCmdPicker extends Component {
                         theme="default"
                         onChange={(e) => {
                             this.setState({ byte1: e.value })
+
+                            if (this.props.getStructure !== undefined) {
+                                let tempPgmChange = this.state
+                                tempPgmChange.byte1 = e.value
+                                this.props.getStructure(this.state.parentCh, tempPgmChange)
+                            }
                         }}
                     />
                 ]
@@ -402,6 +424,12 @@ export class outputCmdPicker extends Component {
                         theme="default"
                         onChange={(e) => {
                             this.setState({ byte2: e.value })
+
+                            if (this.props.getStructure !== undefined) {
+                                let tempVelChange = this.state
+                                tempVelChange.byte2 = e.value
+                                this.props.getStructure(this.state.parentCh, tempVelChange)
+                            }
                         }}
                     />
                 ]
@@ -421,6 +449,12 @@ export class outputCmdPicker extends Component {
                         theme="default"
                         onChange={(e) => {
                             this.setState({ byte2: e.value })
+
+                            if (this.props.getStructure !== undefined) {
+                                let tempValChange = this.state
+                                tempValChange.byte2 = e.value
+                                this.props.getStructure(this.state.parentCh, tempValChange)
+                            }
                         }}
                     />
                 ]

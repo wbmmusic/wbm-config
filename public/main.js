@@ -17,6 +17,7 @@ if (isMac) {
 } else {
   filePath = 'public/bossacwin';
 }
+////////////////////
 
 //Firmware stuff
 let pathToFirmware
@@ -166,12 +167,9 @@ let colorPickerWindow
 var colorPickerOpen = false
 var clPckrCh = 0
 
-
 //WINDOW SCALING BYPASS
 //app.commandLine.appendSwitch('high-dpi-support', 1)
 //app.commandLine.appendSwitch('force-device-scale-factor', 1)
-
-
 
 ////////////////// App Startup ///////////////////////////////////////////////////////////////////
 let win
@@ -190,6 +188,8 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 })
 //////  END SINGLE INSTANCE ////////
 
+
+
 // Create myWindow, load the rest of the app, etc...
 app.on('ready', () => {
 
@@ -206,8 +206,6 @@ app.on('ready', () => {
   } catch (error) {
 
   }
-
-
 
   //log("-APP IS READY");
   createWindow()
@@ -348,10 +346,12 @@ ipcMain.on('react-is-up', function () {
     log('App Is Up!')
     log('PATH BELOW to Bossac')
     log(filePath)
+    log('Path To Open')
+    //log(openSource)
+
 
     //On boot look for any devices that are already connected
     usbDetect.find(1003, function (err, devices) { findAtmelDevices(devices, err) });
-    //getNetInfo()
 
     //Check To See If Some File Exists yet
     //If not show whats new window

@@ -77,7 +77,6 @@ export class midiLightLED extends Component {
                     this.props.getStructure(this.state.parentCh, tempGetColor)
                 }
 
-
             }
         })
 
