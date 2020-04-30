@@ -304,17 +304,52 @@ it('Steps through types using props', () => {
 
     //Step through each type
     for (var i = 0; i < typesDropDown().length; i++) {
-        console.log('Test ' + typesDropDown()[i].label)
+        //console.log('Test Type ' + typesDropDown()[i].label + ' with props')
 
+        // Set Up The State /////////////////////////////////////////////////////////
         let state = defaultStateData()
 
         state.type[0] = typesDropDown()[i].label
         state.type[1] = typesDropDown()[i].value
+        state.id = 1
+        state.parentCh = 1
 
+        //console.log(state.type)
         var tmpCmd = makeOutputCmd(typesDropDown()[i].label, state.channel)
+
         if (tmpCmd[0]) {
             state.command = tmpCmd[1]
         }
+
+        if (typesDropDown()[i].label === 'Note On' ||
+            typesDropDown()[i].label === 'Note Off' ||
+            typesDropDown()[i].label === 'Control Change') {
+            //console.log('NOn NOf CC')
+            state.showByte0 = true
+            state.showByte1 = true
+            state.showByte2 = true
+        } else if (typesDropDown()[i].label === 'Program Change' ||
+            typesDropDown()[i].label === 'Song Select') {
+            //console.log('NOn NOf CC')
+            state.showByte0 = true
+            state.showByte1 = true
+            state.showByte2 = false
+        } else if (typesDropDown()[i].label === 'Sys Ex') {
+            //console.log('NOn NOf CC')
+            state.showByte0 = true
+            state.showByte1 = false
+            state.showByte2 = false
+        } else if (typesDropDown()[i].label === 'System Reset' ||
+            typesDropDown()[i].label === 'Start' ||
+            typesDropDown()[i].label === 'Continue' ||
+            typesDropDown()[i].label === 'Stop' ||
+            typesDropDown()[i].label === 'None') {
+            state.showByte0 = false
+            state.showByte1 = false
+            state.showByte2 = false
+        }
+        ///////////////////////////////////////////////////////// Set Up The State //
+
 
         const wrapper = shallow(<OutputCmdPicker statex={state} />)
 

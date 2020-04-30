@@ -17,13 +17,13 @@ export function defaultStateData(id) {
         parentCh: id,
         type: ['None', 0],
         command: 0,
-        channel: 8,
+        channel: 11,
         byte0: 154,
         byte1: 56,
         byte2: 120,
-        showByte0: true,
-        showByte1: true,
-        showByte2: true,
+        showByte0: false,
+        showByte1: false,
+        showByte2: false,
         hexOutput: [],
         sysex: 'Enter HEX data here'
     }
@@ -36,7 +36,7 @@ export function makeOutputCmd(type, chnl) {
     let wasGood = true
 
     if (type === 'None') {
-        tmpCmd = 'None'
+        tmpCmd = 0
     } else if (type === 'Note On') {
         tmpCmd = 144 + chnl
     } else if (type === 'Note Off') {
@@ -59,11 +59,12 @@ export function makeOutputCmd(type, chnl) {
         tmpCmd = 255
     } else {
         wasGood = false
-        console.log('ERROR - Command Picker makeOutputCmd didnt recognize this command type ' + type)
+        console.log('ERROR - Command Picker makeCmd didnt recognize this command type ' + type)
     }
 
-    return { wasGood, tmpCmd }
+    return [wasGood, tmpCmd]
 }
+
 
 export class outputCmdPicker extends Component {
 
@@ -103,12 +104,15 @@ export class outputCmdPicker extends Component {
         }
     }
 
+
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.statex !== prevState) {
             return nextProps.statex;
         }
         else return null;
     }
+
+
 
     render() {
         let byte0data = []
@@ -266,17 +270,19 @@ export class outputCmdPicker extends Component {
                         theme="default"
                         onChange={(e) => {
                             this.setState({ channel: e.value + 1 })
-                            var cmdPlace = makeOutputCmd(this.state.type[0], e.value)
-                            if (cmdPlace[0]) {
-                                this.setState({ command: cmdPlace[1] })
+                            var tmpCmd = makeOutputCmd(this.state.type[0], e.value)
+                            if (tmpCmd[0]) {
+                                this.setState({ command: tmpCmd[1] })
+
+                                if (this.props.getStructure !== undefined) {
+                                    let tempChChange = this.state
+                                    tempChChange.channel = e.value + 1
+                                    tempChChange.command = makeOutputCmd(this.state.type[0], e.value)[1]
+                                    this.props.getStructure(this.state.parentCh, tempChChange)
+                                }
                             }
 
-                            if (this.props.getStructure !== undefined) {
-                                let tempChChange = this.state
-                                tempChChange.channel = e.value + 1
-                                tempChChange.command = cmdPlace[1]
-                                this.props.getStructure(this.state.parentCh, tempChChange)
-                            }
+
                         }}
                     />
                 ]
@@ -517,16 +523,18 @@ export class outputCmdPicker extends Component {
                                         onChange={(e) => {
                                             //console.log('Type Selector On Change Firing')
                                             this.setState({ type: [e.label, e.value] })
-                                            var cmdPlace = makeOutputCmd(this.state.type[0], e.value)
-                                            if (cmdPlace[0]) {
-                                                this.setState({ command: cmdPlace[1] })
+                                            var tmpCmd = makeOutputCmd(e.label, this.state.channel - 1)
+                                            if (tmpCmd[0]) {
+                                                this.setState({ command: tmpCmd[1] })
+
+                                                if (this.props.getStructure !== undefined) {
+                                                    let tempTypeChange = this.state
+                                                    tempTypeChange.type = [e.label, e.value]
+                                                    tempTypeChange.command = makeOutputCmd(e.label, this.state.channel - 1)[1]
+                                                    this.props.getStructure(this.state.parentCh, tempTypeChange)
+                                                }
                                             }
-                                            if (this.props.getStructure !== undefined) {
-                                                let tempTypeChange = this.state
-                                                tempTypeChange.type = [e.label, e.value]
-                                                tempTypeChange.command = cmdPlace[1]
-                                                this.props.getStructure(this.state.parentCh, tempTypeChange)
-                                            }
+
                                         }}
                                     />
                                 </div>
@@ -577,7 +585,6 @@ function decimalToHexString(number) {
     return number.toString(16).toUpperCase();
 }
 
-// Style /////////////////////////////
 const mainDiv = {
     backgroundColor: 'lightgrey',
     padding: '8px',
@@ -622,6 +629,8 @@ const label = {
     paddingLeft: '5px',
     fontSize: '12px'
 }
-///////////////////////////// Style //
+
+
+
 
 export default outputCmdPicker
