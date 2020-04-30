@@ -9,14 +9,13 @@ import mtcBox from './Components/mtcDisplay/mtcBox'
 import midiAB from './Components/midiAB/midiAB'
 import About from './Components/layout/about'
 import DevInfo from './Components/utilities/DevInfo'
-import Files from './Components/utilities/Files'
 
 
 export class App extends Component {
-  
+
   render() {
     return (
-      <Router>
+      <Router data-testId="router">
         <div className="App" style={{ height: "70vh" }}>
           <div className="container">
             <Header />
@@ -25,7 +24,6 @@ export class App extends Component {
             <Route exact path='/midiButton' component={midiButton} />
             <Route exact path='/mtcDisplay' component={mtcBox} />
             <Route exact path='/midiAB' component={midiAB} />
-            <Route exact path='/files' component={Files} />
             <Route exact path='/about' component={About} />
             <Route exact path='/' component={DevInfo} />
           </div>

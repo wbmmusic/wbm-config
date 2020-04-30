@@ -34,7 +34,7 @@ export class mtcDisplay extends Component {
                 }
                 if (frame.length === 1) {
                     frame = 0 + frame
-                }else if(frame.length > 2){
+                } else if (frame.length > 2) {
                     frame = '00'
                 }
 
@@ -48,32 +48,32 @@ export class mtcDisplay extends Component {
 
     render() {
         return (
-            <div style={{ 
+            <div className="mainDiv" style={{
                 border: '2px black solid',
                 display: 'inline-block'
-                }}>
+            }}>
                 <table>
                     <tbody>
                         <tr>
-                            <td style={digitsCell}>
+                            <td className="hourCell" style={digitsCell}>
                                 <b>{this.state.hours}</b>
                             </td>
                             <td style={spacer}>
                                 <b>:</b>
                             </td>
-                            <td style={digitsCell}>
+                            <td className="minuteCell" style={digitsCell}>
                                 <b>{this.state.minutes}</b>
                             </td>
                             <td style={spacer}>
                                 <b>:</b>
                             </td>
-                            <td style={digitsCell}>
+                            <td className="secondCell" style={digitsCell}>
                                 <b>{this.state.seconds}</b>
                             </td>
                             <td style={spacer}>
                                 <b>:</b>
                             </td>
-                            <td style={digitsCell}>
+                            <td className="frameCell" style={digitsCell}>
                                 <b>{this.state.frames}</b>
                             </td>
                         </tr>

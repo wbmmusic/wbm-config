@@ -11,7 +11,6 @@ function Header() {
             <Link to="/midiButton" style={linkStyle}> MIDI Button</Link> |
             <Link to="/mtcDisplay" style={linkStyle}> MTC Display</Link> |
             <Link to="/midiAB" style={linkStyle}> MIDI A/B</Link> |
-            <Link to="/files" style={linkStyle}> FILES</Link> |
             <Link to="/about" style={linkStyle}> About</Link>
         </header>
     )
