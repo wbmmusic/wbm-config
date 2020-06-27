@@ -39,7 +39,6 @@ export const noteDropDown = () => {
             octiveCnt++;
             noteInOctive = 0
         }
-        noteNames.push('ANY')
     }
     return createOptions(noteNames)
 }

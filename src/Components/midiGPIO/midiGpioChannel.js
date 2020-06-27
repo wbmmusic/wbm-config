@@ -151,7 +151,7 @@ export class midiGpioChannel extends Component {
         }
 
         if (this.state.pickRing) {
-            if (this.state.in) {
+            if (!this.state.in) {
                 pickerDisplay = [
                     <InputCommandPicker />
                 ]
@@ -202,7 +202,7 @@ export class midiGpioChannel extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td style={{ fontSize: '12px' }}>In/Out</td>
+                                            <td style={{ fontSize: '12px' }}>GPI / GPO</td>
                                             <td style={btnTd}>
                                                 <div
                                                     onMouseDown={this.inPress}

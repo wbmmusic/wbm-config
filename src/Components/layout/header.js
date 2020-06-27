@@ -13,7 +13,6 @@ function Header() {
             <Link to="/midiAB" style={linkStyle}> MIDI A/B</Link> |
             <Link to="/inputPicker" style={linkStyle}> In Picker</Link> |
             <Link to="/drag" style={linkStyle}> Drag</Link> |
-            <Link to="/inputPicker" style={linkStyle}> ICP</Link> |
             <Link to="/about" style={linkStyle}> About</Link>
         </header>
     )
