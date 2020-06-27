@@ -4,23 +4,22 @@ import MidiLightLED from './midiLightLED'
 const { ipcRenderer } = window.require('electron')
 
 export class midiLightChannel extends Component {
-    state = {
-        channel: this.props.channel,
-        name: 'Name this LED',
-        pickerData: defaultStateData(this.props.channel),
-        ledData: []
-    }
-
+    
 
     constructor(props) {
         super(props);
+        this.state = {
+            channel: this.props.channel,
+            name: 'Name this LED',
+            pickerData: defaultStateData(this.props.channel),
+            ledData: []
+        }
         //console.log('YXXX channel Constructor #' + this.state.channel)
         //console.log(this.state.pickerData)
         this.handleName = this.handleName.bind(this);
         this.getPickerStructure = this.getPickerStructure.bind(this);
         this.printState = this.printState.bind(this);
     }
-
 
     getLedStructure = (chnl, e) => {
         //console.log('XXX GOT STRUCTURE #' + chnl)

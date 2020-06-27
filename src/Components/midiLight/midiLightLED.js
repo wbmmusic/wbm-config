@@ -263,7 +263,6 @@ function createOptions(pointer, output) {
 }
 
 
-
 //STYLE///////////////////////////////////////////////
 const td = {
     border: '1px black solid'

@@ -13,15 +13,6 @@ import {
 
 Enzyme.configure({ adapter: new Adapter() })
 
-function getType(num) {
-    let output = []
-
-    output.push(typesDropDown()[num].label)
-    output.push(typesDropDown()[num].value)
-
-    return output
-}
-
 function expectNothing(wrapper, target) {
     //console.log('We in expect nothing')
     const temp = wrapper.find('[id="' + target + '"]')
@@ -29,6 +20,17 @@ function expectNothing(wrapper, target) {
 }
 
 function checkSelectsAgainstState(state, wrapper, label) {
+
+    //Type
+    //Check the type fields
+    const typeLbl = wrapper.find('[id="typeLbl"]')
+    expect(typeLbl.text()).toBe("Type:")
+
+    const typeSel2 = wrapper.find('[id="typeDiv"]')
+    const theText = typeSel2.find(Select).props().value.label
+    //console.log('Picker is displaying ' + theText)
+    expect(theText).toBe(label)
+
     if (
         label === "None" ||
         label === "Start" ||
@@ -156,11 +158,42 @@ function checkSelectsAgainstState(state, wrapper, label) {
     }
 }
 
+//Sets the showBytes states based on Type in state
+let setShowBytes = (state) => {
+    if (state.type[0] === 'Note On' ||
+        state.type[0] === 'Note Off' ||
+        state.type[0] === 'Control Change') {
+        //console.log('NOn NOf CC')
+        state.showByte0 = true
+        state.showByte1 = true
+        state.showByte2 = true
+    } else if (state.type[0] === 'Program Change' ||
+        state.type[0] === 'Song Select') {
+        //console.log('NOn NOf CC')
+        state.showByte0 = true
+        state.showByte1 = true
+        state.showByte2 = false
+    } else if (state.type[0] === 'Sys Ex') {
+        //console.log('NOn NOf CC')
+        state.showByte0 = true
+        state.showByte1 = false
+        state.showByte2 = false
+    } else if (state.type[0] === 'System Reset' ||
+        state.type[0] === 'Start' ||
+        state.type[0] === 'Continue' ||
+        state.type[0] === 'Stop' ||
+        state.type[0] === 'None') {
+        state.showByte0 = false
+        state.showByte1 = false
+        state.showByte2 = false
+    }
+    return state
+}
 
 it('Steps through types with no props', () => {
     console.log('TEST: Steps through types with no props')
 
-    let state = defaultStateData()
+    let state = defaultStateData(1)
     const wrapper = shallow(<OutputCmdPicker />)
 
     //Step through each type
@@ -171,18 +204,7 @@ it('Steps through types with no props', () => {
         another.simulate('change', typesDropDown()[i]);
         //console.log('Change To -> ' + typesDropDown()[i].label)
 
-        //Type
-        //Check the type fields
-        const typeLbl = wrapper.find('[id="typeLbl"]')
-        expect(typeLbl.text()).toBe("Type:")
-
-        const typeSel2 = wrapper.find('[id="typeDiv"]')
-        const theText = typeSel2.find(Select).props().value.label
-        //console.log('Picker is displaying ' + theText)
-        expect(theText).toBe(typesDropDown()[i].label)
-
         checkSelectsAgainstState(state, wrapper, typesDropDown()[i].label)
-
     }
 })
 
@@ -200,6 +222,7 @@ it('Steps through each types Dropdowns with no props', () => {
         const byte0Lbl = wrapper.find('[id="byte0Lbl"]')
         //if (byte0Lbl.text().length > 0) { console.log('BYTE0 label = '+byte0Lbl.text()) }
         if (byte0Lbl.text() === "CH:") {
+
             //console.log('Checking ' + typesDropDown()[i].label + ' drop down menus')
             for (var tempChCtr = 0; tempChCtr < 5; tempChCtr++) {
                 const temp = wrapper.find('[name="channelSelector"]')
@@ -207,6 +230,7 @@ it('Steps through each types Dropdowns with no props', () => {
 
                 const tempCh = Math.round(Math.random() * 15)
                 state.channel = tempCh + 1
+                //console.log('----- CHANGE CHANNEL to ' + (tempCh + 1))
                 temp.simulate('change', oneSixteen()[tempCh]);
                 //console.log('CH set to ' + state.channel)
 
@@ -302,12 +326,14 @@ it('Steps through each types Dropdowns with no props', () => {
 it('Steps through types using props', () => {
     console.log('TEST: Steps through types using props')
 
+    const wrapper = shallow(<OutputCmdPicker />)
+
     //Step through each type
     for (var i = 0; i < typesDropDown().length; i++) {
         //console.log('Test Type ' + typesDropDown()[i].label + ' with props')
 
         // Set Up The State /////////////////////////////////////////////////////////
-        let state = defaultStateData()
+        let state = defaultStateData(1)
 
         state.type[0] = typesDropDown()[i].label
         state.type[1] = typesDropDown()[i].value
@@ -321,74 +347,261 @@ it('Steps through types using props', () => {
             state.command = tmpCmd[1]
         }
 
-        if (typesDropDown()[i].label === 'Note On' ||
-            typesDropDown()[i].label === 'Note Off' ||
-            typesDropDown()[i].label === 'Control Change') {
-            //console.log('NOn NOf CC')
-            state.showByte0 = true
-            state.showByte1 = true
-            state.showByte2 = true
-        } else if (typesDropDown()[i].label === 'Program Change' ||
-            typesDropDown()[i].label === 'Song Select') {
-            //console.log('NOn NOf CC')
-            state.showByte0 = true
-            state.showByte1 = true
-            state.showByte2 = false
-        } else if (typesDropDown()[i].label === 'Sys Ex') {
-            //console.log('NOn NOf CC')
-            state.showByte0 = true
-            state.showByte1 = false
-            state.showByte2 = false
-        } else if (typesDropDown()[i].label === 'System Reset' ||
-            typesDropDown()[i].label === 'Start' ||
-            typesDropDown()[i].label === 'Continue' ||
-            typesDropDown()[i].label === 'Stop' ||
-            typesDropDown()[i].label === 'None') {
-            state.showByte0 = false
-            state.showByte1 = false
-            state.showByte2 = false
-        }
+        state = setShowBytes(state)
         ///////////////////////////////////////////////////////// Set Up The State //
 
-
-        const wrapper = shallow(<OutputCmdPicker statex={state} />)
+        //Pass the state as a prop to the command picker
+        wrapper.setProps({ statex: state })
 
         //Select the type
         const another = wrapper.find('[name="typeSelector"]')
         another.simulate('change', typesDropDown()[i]);
         //console.log('Change To -> ' + typesDropDown()[i].label)
 
-        //Type
-        //Check the type fields
-        const typeLbl = wrapper.find('[id="typeLbl"]')
-        expect(typeLbl.text()).toBe("Type:")
-
-        const typeSel2 = wrapper.find('[id="typeDiv"]')
-        const theText = typeSel2.find(Select).props().value.label
-        //console.log('Picker is displaying ' + theText)
-        expect(theText).toBe(typesDropDown()[i].label)
-
         checkSelectsAgainstState(state, wrapper, typesDropDown()[i].label)
 
+        //Check Compare picker state to testing temp state
+        expect(wrapper.state().toString()).toBe(state.toString())
     }
 })
 
-/*
 it('Steps through each types Dropdowns using props', () => {
     console.log('TEST: Steps through each types Dropdowns using props')
 
-    expect(true).toBeTruthy()
+    const wrapper = shallow(<OutputCmdPicker />)
+
+    //Step through each type
+    for (var i = 0; i < typesDropDown().length; i++) {
+        //console.log('Test Type ' + typesDropDown()[i].label + ' with props')
+
+        for (var numPerType = 0; numPerType < 5; numPerType++) {
+            // Set Up The State /////////////////////////////////////////////////////////
+            let state = defaultStateData(1)
+
+            state.type[0] = typesDropDown()[i].label
+            state.type[1] = typesDropDown()[i].value
+
+            var id = Math.round(Math.random() * 127)
+            state.id = id
+            state.parentCh = id
+
+            state = setShowBytes(state)
+
+            if (state.type[0] === 'Note On' ||
+                state.type[0] === 'Note Off' ||
+                state.type[0] === 'Control Change') {
+                //console.log('NOn NOf CC')
+
+                //Set Channel
+                state.channel = Math.round(Math.random() * 15) + 1
+                //Set Note / CC#
+                state.byte1 = Math.round(Math.random() * 127)
+                //Set Velocity / Val
+                state.byte2 = Math.round(Math.random() * 127)
+
+                //console.log('CH# ' + state.channel + ' Note/CC# ' + state.byte1 + ' Vel/Val ' + state.byte2)
+
+            } else if (state.type[0] === 'Program Change') {
+                //console.log('NOn NOf CC')
+
+                //Set Channel
+                state.channel = Math.round(Math.random() * 15) + 1
+                //Set PGM#
+                state.byte1 = Math.round(Math.random() * 127)
+
+                //console.log('CH# ' + state.channel + ' PGM# ' + state.byte1)
+
+            } else if (state.type[0] === 'Song Select') {
+
+                //Set Song
+                state.byte1 = Math.round(Math.random() * 127)
+                //console.log('Song # ' + state.byte1)
+            }
+
+            //console.log(state.type)
+            var tmpCmd = makeOutputCmd(state.type[0], state.channel)
+            if (tmpCmd[0]) {
+                state.command = tmpCmd[1]
+            }
+            ///////////////////////////////////////////////////////// Set Up The State //
+
+            //Pass the state as a prop to the command picker
+            wrapper.setProps({ statex: state })
+
+            //Select the type
+            const another = wrapper.find('[name="typeSelector"]')
+            another.simulate('change', typesDropDown()[i]);
+            //console.log('Change To -> ' + state.type[0])
+
+            checkSelectsAgainstState(state, wrapper, state.type[0])
+
+            //Check Compare picker state to testing temp state
+            expect(wrapper.state().toString()).toBe(state.toString())
+        }
+    }
 })
 
 it('Steps through types using props and callbacks', () => {
     console.log('TEST: Steps through types using props and callbacks')
 
-    expect(true).toBeTruthy()
+
+    let messageFromPicker = jest.fn()
+
+    let state = defaultStateData(1)
+
+    //console.log('---> Create OutputCmdPicker')
+    const wrapper = shallow(<OutputCmdPicker statex={state} getStructure={messageFromPicker} />)
+
+    //console.log('---> Expect Structure')
+    // The mock function was called at least once with the specified args
+    expect(messageFromPicker).toHaveBeenCalledWith(state.parentCh, state);
+
+    //console.log('---> Mock Reset')
+    messageFromPicker.mockReset()
+
+    //console.log('>>>> MADE IT THROUGH SETUP')
+
+    for (var i = 0; i < typesDropDown().length; i++) {
+        //console.log('Test Type ' + typesDropDown()[i].label + ' with props and callback')
+
+        // Set Up The State /////////////////////////////////////////////////////////
+        let state = defaultStateData(1)
+
+        state.type[0] = typesDropDown()[i].label
+        state.type[1] = typesDropDown()[i].value
+        const id = 1
+        state.id = 'picker' + id
+        state.parentCh = id
+
+        //console.log(state.type)
+        var tmpCmd = makeOutputCmd(typesDropDown()[i].label, state.channel - 1)
+
+        if (tmpCmd[0]) {
+            state.command = tmpCmd[1]
+        }
+
+        state = setShowBytes(state)
+        ///////////////////////////////////////////////////////// Set Up The State //
+
+        //console.log('---> Change Type to ' + typesDropDown()[i].label)
+        //Select the type
+        var another = wrapper.find('[name="typeSelector"]')
+        another.simulate('change', typesDropDown()[i]);
+        //console.log('Change To -> ' + typesDropDown()[i].label)
+
+        // The mock function was called at least once with the specified args
+        //console.log('---> Expect Structure')
+
+        var tempParCh = messageFromPicker.mock.calls[0][0]
+        var readState = messageFromPicker.mock.calls[0][1]
+        var tempState = state
+
+        expect(tempParCh).toBe(1)
+        tempState.textOutput = []
+        expect(tempState).toBe(state);
+
+        //console.log('---> Mock Reset')
+        messageFromPicker.mockReset()
+
+        //console.log('---> Check Test State againsd component state')
+        //Check Compare picker state to testing temp state
+        expect(wrapper.state().toString()).toBe(state.toString())
+
+        //console.log('---> Set Statex')
+        //Pass the state as a prop to the command picker
+        wrapper.setProps({ statex: readState })
+
+        //console.log('---> Expect No Response from component because states match')
+        expect(messageFromPicker).toBeCalledTimes(0);
+        messageFromPicker.mockReset()
+
+        //console.log('---> checkSelectsAgainstState()')
+        checkSelectsAgainstState(state, wrapper, typesDropDown()[i].label)
+    }
+
 })
 
+// STILL NEED TO MAKE IT STEP THROUGH EACH DROPDOWN FOR EACH TYPE
 it('Steps through each types Dropdowns using props and callbacks', () => {
     console.log('TEST: Steps through each types Dropdowns using props and callbacks')
 
-    expect(true).toBeTruthy()
+    let messageFromPicker = jest.fn()
+
+    let state = defaultStateData(1)
+
+    //console.log('---> Create OutputCmdPicker')
+    const wrapper = shallow(<OutputCmdPicker statex={state} getStructure={messageFromPicker} />)
+
+    //console.log('---> Expect Structure')
+    // The mock function was called at least once with the specified args
+    expect(messageFromPicker).toHaveBeenCalledWith(state.parentCh, state);
+
+    //console.log('---> Mock Reset')
+    messageFromPicker.mockReset()
+
+    //console.log('>>>> MADE IT THROUGH SETUP')
+
+    for (var i = 0; i < typesDropDown().length; i++) {
+        //console.log('Test Type ' + typesDropDown()[i].label + ' with props and callback')
+
+        for (var tempChange = 0; tempChange < 5; tempChange++) {
+
+            //console.log('TEMP CHANGE ======== ' + tempChange)
+            // Set Up The State /////////////////////////////////////////////////////////
+            let state = defaultStateData(1)
+
+            state.type[0] = typesDropDown()[i].label
+            state.type[1] = typesDropDown()[i].value
+            const id = 1
+            state.id = 'picker' + id
+            state.parentCh = id
+
+            //console.log(state.type)
+            var tmpCmd = makeOutputCmd(typesDropDown()[i].label, state.channel - 1)
+
+            if (tmpCmd[0]) {
+                state.command = tmpCmd[1]
+            } else {
+                console.log('tmpCmd Issue ' + tmpCmd.toString())
+            }
+
+            state = setShowBytes(state)
+            ///////////////////////////////////////////////////////// Set Up The State //
+
+            //console.log('---> Change Type to ' + typesDropDown()[i].label)
+            //Select the type
+            const another = wrapper.find('[name="typeSelector"]')
+            another.simulate('change', typesDropDown()[i]);
+
+            // The mock function was called at least once with the specified args
+            //console.log('---> Expect Structure')
+
+            var tempParCh = messageFromPicker.mock.calls[0][0]
+            var readState = messageFromPicker.mock.calls[0][1]
+            var tempState = state
+
+            expect(tempParCh).toBe(1)
+            tempState.textOutput = []
+            expect(tempState).toBe(state);
+
+            //console.log('---> Mock Reset')
+            messageFromPicker.mockReset()
+
+            //console.log('---> Check Test State againsd component state')
+            //Check Compare picker state to testing temp state
+            expect(wrapper.state().toString()).toBe(state.toString())
+
+            //console.log('---> Set Statex')
+            //Pass the state as a prop to the command picker
+            wrapper.setProps({ statex: readState })
+
+            //console.log('---> Expect No Response from component because states match')
+            expect(messageFromPicker).toBeCalledTimes(0);
+            messageFromPicker.mockReset()
+
+            //console.log('---> checkSelectsAgainstState()')
+            checkSelectsAgainstState(state, wrapper, typesDropDown()[i].label)
+
+        }
+    }
 })
-*/

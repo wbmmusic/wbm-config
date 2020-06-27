@@ -189,7 +189,6 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 //////  END SINGLE INSTANCE ////////
 
 
-
 // Create myWindow, load the rest of the app, etc...
 app.on('ready', () => {
 
@@ -219,7 +218,7 @@ app.on('ready', () => {
 
 ////////// Color Picker Window //////////
 ipcMain.on('showColorPicker', function (event, ch, nm, clr) {
-  log("Color Picker " + ch)
+  console.log("Color Picker " + ch)
 
   if (!colorPickerOpen) {
     colorPickerOpen = true
@@ -343,10 +342,10 @@ ipcMain.on('react-is-up', function () {
   //We only let it get called the first time
   if (!reactState) {
     reactState = true
-    log('App Is Up!')
-    log('PATH BELOW to Bossac')
-    log(filePath)
-    log('Path To Open')
+    console.log('App Is Up!')
+    console.log('PATH BELOW to Bossac')
+    console.log(filePath)
+    console.log('Path To Open')
     //log(openSource)
 
 
@@ -357,7 +356,7 @@ ipcMain.on('react-is-up', function () {
     //If not show whats new window
     showWhatsNew()
 
-    log('Process.cwd() = ' + process.cwd())
+    console.log('Process.cwd() = ' + process.cwd())
 
   }
 })
@@ -393,7 +392,7 @@ function showWhatsNew() {
 
 //Don't show the whats new window again until updated
 ipcMain.on('dont-show-whats-new', () => {
-  log('dont-show-whats-new')
+  console.log('dont-show-whats-new')
   try {
     whatsNewWin.close()
   } catch (error) {
@@ -440,11 +439,11 @@ function toggleDevelopeMenu() {
     if (menuTemplate[i].label === 'Devices') {
 
       if (menuTemplate[i + 1].label === 'Developer') {
-        log('Toggle Develope Menu Menu Off')
+        console.log('Toggle Develope Menu Menu Off')
         developeMenu = menuTemplate[i + 1]
         menuTemplate.splice(i + 1, 1)
       } else {
-        log('Toggle Develope Menu Menu On')
+        console.log('Toggle Develope Menu Menu On')
         menuTemplate.splice(i + 1, 0, developeMenu)
       }
 
@@ -459,7 +458,7 @@ function toggleDevelopeMenu() {
 
 ///////////////////// FILE OPEN AND SAVE //////////////////////////////
 ipcMain.on('OPEN', (event, arg) => {
-  log(arg) // prints "ping"
+  console.log(arg) // prints "ping"
   dialog.showOpenDialog(win, {
     properties: ['openFile'],
     filters: [
@@ -468,37 +467,37 @@ ipcMain.on('OPEN', (event, arg) => {
     ]
   }).then(result => {
     if (result.canceled) {
-      log('CANCLED')
+      console.log('CANCLED')
     } else {
-      log(result.filePaths)
+      console.log(result.filePaths)
       fs.readFile(result.filePaths[0], function (err, data) {
-        log(data.toString())
+        console.log(data.toString())
         event.reply('asynchronous-reply', data)
       });
     }
   }).catch(err => {
-    log(err)
+    console.log(err)
   })
 })
 
 ipcMain.on('SAVE', (event, arg, fileData) => {
-  log(arg) // prints "ping"
+  console.log(arg) // prints "ping"
   dialog.showSaveDialog(win, {
     properties: ['createDirectory', 'showOverwriteConfirmation'],
     filters: [{ name: 'Config File', extensions: ['wbmtek'] },]
   }).then(result => {
     if (result.canceled) {
-      log('CANCLED')
+      console.log('CANCLED')
     } else {
-      log(result.filePath)
+      console.log(result.filePath)
       fs.writeFile(result.filePath, fileData, function (err) {
         if (err) throw err;
-        log('Saved!');
+        console.log('Saved!');
         event.reply('itSaved', 'File Saved')
       });
     }
   }).catch(err => {
-    log(err)
+    console.log(err)
   })
 })
 
@@ -510,37 +509,55 @@ ipcMain.on('fileOpen', (event, extension) => {
     ]
   }).then(result => {
     if (result.canceled) {
-      log('CANCLED')
+      console.log('CANCLED')
     } else {
-      log(result.filePaths)
+      console.log(result.filePaths)
       fs.readFile(result.filePaths[0], function (err, data) {
         event.reply('asynchronous-reply', data.toString())
       });
     }
   }).catch(err => {
-    log(err)
+    console.log(err)
   })
 })
 
 ipcMain.on('fileSaveAs', (event, extension, fileData) => {
-  log('GOT A SAVE AS COMMAND') // prints "ping"
+  console.log('GOT A SAVE AS COMMAND') // prints "ping"
   dialog.showSaveDialog(win, {
     properties: ['createDirectory', 'showOverwriteConfirmation'],
     filters: [{ name: 'Config File', extensions: [extension] },]
   }).then(result => {
     if (result.canceled) {
-      log('CANCLED')
+      console.log('CANCLED')
     } else {
-      log(result.filePath)
+      console.log(result.filePath)
       fs.writeFile(result.filePath, fileData, function (err) {
         if (err) throw err;
-        log('Saved!');
+        console.log('Saved!');
         event.reply('itSaved', 'File Saved')
       });
     }
   }).catch(err => {
-    log(err)
+    console.log(err)
   })
+})
+
+ipcMain.on('send', (event, extension, fileData) => {
+  //THIS NEEDS TO E SET SOME OTHER WAY
+  var targetPort = 0
+  /////////////////////////////////////
+
+  console.log('GOT A SEND COMMAND') // prints "ping"
+  console.log(fileData)
+  conDevs[targetPort].port.write('WBM SEND FILE')
+
+  setTimeout(() => {
+    conDevs[targetPort].port.write(fileData)
+    conDevs[targetPort].port.write('WBM END SEND FILE')
+  }, 50);
+
+  
+
 })
 /////////////////// END FILE OPEN AND SAVE ////////////////////////////
 
@@ -550,7 +567,7 @@ ipcMain.on('fileSaveAs', (event, extension, fileData) => {
 //Opens a port and gets device info
 function createPort(path, serNum) {
 
-  log('CREATE PORT')
+  console.log('CREATE PORT')
 
   //The slot (address in conDevs[?]) we will use for this device
   let targetPort
@@ -594,19 +611,20 @@ function createPort(path, serNum) {
   conDevs[targetPort].info.serialNumber = serNum
 
   //request the devices info
+  console.log("REQUESTING DEV INFO")
   conDevs[targetPort].port.write('WBM ID REQ')
 
   //Create this ports read callback
   conDevs[targetPort].port.on('readable', function () {
-    log('---->Recieved Data')
+    console.log('---->Recieved Data')
     conDevs[targetPort].port.read()
   })
 
   //Set the callback for recieving data
   conDevs[targetPort].port.on('data', function (data) {
     var packet = data.toString()
-    log('PACKET DATA BELOW')
-    log(packet)
+    console.log('PACKET DATA BELOW')
+    console.log(packet)
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     /*
@@ -635,13 +653,13 @@ function createPort(path, serNum) {
       } else if (key === 'Firmware') {
         conDevs[targetPort].info.firmware = value
       } else {
-        log("--Not Recognized -> " + key + " = " + value)
+        console.log("--Not Recognized -> " + key + " = " + value)
       }
     }
 
-    log('Device ' + targetPort + ' Info Info Below v')
-    log(conDevs[targetPort].info)
-    log('---->END Recieved Data')
+    console.log('Device ' + targetPort + ' Info Info Below v')
+    console.log(conDevs[targetPort].info)
+    console.log('---->END Recieved Data')
 
     //Update the Devices menu to display new device
     redrawDeviceMenu()
@@ -650,7 +668,7 @@ function createPort(path, serNum) {
 }
 
 function redrawDeviceMenu() {
-  log('Redraw Menu')
+  console.log('Redraw Menu')
 
   //Update Devices menu to represent conDevs
   for (var i = 0; i < menuTemplate.length; i++) {
@@ -667,7 +685,7 @@ function redrawDeviceMenu() {
             label: 'No Connected Devices',
             enabled: false
           })
-          log('No Devices Connected set in menu')
+          console.log('No Devices Connected set in menu')
 
           //If there are connected devices devices (conDevs.lenght > 0)
         } else {
@@ -688,7 +706,7 @@ function redrawDeviceMenu() {
         Menu.setApplicationMenu(menu)
 
       } catch (error) {
-        log('->ERROR in add menu item')
+        console.log('->ERROR in add menu item')
       }
     }
   }
@@ -707,11 +725,11 @@ function usbDisconnected(device) {
         conDevs[i].port.close()
       }
 
-      log('USB DEVICE DISCONNECTED ' + conDevs[i].info.serialNumber)
+      console.log('USB DEVICE DISCONNECTED ' + conDevs[i].info.serialNumber)
 
       //remove it from the connected devices list
       conDevs.splice(i, 1);
-      log("# of active connections = " + conDevs.length)
+      console.log("# of active connections = " + conDevs.length)
 
       //Remove it from the devices menu
       redrawDeviceMenu()
@@ -743,7 +761,7 @@ function isThisOurSerialNumber(device) {
   } else if (device.serialNumber.substring(0, 4) === "WBM:") {
     findSerNumInAvailPorts(device.serialNumber)
   } else {
-    //log('NOT OUR SERIAL NUMBER')
+    console.log('NOT OUR SERIAL NUMBER')
   }
 }
 
@@ -768,29 +786,29 @@ function findSerNumInAvailPorts(targetSerNum) {
   SerialPort.list().then(
     ports => {
       ports.forEach((port) => {
-        //log(`${port.path}\t${port.serialNumber || ''}\t${port.manufacturer || ''}`)
-        //log('THIS HERE')
-        //log("PORT SN: " + port.serialNumber.toUpperCase())
-        //log("TRGT SN: " + targetSerNum)
+        console.log(`${port.path}\t${port.serialNumber || ''}\t${port.manufacturer || ''}`)
+        console.log('THIS HERE')
+        console.log("PORT SN: " + port.serialNumber.toUpperCase())
+        console.log("TRGT SN: " + targetSerNum)
         if (port.serialNumber === targetSerNum) {
 
           //If we are expecting this device during a frimware upload process
           if (targetSerNum === "WBMBXYZABC" && firmwareUpload === true) {
-            log("Found Device ready for firmware as expected")
+            console.log("Found Device ready for firmware as expected")
             uploadFirmware(port.path, pathToFirmware)
 
             //Device is in bootloader and we werent expecting it
-          } else if (targetSerNum == "WBMBXYZABC") {
-            log('-ERROR Somehow a device is in bootloader mode unexpectadly')
+          } else if (targetSerNum === "WBMBXYZABC") {
+            console.log('-ERROR Somehow a device is in bootloader mode unexpectadly')
 
             //Device is ours and we want to connect to it via serial
           } else {
             try {
               type = createPort(port.path, targetSerNum)
-              log("CONNECTED " + port.serialNumber)
-              log("# of active connections = " + conDevs.length)
+              console.log("CONNECTED " + port.serialNumber)
+              console.log("# of active connections = " + conDevs.length)
             } catch (error) {
-              log('--ERROR creating port ' + error)
+              console.log('--ERROR creating port ' + error)
             }
           }
         }
@@ -809,7 +827,7 @@ ipcMain.on('showDevs', (event) => {
 
 //IF A DEVICE IS SELECTED IN THE DEVICES MENU
 function selectDevice(e) {
-  log('Selected ' + e.id)
+  console.log('Selected ' + e.id)
   showDeviceInfo(e.id)
 }
 
@@ -859,19 +877,19 @@ function showDeviceInfo(serNum) {
 
 ////////////////////////// FIRMWARE UPLOAD /////////////////////////////////////////
 function uploadFirmware(port, path) {
-  log('In getNetInfo()')
+  console.log('In getNetInfo()')
 
   var argumentsx = ['-d', '-u', '-i', '-o', '0x2000', '-p', port, '-e', '-w', '-v', '-R', '-b', path]
 
   execFile(filePath, argumentsx, (error, stdout, stderr) => {
     if (error) {
-      log(`child process ERROR ${error}`);
+      console.log(`child process ERROR ${error}`);
       firmwareUpload = false
       throw error;
     }
 
-    log(stdout);
-    log(`child process FINISHED`);
+    console.log(stdout);
+    console.log(`child process FINISHED`);
     firmwareUpload = false
   });
 }
@@ -892,10 +910,10 @@ function selectDeviceAndFWfile() {
     message: 'Select A Device To Upload Firmware To',
     cancelId: 9999
   })
-  log('msg box output = ' + dev)
+  console.log('msg box output = ' + dev)
 
   if (dev > 0) {
-    log('IN FIRMWARE SELECT') // prints "ping"
+    console.log('IN FIRMWARE SELECT') // prints "ping"
     dialog.showOpenDialog(win, {
       properties: ['openFile'],
       filters: [
@@ -903,12 +921,12 @@ function selectDeviceAndFWfile() {
       ]
     }).then(result => {
       if (result.canceled) {
-        log('FIRMWARE SELECT CANCELED')
+        console.log('FIRMWARE SELECT CANCELED')
       } else {
         if (firmwareUpload) {
-          log('CANT UPLOAD FIRMWARE - UPLOAD ALREADY IN PROGRESS')
+          console.log('CANT UPLOAD FIRMWARE - UPLOAD ALREADY IN PROGRESS')
         } else {
-          log(result.filePaths[0])
+          console.log(result.filePaths[0])
           pathToFirmware = result.filePaths[0]
           firmwareUpload = true
           conDevs[dev - 1].port.write('WBM FIRMWARE REBOOT COMMAND')
@@ -916,15 +934,10 @@ function selectDeviceAndFWfile() {
         }
       }
     }).catch(err => {
-      log(err)
+      console.log(err)
     })
   } else {
-    log('Canceled')
+    console.log('Canceled')
   }
 }
 ////////////////////////// END FIRMWARE UPLOAD /////////////////////////////////////
-
-
-function log(msg) {
-  win.webContents.send('mainlog', msg)
-}

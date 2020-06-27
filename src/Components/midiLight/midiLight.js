@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import MidiLightChannel from './midiLightChannel'
-import { v4 as uuid } from 'uuid';
 
 const { ipcRenderer } = window.require('electron')
-
-console.log('XXXX MIDI LIGHT TOP')
 
 export class midiLight extends Component {
     constructor(props) {
@@ -25,6 +22,11 @@ export class midiLight extends Component {
     saveBtnPress = () => {
         console.log('SAVE btn press')
         ipcRenderer.send('fileSave', 'wbmlight', this.state)
+    }
+
+    sendBtnPress = () => {
+        console.log('SEND btn press')
+        ipcRenderer.send('send', 'wbmlight', JSON.stringify(this.state))
     }
 
     saveAsBtnPress = () => {
@@ -105,6 +107,11 @@ export class midiLight extends Component {
                                 <div style={openSaveBtns}
                                     onMouseDown={this.seeState}
                                 >STATE</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={this.sendBtnPress}
+                                >Send</div>
                             </td>
                         </tr>
                     </tbody>

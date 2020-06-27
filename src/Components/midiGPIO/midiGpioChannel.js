@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import OutputCmdPicker, { defaultStateData } from './../utilities/outputCmdPicker'
+import InputCommandPicker from "./../utilities/inputCommandPicker";
 
 export class midiGpioChannel extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export class midiGpioChannel extends Component {
             ringPickerData: defaultStateData('ring'),
         }
 
-        console.log('GPIO CH CONSTRUCTOR #' + this.props.channel)
+        //console.log('GPIO CH CONSTRUCTOR #' + this.props.channel)
 
         this.inPress = this.inPress.bind(this);
         this.outPress = this.outPress.bind(this);
@@ -150,22 +151,36 @@ export class midiGpioChannel extends Component {
         }
 
         if (this.state.pickRing) {
-            pickerDisplay = [
-                <OutputCmdPicker
-                    getStructure={this.getStructure}
-                    statex={this.state.ringPickerData}
-                    channel={'ring'}
-                />
-            ]
+            if (this.state.in) {
+                pickerDisplay = [
+                    <InputCommandPicker />
+                ]
+            } else {
+                pickerDisplay = [
+                    <OutputCmdPicker
+                        getStructure={this.getStructure}
+                        statex={this.state.ringPickerData}
+                        channel={'ring'}
+                    />
+                ]
+            }
+
 
         } else {
-            pickerDisplay = [
-                <OutputCmdPicker
-                    getStructure={this.getStructure}
-                    statex={this.state.tipPickerData}
-                    channel={'tip'}
-                />
-            ]
+            if (!this.state.in) {
+                pickerDisplay = [
+                    <InputCommandPicker />
+                ]
+            } else {
+                pickerDisplay = [
+                    <OutputCmdPicker
+                        getStructure={this.getStructure}
+                        statex={this.state.tipPickerData}
+                        channel={'tip'}
+                    />
+                ]
+            }
+
         }
 
         return (
@@ -225,15 +240,16 @@ export class midiGpioChannel extends Component {
                                             <td style={btnTd}>
                                                 <div
                                                     onMouseDown={this.tsPress}
-                                                    style={{
-                                                        cursor: 'context-menu',
-                                                        padding: '2px',
-                                                        border: '0',
-                                                        borderRadius: '4px',
-                                                        width: "100%",
-                                                        backgroundColor: this.state.trs ? 'white' : 'lightgreen',
-                                                        fontSize: '12px'
-                                                    }}>
+                                                    style={
+                                                        {
+                                                            cursor: 'context-menu',
+                                                            padding: '2px',
+                                                            border: '0',
+                                                            borderRadius: '4px',
+                                                            width: "100%",
+                                                            backgroundColor: this.state.trs ? 'white' : 'lightgreen',
+                                                            fontSize: '12px'
+                                                        }}>
                                                     TS
                                                 </div>
                                             </td>

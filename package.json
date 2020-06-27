@@ -1,6 +1,6 @@
 {
   "name": "wbm-config",
-  "version": "0.0.91",
+  "version": "0.0.92",
   "author": "Marece Williams",
   "description": "App for configuring WBM Tek devices",
   "homepage": "./",
@@ -16,11 +16,13 @@
     "jquery": "^3.4.1",
     "rc-slider": "^9.2.4",
     "react": "^16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
     "serialport": "^8.0.7",
+    "styled-components": "^5.1.0",
     "usb-detection": "^4.7.0",
     "uuid": "^7.0.2"
   },

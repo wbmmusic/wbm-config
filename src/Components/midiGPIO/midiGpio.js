@@ -56,7 +56,7 @@ export class midiGpio extends Component {
     }
 
     getChanelInfo = (chnl, e) => {
-        console.log('XXX GPIO CH STRUCTURE #' + chnl)
+        //console.log('XXX GPIO CH STRUCTURE #' + chnl)
         var tempState = this.state.channelData
         tempState[chnl - 1] = e
         //console.log(e)
