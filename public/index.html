@@ -76,8 +76,10 @@
       notification.classList.remove('hidden');
     });
 
-    ipcRenderer.on('update_error', () => {
+    ipcRenderer.on('update_error', (err) => {
       ipcRenderer.removeAllListeners('update_error');
+      console.log('ERROR')
+      console.log(err)
       message.innerText = 'UPDATE ERROR';
       notification.classList.remove('hidden');
     });

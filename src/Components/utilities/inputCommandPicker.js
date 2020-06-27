@@ -537,10 +537,10 @@ export class inputCommandPicker extends Component {
                         </tr>
                         {horizontalSpacer}
                         <tr>
-                            <td style={td}>
+                            <td>
                                 <div id="typeLbl" style={label}><b>Type:</b></div>
                             </td>
-                            <td style={td}>
+                            <td>
                                 <div id="typeDiv">
                                     <Select
                                         name='typeSelector'

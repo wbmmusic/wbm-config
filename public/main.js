@@ -426,8 +426,8 @@ autoUpdater.on('update-downloaded', () => {
   win.webContents.send('update_downloaded');
 });
 
-autoUpdater.on('error', () => {
-  win.webContents.send('update_error');
+autoUpdater.on('error', (err) => {
+  win.webContents.send('update_error', err);
 });
 ///////////////////////// END AUTO UPDATE /////////////////////////////
 
