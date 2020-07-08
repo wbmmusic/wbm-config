@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
-import OutputCmdPicker, { defaultStateData } from './../utilities/outputCmdPicker'
+import InputCommandPickerv2 from './../utilities/pickers/inputPicker/InputCommandPickerv2'
+import { defaultStateData } from './../utilities/pickers/outputPicker/outputCmdPicker'
 import MidiLightLED from './midiLightLED'
+import NameInput from '../utilities/NameInput';
+import CommandsContainer from '../utilities/pickers/CommandsContainer'
+
+
 const { ipcRenderer } = window.require('electron')
 
 export class midiLightChannel extends Component {
-    
+
 
     constructor(props) {
         super(props);
@@ -16,7 +21,6 @@ export class midiLightChannel extends Component {
         }
         //console.log('YXXX channel Constructor #' + this.state.channel)
         //console.log(this.state.pickerData)
-        this.handleName = this.handleName.bind(this);
         this.getPickerStructure = this.getPickerStructure.bind(this);
         this.printState = this.printState.bind(this);
     }
@@ -39,18 +43,6 @@ export class midiLightChannel extends Component {
         this.props.getChanelInfo(this.state.channel, tempUpdateState)
     }
 
-    handleName = (e) => {
-        this.setState({ name: e.target.value })
-
-        if (this.props.getChanelInfo !== undefined) {
-            let tempNameState = this.state
-            tempNameState.name = e.target.value
-            this.props.getChanelInfo(this.state.channel, tempNameState)
-        }
-
-        ipcRenderer.send('nameChange', this.state.channel, e.target.value)
-    }
-
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.statex !== prevState) {
             return nextProps.statex;
@@ -61,11 +53,7 @@ export class midiLightChannel extends Component {
     makePicker = () => {
         //console.log('Make Picker ' + this.state.channel)
         return (
-            <OutputCmdPicker
-                statex={this.state.pickerData}
-                getStructure={this.getPickerStructure}
-                channel={this.state.channel}//////////////////////////////////////////////
-            />
+            <CommandsContainer direction="in"/>
         )
     }
 
@@ -86,6 +74,20 @@ export class midiLightChannel extends Component {
 
     }
 
+    setName = (newName) => {
+
+        this.setState({ name: newName })
+
+        if (this.props.getChanelInfo !== undefined) {
+            let tempNameState = this.state
+            tempNameState.name = newName
+            this.props.getChanelInfo(this.state.channel, tempNameState)
+        }
+
+        //Send info to color picker window
+        ipcRenderer.send('nameChange', this.state.channel, newName)
+    }
+
     render() {
 
         return (
@@ -100,22 +102,12 @@ export class midiLightChannel extends Component {
                                             <td style={{ fontSize: '14px' }}>
                                                 <b>LED #{this.props.channel}</b>
                                                 <br />
-                                                <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button>
+                                                {/* <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button> */}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style={tblcell}>
-                                                <input
-                                                    style={{
-                                                        margin: '3px',
-                                                        textIndent: '4px',
-                                                        textAlign: 'center',
-                                                        width: '95%',
-                                                        fontSize: '12px'
-                                                    }}
-                                                    value={this.state.name}
-                                                    onChange={this.handleName}
-                                                />
+                                                <NameInput value={this.state.name} setValue={this.setName} />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -155,7 +147,8 @@ const mainDiv = {
     border: '2px black solid',
     margin: '3px',
     borderRadius: "10px",
-    fontSize: '12px'
+    fontSize: '12px',
+    height: '600px'
 }
 
 export default midiLightChannel

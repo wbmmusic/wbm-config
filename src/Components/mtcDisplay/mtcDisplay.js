@@ -45,12 +45,14 @@ const digitsCell = {
     //border: '2px black solid',
     width: '110px',
     fontSize: '80px',
+    userSelect:'none'
 }
 
 const spacer = {
     //border: '2px black solid',
     fontSize: '80px',
     paddingBottom: '15px',
+    userSelect:'none'
 }
 
 export default mtcDisplay

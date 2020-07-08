@@ -4,18 +4,14 @@ import MidiGpioChannel from './midiGpioChannel'
 const { ipcRenderer } = window.require('electron')
 
 export class midiGpio extends Component {
-
-
     constructor(props) {
         super(props)
         this.state = {
             numberOfChannels: 6,
             channelData: []
         }
-
         this.getChanelInfo = this.getChanelInfo.bind(this)
     }
-
 
     openBtnPress = () => {
         console.log('OPEN btn press')

@@ -9,7 +9,7 @@ import {
     noteDropDown,
     oneSixteen,
     ccDropDown
-} from './midiTables'
+} from '../midiTables'
 
 Enzyme.configure({ adapter: new Adapter() })
 

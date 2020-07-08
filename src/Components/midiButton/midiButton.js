@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import MidiBtnChannel from "./midiBtnChannel";
+import MidiBtnChannel from "./MidiBtnChannel";
 import { v4 as uuid } from 'uuid';
 
 export class midiButton extends Component {
@@ -23,14 +23,14 @@ export class midiButton extends Component {
     render() {
         return (
             <div>
-                <b style={{display: 'block'}}>MIDI Button</b>
+                <b style={{ display: 'block' }}>MIDI Button</b>
                 {this.createTable()}
             </div>
         )
     }
 }
 
-const chnl={
+const chnl = {
     backgroundColor: 'darkgrey',
     display: 'inline-block',
     padding: '3px',

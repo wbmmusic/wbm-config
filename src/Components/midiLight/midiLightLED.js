@@ -180,7 +180,7 @@ export class midiLightLED extends Component {
         //console.log('RENDER ' + this.state.sliderval)
         return (
             <div style={mainDiv}>
-                LED Options
+                <div style={{ userSelect: 'none' }}>LED Options</div>
                 <table style={{ width: '100%' }}>
                     <colgroup>
                         <col width="1px" />
@@ -203,7 +203,10 @@ export class midiLightLED extends Component {
                                     verticalAlign: "middle"
                                 }}></span>
                             </td>
-                            <td style={td}>Color / Brightness</td>
+                            <td style={td}>
+                                <div style={{ userSelect: 'none' }}>Color / Brightness</div>
+
+                            </td>
                         </tr>
                         <tr>
                             <td style={label}>Style:</td>
@@ -277,7 +280,8 @@ const label = {
     border: '1px black solid',
     textAlign: 'right',
     paddingLeft: '5px',
-    fontSize: '12px'
+    fontSize: '12px',
+    userSelect: 'none'
 }
 
 const mainDiv = {

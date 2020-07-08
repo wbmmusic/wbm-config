@@ -4,10 +4,10 @@ import MtcDisplay from './mtcDisplay'
 export class mtcBox extends Component {
     state = {
         frameRate: '29.97 drop',
-        hours:'',
-        minutes:'',
-        seconds:'',
-        frames:'',
+        hours: '',
+        minutes: '',
+        seconds: '',
+        frames: '',
     }
 
     componentDidMount() {
@@ -52,7 +52,7 @@ export class mtcBox extends Component {
                 padding: '20px',
                 margin: '0 auto'
             }}>
-                <b style={{ display: 'block' }}>MTC Display</b>
+                <b style={{ display: 'block', userSelect: 'none' }}>MTC Display</b>
                 <br></br>
                 <div>
                     <MtcDisplay
@@ -69,10 +69,10 @@ export class mtcBox extends Component {
                     <table>
                         <tbody>
                             <tr>
-                                <td>
+                                <td style={{ userSelect: 'none' }}>
                                     Rate:
-                            </td>
-                                <td>
+                                </td>
+                                <td style={{ userSelect: 'none' }}>
                                     {this.state.frameRate}
                                 </td>
                             </tr>

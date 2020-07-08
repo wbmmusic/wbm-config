@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
-import OutputCmdPicker, { defaultStateData } from './../utilities/outputCmdPicker'
-import InputCommandPicker from "./../utilities/inputCommandPicker";
+import { defaultStateData } from './../utilities/pickers/outputPicker/outputCmdPicker'
+import OutputCommandPickerv2 from './../utilities/pickers/outputPicker/OutputCommandPickerv2'
+import NameInput from '../utilities/NameInput';
+import InputCommandPickerv2 from '../utilities/pickers/inputPicker/InputCommandPickerv2'
+import CommandsContainer from '../utilities/pickers/CommandsContainer'
 
 export class midiGpioChannel extends Component {
     constructor(props) {
         super(props)
         this.state = {
             channel: this.props.channel,
+            chName: 'Name This Channel',
             in: false,
             trs: false,
             pickRing: false,
             tipPickerData: defaultStateData('tip'),
             ringPickerData: defaultStateData('ring'),
+            nameFocus: false,
+            nameOver: false
         }
 
         //console.log('GPIO CH CONSTRUCTOR #' + this.props.channel)
@@ -22,8 +28,15 @@ export class midiGpioChannel extends Component {
         this.trsPress = this.trsPress.bind(this);
         this.tipSel = this.tipSel.bind(this);
         this.ringSel = this.ringSel.bind(this);
-
         this.getStructure = this.getStructure.bind(this);
+    }
+
+    setName = (name) => {
+        var inPressTemp = this.state
+        inPressTemp.chName = name
+        if (this.props.getChanelInfo !== undefined) {
+            this.props.getChanelInfo(this.state.channel, inPressTemp)
+        }
     }
 
     printState = () => {
@@ -153,11 +166,12 @@ export class midiGpioChannel extends Component {
         if (this.state.pickRing) {
             if (!this.state.in) {
                 pickerDisplay = [
-                    <InputCommandPicker />
+                    <CommandsContainer direction="in" />
                 ]
             } else {
                 pickerDisplay = [
-                    <OutputCmdPicker
+                    <CommandsContainer
+                        direction="out"
                         getStructure={this.getStructure}
                         statex={this.state.ringPickerData}
                         channel={'ring'}
@@ -169,11 +183,12 @@ export class midiGpioChannel extends Component {
         } else {
             if (!this.state.in) {
                 pickerDisplay = [
-                    <InputCommandPicker />
+                    <CommandsContainer direction="in" />
                 ]
             } else {
                 pickerDisplay = [
-                    <OutputCmdPicker
+                    <CommandsContainer
+                        direction="out"
                         getStructure={this.getStructure}
                         statex={this.state.tipPickerData}
                         channel={'tip'}
@@ -192,9 +207,11 @@ export class midiGpioChannel extends Component {
                                 textAlign: 'center',
                                 fontSize: '14px'
                             }}>
-                                <b>I/O #{this.state.channel}</b>
-                                <br />
-                                <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button>
+                                <b style={{ userSelect: 'none' }}>I/O#{this.state.channel}</b>
+                                <div>
+                                    <NameInput value={this.state.chName} setValue={this.setName} />
+                                </div>
+                                {/* <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button> */}
                             </td>
                         </tr>
                         <tr>
@@ -202,7 +219,7 @@ export class midiGpioChannel extends Component {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td style={{ fontSize: '12px' }}>GPI / GPO</td>
+                                            <td style={lblStyle} width="60px">GPI / GPO:</td>
                                             <td style={btnTd}>
                                                 <div
                                                     onMouseDown={this.inPress}
@@ -236,7 +253,7 @@ export class midiGpioChannel extends Component {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style={{ fontSize: '12px' }}>TS/TRS</td>
+                                            <td style={lblStyle}>TS/TRS:</td>
                                             <td style={btnTd}>
                                                 <div
                                                     onMouseDown={this.tsPress}
@@ -327,7 +344,14 @@ export class midiGpioChannel extends Component {
 }
 
 const btnTd = {
-    padding: '1.5px 3px'
+    padding: '1.5px 3px',
+    width: '38%'
+}
+
+const lblStyle = {
+    userSelect: 'none',
+    fontSize: '12px',
+    textAlign: 'right'
 }
 
 export default midiGpioChannel

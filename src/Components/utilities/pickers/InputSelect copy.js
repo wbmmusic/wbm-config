@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-
-
 export class InputSelect extends Component {
     constructor(props) {
         super(props)

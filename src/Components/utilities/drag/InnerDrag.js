@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import OutputCmdPicker from './outputCmdPicker'
+import OutputCmdPicker from '../pickers/outputPicker/outputCmdPicker'
 
 export class InnerDrag extends Component {
 
@@ -8,10 +8,6 @@ export class InnerDrag extends Component {
         this.state = {
             val: [0, 1, 2, 3, 4, 5, 6, 7, 8]
         }
-
-
-
-
     }
 
     componentDidMount() {

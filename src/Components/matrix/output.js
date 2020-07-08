@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import OutNumbers from './outNumbers'
+import NameInput from '../utilities/NameInput' 
 
 export class output extends Component {
     state = {
         name: this.props.usrOutputName
     }
 
-    handleNameChange = (e) =>{
+    handleNameChange = (newName) =>{
         //console.log(e.target.value)
-        this.setState({name: e.target.value})
+        this.setState({name: newName})
     }
 
     render() {
@@ -18,11 +19,7 @@ export class output extends Component {
                     {this.props.outputName}
                 </div>
 
-                <input
-                    value={this.state.name}
-                    onChange={this.handleNameChange}
-                    style={{ marginBottom: '5px', textAlign: 'center', width: '90%' }}
-                />
+                <NameInput value={this.state.name} setValue={this.handleNameChange} />
 
                 <div style={td}>
                     <OutNumbers cols={this.props.cols} />

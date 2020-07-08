@@ -1,67 +1,51 @@
-import React, { Component } from 'react'
-import OutputCmdPicker, { defaultStateData } from './../utilities/outputCmdPicker'
+import React, { useState } from 'react'
+import NameInput from "../utilities/NameInput"
+import MidiBtnButton from './MidiBtnButton'
+import CommandsContainer from '../utilities/pickers/CommandsContainer'
 
-export class midiBtnChannel extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            channel: this.props.channel,
-            name: 'Name this button'
-        }
 
-        this.handleName = this.handleName.bind(this);
+export default function MidiBtnChannel(props) {
+    const [name, setname] = useState('Name this button')
+
+    const lblStyle = {
+        userSelect: 'none',
     }
 
-    handleName(e) {
-        this.setState({ name: e.target.value })
-        //ipcRenderer.send('nameChange', this.state.channel, e.target.value)
+    function setName(newName) {
+        setname(newName)
     }
 
-
-    render() {
-        return (
-            <div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td style={{ fontSize: '14px' }}>
-                                <b>Button # {this.state.channel}</b>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input
-                                    style={{
-                                        textAlign: 'center',
-                                        fontSize: '12px'
-                                    }}
-                                    type='text'
-                                    value={this.state.name}
-                                    onChange={this.handleName}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={{
-                                border: '1px black solid',
-                                fontSize: '12px'
-                            }}>
-                                <p>This is where button config stuff should go..</p>
-                                <p>Momentary / Latching / etc..</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <OutputCmdPicker />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    return (
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td style={{ fontSize: '14px' }}>
+                            <b style={lblStyle}>Button # {props.channel}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <NameInput value={name} setValue={setName} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style={{
+                            border: '1px black solid',
+                            fontSize: '12px'
+                        }}>
+                            <MidiBtnButton />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <CommandsContainer direction="out" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
 
-            </div>
-        )
-    }
+        </div>
+    )
 }
-
-export default midiBtnChannel
