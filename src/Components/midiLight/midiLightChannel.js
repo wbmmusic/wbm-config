@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import InputCommandPickerv2 from './../utilities/pickers/inputPicker/InputCommandPickerv2'
 import { defaultStateData } from './../utilities/pickers/outputPicker/outputCmdPicker'
-import MidiLightLED from './midiLightLED'
+import MidiLightLED from './midiLightLEDv2'
 import NameInput from '../utilities/NameInput';
 import CommandsContainer from '../utilities/pickers/CommandsContainer'
 
@@ -15,7 +14,7 @@ export class midiLightChannel extends Component {
         super(props);
         this.state = {
             channel: this.props.channel,
-            name: 'Name this LED',
+            name: 'LED Name',
             pickerData: defaultStateData(this.props.channel),
             ledData: []
         }
@@ -144,11 +143,12 @@ const mainDiv = {
     backgroundColor: 'darkgrey',
     display: 'inline-block',
     padding: '3px',
-    border: '2px black solid',
+    border: '1px solid grey',
+    boxShadow: '1px 1px 6px',
     margin: '3px',
     borderRadius: "10px",
     fontSize: '12px',
-    height: '600px'
+    //height: '700px'
 }
 
 export default midiLightChannel

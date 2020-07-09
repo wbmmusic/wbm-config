@@ -5,7 +5,7 @@ import CommandsContainer from '../utilities/pickers/CommandsContainer'
 
 
 export default function MidiBtnChannel(props) {
-    const [name, setname] = useState('Name this button')
+    const [name, setname] = useState('Button Name')
 
     const lblStyle = {
         userSelect: 'none',
@@ -31,8 +31,12 @@ export default function MidiBtnChannel(props) {
                     </tr>
                     <tr>
                         <td style={{
-                            border: '1px black solid',
-                            fontSize: '12px'
+                            backgroundColor: 'lightgrey',
+                            border: '1px solid grey',
+                            borderRadius: '10px',
+                            padding: '8px',
+                            fontSize: '12px',
+                            boxShadow: 'inset 1px 1px 6px'
                         }}>
                             <MidiBtnButton />
                         </td>

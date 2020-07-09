@@ -33,7 +33,7 @@ export class midiLightLED extends Component {
 
     makeSlot2ui = (val) => {
         slot2ui = [
-            <table style={{ width: '100%' }}>
+            <table key="slot2ui" style={{ width: '100%' }}>
                 <tbody>
                     <tr>
                         <td style={label}>

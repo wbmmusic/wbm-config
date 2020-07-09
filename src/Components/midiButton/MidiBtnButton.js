@@ -19,7 +19,9 @@ export default function MidiBtnButton() {
 
             var cellStyle = {
                 backgroundColor: 'white',
-                cursor: 'context-menu',
+                borderRadius: '3px',
+                border: '1px solid grey',
+                padding: '3px',
                 userSelect: 'none'
             }
 
@@ -48,18 +50,31 @@ export default function MidiBtnButton() {
         table.push(
             <tr>
                 <td style={lblStyle}>
-                    Color:
+                    <b>Color:</b>
                 </td>
-                <td style={{ backgroundColor: 'green' }}>
-
+                <td >
+                    <div
+                        style={{
+                            backgroundColor: 'yellow',
+                            height: '20px',
+                            borderRadius: '3px',
+                            boxShadow: 'inset 1px 1px 1px'
+                        }}
+                    />
                 </td>
             </tr>
         )
 
         table.push(
             <tr>
+                <td colSpan="2"><hr/></td>
+            </tr>
+        )
+
+        table.push(
+            <tr>
                 <td style={lblStyle}>
-                    Type:
+                    <b>Type:</b>
                 </td>
                 <td>
                     <table style={{ width: '100%' }}>

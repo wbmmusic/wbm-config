@@ -139,7 +139,7 @@ export default function MTCinput(props) {
                                     backgroundColor: 'lightgrey',
                                     padding: '8px',
                                     borderRadius: '3px',
-                                    boxShadow: '1px 1px 4px',
+                                    boxShadow: 'inset 1px 1px 4px',
                                     border: '1px solid black'
                                 }}
                             >

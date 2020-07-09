@@ -18,12 +18,8 @@ export default function CommandsContainer(props) {
     }
 
     const handleNameChange = (id, newName) => {
-        console.log('Name Change ' + newName)
-        console.log(id)
-
         for (var i = 0; i < commands.length; i++) {
             if (commands[i].id === id) {
-                console.log('GOT A MATCH')
                 let tempCommands = commands
                 tempCommands[i].commandName = newName
                 setCommands(tempCommands)
@@ -77,7 +73,7 @@ export default function CommandsContainer(props) {
 
         return (
             <Fragment>
-                <div style={{ backgroundColor: 'red', borderRadius: '3px' }}>
+                <div style={redBar}>
                     <table style={{ width: '100%' }}>
                         <tbody>
                             <tr>
@@ -162,20 +158,16 @@ export default function CommandsContainer(props) {
 
         if (props.direction === 'in') {
             thePicker = (<InputCommandPickerv2 />)
-        }else if(props.direction === 'out'){
+        } else if (props.direction === 'out') {
             thePicker = (<OutputCommandPickerv2 />)
-        }else{
+        } else {
             console.log('No direction prop')
         }
 
         return (
             <Fragment>
                 <div
-                    style={{
-                        width: '100%',
-                        backgroundColor: 'red',
-                        borderRadius: '3px'
-                    }}
+                    style={redBar}
                 >
                     <table style={{ width: '100%' }}>
                         <tbody>
@@ -232,9 +224,28 @@ export default function CommandsContainer(props) {
     }
 
     return (
-        <div style={{ display: 'inline-block', width: '100%' }}>
-            {body}
-            <button onMouseDown={handleShowCommands}>Log Commands</button>
+        <div
+            style={{
+                display: 'inline-block',
+                width: '100%',
+                borderRadius: '10px',
+                backgroundColor: 'lightgrey',
+                border: '1px solid grey',
+                boxShadow: 'inset 1px 1px 6px'
+            }}
+        >
+            <div style={{ margin: '8px' }}>
+                {body}
+                <button onMouseDown={handleShowCommands}>Log Commands</button>
+            </div>
         </div>
     )
+}
+
+const redBar = {
+    width: '100%',
+    backgroundColor: 'darkgrey',
+    borderRadius: '3px',
+    userSelect: 'none',
+    border: '1px solid grey',
 }

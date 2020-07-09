@@ -17,7 +17,7 @@ export class App extends Component {
   render() {
     return (
       <Router data-testId="router">
-        <div className="App" style={{ height: "70vh" }}>
+        <div className="App">
           <div className="container">
             <Header />
             <Route exact path='/midiLight' component={midiLight} />

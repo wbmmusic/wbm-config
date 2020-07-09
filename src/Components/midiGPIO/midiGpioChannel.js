@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { defaultStateData } from './../utilities/pickers/outputPicker/outputCmdPicker'
-import OutputCommandPickerv2 from './../utilities/pickers/outputPicker/OutputCommandPickerv2'
 import NameInput from '../utilities/NameInput';
-import InputCommandPickerv2 from '../utilities/pickers/inputPicker/InputCommandPickerv2'
 import CommandsContainer from '../utilities/pickers/CommandsContainer'
 
 export class midiGpioChannel extends Component {
@@ -10,7 +8,7 @@ export class midiGpioChannel extends Component {
         super(props)
         this.state = {
             channel: this.props.channel,
-            chName: 'Name This Channel',
+            chName: 'Channel Name',
             in: false,
             trs: false,
             pickRing: false,
@@ -153,15 +151,73 @@ export class midiGpioChannel extends Component {
         }
     }
 
+    tipRingBtns = () => {
+
+        if (!this.state.trs) {
+            return
+        } else {
+            return (
+                <tr>
+                    <td>
+                        <div
+                            style={{
+                                backgroundColor: 'lightgrey',
+                                borderRadius: '10px',
+                                padding: '8px',
+                                border: '1px solid grey',
+                                boxShadow: 'inset 1px 1px 6px',
+                                fontSize: '12px'
+                            }}
+                        >
+                            View
+                            <hr />
+                            <table style={{ width: '100%' }}>
+                                <tbody>
+                                    <tr>
+                                        <td style={{ width: '50%' }}>
+                                            <div
+                                                style={{
+                                                    padding: '2px',
+                                                    border: '1px solid grey',
+                                                    borderRadius: '4px',
+                                                    cursor: 'context-menu',
+                                                    backgroundColor: this.state.pickRing ? 'white' : 'lightgreen',
+                                                    fontSize: '12px'
+                                                }}
+                                                onMouseDown={this.tipSel}>
+                                                TIP
+
+                                                </div>
+
+                                        </td>
+                                        <td style={{ width: '50%' }}>
+                                            <div
+                                                style={{
+                                                    padding: '2px',
+                                                    border: '1px solid grey',
+                                                    borderRadius: '4px',
+                                                    cursor: 'context-menu',
+                                                    backgroundColor: this.state.pickRing ? 'lightgreen' : 'white',
+                                                    fontSize: '12px',
+                                                }}
+                                                onMouseDown={this.ringSel}>
+                                                RING
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            )
+        }
+    }
+
     render() {
         let pickerDisplay
-        let rngBtn
 
-        if (this.state.trs) {
-            rngBtn = 'RING'
-        } else {
-            rngBtn = ''
-        }
 
         if (this.state.pickRing) {
             if (!this.state.in) {
@@ -216,124 +272,94 @@ export class midiGpioChannel extends Component {
                         </tr>
                         <tr>
                             <td>
-                                <table style={{ width: '100%' }}>
-                                    <tbody>
-                                        <tr>
-                                            <td style={lblStyle} width="60px">GPI / GPO:</td>
-                                            <td style={btnTd}>
-                                                <div
-                                                    onMouseDown={this.inPress}
-                                                    style={{
-                                                        cursor: 'context-menu',
-                                                        padding: '2px',
-                                                        border: '0',
-                                                        borderRadius: '4px',
-                                                        width: "100%",
-                                                        backgroundColor: this.state.in ? 'lightgreen' : 'white',
-                                                        fontSize: '12px'
-                                                    }}>
-                                                    IN
-                                                </div>
-                                            </td>
-                                            <td style={btnTd}>
-                                                <div
-                                                    onMouseDown={this.outPress}
-                                                    style={{
-                                                        cursor: 'context-menu',
-                                                        padding: '2px',
-                                                        border: '0',
-                                                        borderRadius: '4px',
-                                                        width: "100%",
-                                                        backgroundColor: this.state.in ? 'white' : 'lightgreen',
-                                                        fontSize: '12px'
-                                                    }}>
-                                                    OUT
-                                                </div>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style={lblStyle}>TS/TRS:</td>
-                                            <td style={btnTd}>
-                                                <div
-                                                    onMouseDown={this.tsPress}
-                                                    style={
-                                                        {
+                                <div
+                                    style={{
+                                        backgroundColor: 'lightgrey',
+                                        padding: '8px',
+                                        borderRadius: '10px',
+                                        border: '1px solid grey',
+                                        boxShadow: 'inset 1px 1px 6px',
+                                        fontSize: '12px'
+                                    }}
+                                >
+                                    Port Settings
+                                    <hr />
+                                    <table style={{ width: '100%' }}>
+                                        <tbody>
+                                            <tr>
+                                                <td style={btnTd}>
+                                                    <div
+                                                        onMouseDown={this.inPress}
+                                                        style={{
                                                             cursor: 'context-menu',
                                                             padding: '2px',
-                                                            border: '0',
+                                                            border: '1px solid grey',
                                                             borderRadius: '4px',
                                                             width: "100%",
-                                                            backgroundColor: this.state.trs ? 'white' : 'lightgreen',
+                                                            backgroundColor: this.state.in ? 'lightgreen' : 'white',
+                                                            fontSize: '12px',
+                                                        }}>
+                                                        IN
+                                                </div>
+                                                </td>
+                                                <td style={btnTd}>
+                                                    <div
+                                                        onMouseDown={this.outPress}
+                                                        style={{
+                                                            cursor: 'context-menu',
+                                                            padding: '2px',
+                                                            border: '1px solid grey',
+                                                            borderRadius: '4px',
+                                                            width: "100%",
+                                                            backgroundColor: this.state.in ? 'white' : 'lightgreen',
                                                             fontSize: '12px'
                                                         }}>
-                                                    TS
+                                                        OUT
                                                 </div>
-                                            </td>
-                                            <td style={btnTd}>
-                                                <div
-                                                    onMouseDown={this.trsPress}
-                                                    style={{
-                                                        cursor: 'context-menu',
-                                                        padding: '2px',
-                                                        border: '0',
-                                                        borderRadius: '4px',
-                                                        width: "100%",
-                                                        backgroundColor: this.state.trs ? 'lightgreen' : 'white',
-                                                        fontSize: '12px'
-                                                    }}>
-                                                    TRS
+                                                </td>
+                                                <td style={{width: '4%'}}></td>
+                                                <td style={btnTd}>
+                                                    <div
+                                                        onMouseDown={this.tsPress}
+                                                        style={
+                                                            {
+                                                                cursor: 'context-menu',
+                                                                padding: '2px',
+                                                                border: '1px solid grey',
+                                                                borderRadius: '4px',
+                                                                width: "100%",
+                                                                backgroundColor: this.state.trs ? 'white' : 'lightgreen',
+                                                                fontSize: '12px'
+                                                            }}>
+                                                        TS
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                </td>
+                                                <td style={btnTd}>
+                                                    <div
+                                                        onMouseDown={this.trsPress}
+                                                        style={{
+                                                            cursor: 'context-menu',
+                                                            padding: '2px',
+                                                            border: '1px solid grey',
+                                                            borderRadius: '4px',
+                                                            width: "100%",
+                                                            backgroundColor: this.state.trs ? 'lightgreen' : 'white',
+                                                            fontSize: '12px'
+                                                        }}>
+                                                        TRS
+                                                </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </td>
                         </tr>
+                        {this.tipRingBtns()}
                         <tr>
                             <td>
-                                <table style={{ width: '100%' }}>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div
-                                                    style={{
-                                                        padding: '2px',
-                                                        border: '0',
-                                                        borderRadius: '4px',
-                                                        cursor: 'context-menu',
-                                                        backgroundColor: this.state.pickRing ? 'white' : 'lightgreen',
-                                                        fontSize: '12px'
-                                                    }}
-                                                    onMouseDown={this.tipSel}>
-                                                    TIP
-
-                                                </div>
-
-                                            </td>
-                                            <td>
-                                                <div
-                                                    style={{
-                                                        padding: '2px',
-                                                        border: '0',
-                                                        borderRadius: '4px',
-                                                        cursor: 'context-menu',
-                                                        backgroundColor: this.state.pickRing ? 'lightgreen' : 'white',
-                                                        fontSize: '12px'
-                                                    }}
-                                                    onMouseDown={this.ringSel}>
-                                                    {rngBtn}
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan="2">
-                                                {pickerDisplay}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                {pickerDisplay}
                             </td>
                         </tr>
                     </tbody>
@@ -345,13 +371,13 @@ export class midiGpioChannel extends Component {
 
 const btnTd = {
     padding: '1.5px 3px',
-    width: '38%'
+    width: '24%',
 }
 
 const lblStyle = {
     userSelect: 'none',
     fontSize: '12px',
-    textAlign: 'right'
+    textAlign: 'right',
 }
 
 export default midiGpioChannel

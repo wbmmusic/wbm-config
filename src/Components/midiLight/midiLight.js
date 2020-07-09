@@ -64,12 +64,14 @@ export class midiLight extends Component {
             //console.log('XXX make chnl #' + (i + 1))
             table.push(
                 <div
+                    key={'midiLightChannelDiv' + i}
                     style={{
-                        display: 'inline-block'
+                        display: 'inline-block',
                     }}
                     channel={(i + 1)}
                 >
                     <MidiLightChannel
+                        key={'midiLightChannel' + i}
                         getChanelInfo={this.getChanelInfo}
                         statex={this.state.channelData[i]}
                         id={'gpiochnl' + (i + 1)}
@@ -84,38 +86,43 @@ export class midiLight extends Component {
     render() {
         return (
             <div>
-                <b style={{ display: 'block' }}>MIDI Light</b>
-                <table style={{ display: 'block', paddingLeft: '6px' }}>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.openBtnPress}
-                                >Open</div>
-                            </td>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.saveBtnPress}
-                                >Save</div>
-                            </td>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.saveAsBtnPress}
-                                >Save As</div>
-                            </td>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.seeState}
-                                >STATE</div>
-                            </td>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.sendBtnPress}
-                                >Send</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div style={{
+                    backgroundColor: 'darkgrey',
+                    paddingBottom: '4px'
+                }}>
+                    <b style={{ display: 'block' }}>MIDI Light</b>
+                    <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.openBtnPress}
+                                    >Open</div>
+                                </td>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.saveBtnPress}
+                                    >Save</div>
+                                </td>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.saveAsBtnPress}
+                                    >Save As</div>
+                                </td>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.seeState}
+                                    >STATE</div>
+                                </td>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.sendBtnPress}
+                                    >Send</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 {this.createTable()}
             </div>
         )

@@ -67,8 +67,9 @@ export class midiGpio extends Component {
 
             //console.log(this.state)
             table.push(
-                <div style={chnl}>
+                <div key={'gpioChannelDiv' + i} style={chnl}>
                     <MidiGpioChannel
+                        key={'gpioChannel' + i}
                         statex={this.state.channelData[i]}
                         getChanelInfo={this.getChanelInfo}
                         channel={i + 1}
@@ -85,33 +86,38 @@ export class midiGpio extends Component {
 
         return (
             <div>
-                <b style={{ display: 'block' }}>MIDI GPIO</b>
-                <table style={{ display: 'block', paddingLeft: '6px' }}>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.openBtnPress}
-                                >Open</div>
-                            </td>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.saveBtnPress}
-                                >Save</div>
-                            </td>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.saveAsBtnPress}
-                                >Save As</div>
-                            </td>
-                            <td>
-                                <div style={openSaveBtns}
-                                    onMouseDown={this.seeState}
-                                >STATE</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div style={{
+                    backgroundColor:'darkgrey',
+                    paddingBottom:'4px'
+                }}>
+                    <b style={{ display: 'block' }}>MIDI GPIO</b>
+                    <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.openBtnPress}
+                                    >Open</div>
+                                </td>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.saveBtnPress}
+                                    >Save</div>
+                                </td>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.saveAsBtnPress}
+                                    >Save As</div>
+                                </td>
+                                <td>
+                                    <div style={openSaveBtns}
+                                        onMouseDown={this.seeState}
+                                    >STATE</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 {channels}
             </div>
         )
@@ -123,7 +129,8 @@ const chnl = {
     backgroundColor: 'darkgrey',
     display: 'inline-block',
     padding: '3px',
-    border: '2px black solid',
+    border: '1px solid grey',
+    boxShadow: '1px 1px 6px',
     margin: '3px',
     borderRadius: "10px",
 }

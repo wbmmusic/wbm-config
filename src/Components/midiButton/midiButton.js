@@ -23,7 +23,12 @@ export class midiButton extends Component {
     render() {
         return (
             <div>
-                <b style={{ display: 'block' }}>MIDI Button</b>
+                <div style={{
+                    backgroundColor: 'darkgrey',
+                    paddingBottom: '4px',
+                }}>
+                    <b style={{ display: 'block' }}>MIDI Button</b>
+                </div>
                 {this.createTable()}
             </div>
         )
@@ -34,7 +39,8 @@ const chnl = {
     backgroundColor: 'darkgrey',
     display: 'inline-block',
     padding: '3px',
-    border: '2px black solid',
+    border: '1px solid grey',
+    boxShadow: '1px 1px 6px',
     margin: '3px',
     borderRadius: "10px",
 }

@@ -7,6 +7,7 @@ export class mtcDisplay extends Component {
         return (
             <div className="mainDiv" style={{
                 border: '2px black solid',
+                boxShadow: '1px 1px 6px',
                 display: 'inline-block'
             }}>
                 <table>
