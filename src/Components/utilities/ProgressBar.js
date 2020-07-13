@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class download extends Component {
+export class ProgressBar extends Component {
 
     componentDidMount() {
         c = document.getElementById("myCanvas");
@@ -41,4 +41,4 @@ function drawProgress() {
     place++
 }
 
-export default download
+export default ProgressBar

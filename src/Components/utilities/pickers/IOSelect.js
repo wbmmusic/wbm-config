@@ -62,6 +62,7 @@ export default function InputSelect(props) {
 
                 tbl.push(
                     <td
+                        key={'channelButton' + i + props.id}
                         style={cellSty}
                         onMouseDown={handleClick}
                         id={i}
@@ -84,6 +85,7 @@ export default function InputSelect(props) {
 
                 tbl.push(
                     <td
+                        key={'allBtn' + props.id}
                         style={cellSty}
                         onMouseDown={handleClick}
                         id="ALL"

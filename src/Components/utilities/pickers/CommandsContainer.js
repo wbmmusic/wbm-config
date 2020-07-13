@@ -1,17 +1,39 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import InputCommand from './inputPicker/InputCommand'
 import { v4 as uuid } from 'uuid';
 import NameInput from '../NameInput';
-import InputCommandPickerv2 from './inputPicker/InputCommandPickerv2';
+import InputCommandPicker from './inputPicker/InputCommandPicker';
 import OutputCommandPickerv2 from './outputPicker/OutputCommandPickerv2';
 
 export default function CommandsContainer(props) {
+    const [commands, setcommands] = useState(props.commands)
 
-    const [commands, setCommands] = useState([])
     const [showPicker, setshowPicker] = useState({
         id: '',
         true: false
     })
+
+    useEffect(() => {
+        props.sendCommands(commands)
+    }, [commands])
+
+    useEffect(() => {
+        setcommands(props.commands)
+    }, [props.commands])
+
+    const setPickerData = (idx, data) => {
+
+        for (var i = 0; i < commands.length; i++) {
+            if (commands[i].id === idx) {
+                console.log('--------Got A Match at ' + i)
+                let tempCmd = [...commands]
+                tempCmd[i].pickerData = data
+                setcommands(tempCmd)
+                return;
+            }
+        }
+        console.log('No Match')
+    }
 
     const handleShowCommands = () => {
         console.log(commands)
@@ -20,9 +42,10 @@ export default function CommandsContainer(props) {
     const handleNameChange = (id, newName) => {
         for (var i = 0; i < commands.length; i++) {
             if (commands[i].id === id) {
-                let tempCommands = commands
+
+                let tempCommands = [...commands]
                 tempCommands[i].commandName = newName
-                setCommands(tempCommands)
+                setcommands(tempCommands)
                 break
             }
         }
@@ -35,19 +58,23 @@ export default function CommandsContainer(props) {
                 setCommands(commands.filter(item => item.id !== id))
             }
         */
-        setCommands(commands.filter(item => item.id !== id))
+        let tempCommands = [...commands]
+        tempCommands = tempCommands.filter(item => item.id !== id)
+        setcommands(tempCommands)
     }
 
     const handleAdd = () => {
-        setCommands([...commands, {
+        let tempCommands = [...commands]
+        tempCommands.push({
             id: uuid(),
             commandName: Math.floor(Math.random(0) * 100000) + 1,
             pickerData: {}
-        }])
+        })
+        setcommands(tempCommands)
     }
 
     const handleShowPicker = (id) => {
-        console.log('In Handle Show Picker ' + id)
+        //console.log('In Handle Show Picker ' + id)
         setshowPicker({
             id: id,
             true: true
@@ -55,7 +82,7 @@ export default function CommandsContainer(props) {
     }
 
     const handleReturnToList = () => {
-        console.log('In Handle Return To List')
+        //console.log('In Handle Return To List')
         setshowPicker({
             id: '',
             true: false
@@ -121,6 +148,7 @@ export default function CommandsContainer(props) {
                                         <InputCommand
                                             id={item.id}
                                             idx={idx}
+                                            commandData={commands[idx].pickerData}
                                             commandName={item.commandName}
                                             remove={removeHandle}
                                             showPicker={handleShowPicker}
@@ -137,29 +165,31 @@ export default function CommandsContainer(props) {
         )
     }
 
+    const tempCommand = () => { return commands.filter(cmd => cmd.id === showPicker.id) }
+
     const showCommandPicker = () => {
         let thePicker = []
-        let tempCommand = commands.filter(cmd => cmd.id === showPicker.id)
+
 
         const handleNameChange2 = (newName) => {
             console.log('Name Change ' + newName)
-            console.log(tempCommand[0].id)
+            console.log(tempCommand()[0].id)
 
             for (var i = 0; i < commands.length; i++) {
-                if (commands[i].id === tempCommand[0].id) {
+                if (commands[i].id === tempCommand()[0].id) {
                     console.log('GOT A MATCH')
-                    let tempCommands = commands
+                    let tempCommands = [...commands]
                     tempCommands[i].commandName = newName
-                    setCommands(tempCommands)
+                    setcommands(tempCommands)
                     break
                 }
             }
         }
 
         if (props.direction === 'in') {
-            thePicker = (<InputCommandPickerv2 />)
+            thePicker = (<InputCommandPicker id={showPicker.id} data={tempCommand()[0]} sendData={setPickerData} />)
         } else if (props.direction === 'out') {
-            thePicker = (<OutputCommandPickerv2 />)
+            thePicker = (<OutputCommandPickerv2 sendData={setPickerData} />)
         } else {
             console.log('No direction prop')
         }
@@ -173,7 +203,7 @@ export default function CommandsContainer(props) {
                         <tbody>
                             <tr>
                                 <td style={{ fontSize: '12px' }}>
-                                    <NameInput value={tempCommand[0].commandName} setValue={handleNameChange2} />
+                                    <NameInput value={tempCommand()[0].commandName} setValue={handleNameChange2} />
                                 </td>
                                 <td style={{ width: '30px' }}>
                                     <div
@@ -215,12 +245,12 @@ export default function CommandsContainer(props) {
         )
     }
 
-    let body
-
-    if (!showPicker.true) {
-        body = showList()
-    } else {
-        body = showCommandPicker()
+    const makeBody = () => {
+        if (!showPicker.true) {
+            return showList()
+        } else {
+            return showCommandPicker()
+        }
     }
 
     return (
@@ -235,7 +265,7 @@ export default function CommandsContainer(props) {
             }}
         >
             <div style={{ margin: '8px' }}>
-                {body}
+                {makeBody()}
                 <button onMouseDown={handleShowCommands}>Log Commands</button>
             </div>
         </div>

@@ -12,58 +12,56 @@ import ChannelSelect from '../ChannelSelect'
 import SysExInput from '../SysExInput'
 import MTCinput from '../MTCinput'
 
-const defaultState = {
-    id: 'picker' + 1,
-    parentCh: 1,
-    type: {
-        label: 'None',
-        value: 0
-    },
-    command: 0,
-    channel: 11,
-    sysex: 'Enter HEX data here',
-    selectedIns: 0x01,
-    selectedCh: 256,
-    noteType: 'Specific',
-    note: {
-        label: 'Select A Note',
-        value: 129
-    },
-    pgmType: 'Specific',
-    program: {
-        label: 'Select A Program',
-        value: 129
-    },
-    ccType: 'Specific',
-    cc: {
-        label: 'Select A Controller',
-        value: 129
-    },
-    velType: 'Any',
-    valType: 'Any',
-    value: {
-        label: 'Select A Value',
-        value: 129
-    },
-    pbValType: 'Specific',
-    songType: 'Specific',
-    song: {
-        label: 'Select A Song',
-        value: 129
-    },
-    pbVal: 8192,
-    sysexText: 'Enter Sysex Data'
-}
-
 export default function OutputCommandPickerv2(props) {
-
+    const defaultState = {
+        id: 'picker' + 1,
+        parentCh: 1,
+        type: {
+            label: 'None',
+            value: 0
+        },
+        command: 0,
+        channel: 11,
+        sysex: 'Enter HEX data here',
+        selectedIns: 0x01,
+        selectedCh: 256,
+        noteType: 'Specific',
+        note: {
+            label: 'Select A Note',
+            value: 129
+        },
+        pgmType: 'Specific',
+        program: {
+            label: 'Select A Program',
+            value: 129
+        },
+        ccType: 'Specific',
+        cc: {
+            label: 'Select A Controller',
+            value: 129
+        },
+        velType: 'Any',
+        valType: 'Any',
+        value: {
+            label: 'Select A Value',
+            value: 129
+        },
+        pbValType: 'Specific',
+        songType: 'Specific',
+        song: {
+            label: 'Select A Song',
+            value: 129
+        },
+        pbVal: 8192,
+        sysexText: 'Enter Sysex Data'
+    }
+    if (props.data.pickerData.type) {
+        defaultState = props.data.pickerData
+    }
     const [state, setstate] = useState(defaultState)
 
     useEffect(() => {
-        console.log('State Changed')
-        return () => {
-            //cleanup
-        }
+        props.sendData(props.id, state)
     }, [state])
 
     const getChannels = (channels) => {

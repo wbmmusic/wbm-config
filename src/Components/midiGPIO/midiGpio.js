@@ -1,127 +1,116 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import MidiGpioChannel from './midiGpioChannel'
+import { MidiGpioChannelProvider } from './MidiGpioChannelContext'
 
 const { ipcRenderer } = window.require('electron')
 
-export class midiGpio extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            numberOfChannels: 6,
-            channelData: []
+export default function MidiGpio() {
+    let state = {
+        numberOfChannels: 6,
+        channels: []
+    }
+
+    const [savedSanpshot, setsavedSanpshot] = useState(state)
+
+    const openFromFile = (event, arg) => {
+        console.log('GOT DATA FROM OPEN')
+        let data = JSON.parse(arg)
+        console.log(data)
+        setsavedSanpshot(data)
+    }
+
+    useEffect(() => {
+        ipcRenderer.on('asynchronous-reply', openFromFile)
+        return () => {
+            console.log('GPIO CLEANUP')
+            ipcRenderer.removeListener('asynchronous-reply', openFromFile)
         }
-        this.getChanelInfo = this.getChanelInfo.bind(this)
-    }
+    }, [])
 
-    openBtnPress = () => {
-        console.log('OPEN btn press')
-        ipcRenderer.send('fileOpen', 'wbmgpio')
-    }
-
-    saveBtnPress = () => {
-        console.log('SAVE btn press')
-        ipcRenderer.send('fileSave', 'wbmgpio', this.state)
-    }
-
-    saveAsBtnPress = () => {
-        console.log('SAVE AS btn press')
-        ipcRenderer.send('fileSaveAs', 'wbmgpio', JSON.stringify(this.state))
-    }
-
-    seeState = () => {
-        console.log(this.state)
-    }
-
-    componentDidUpdate() {
-        console.log('TOP GPIO UPDATE')
-        //console.log(this.state)
-    }
-
-    componentWillUnmount() {
-        console.log('GPIO TOP UNMOUNT')
-    }
-
-    componentDidMount() {
-        ipcRenderer.on('asynchronous-reply', (event, arg) => {
-            console.log('GOT DATA FROM OPEN')
-            var data = JSON.parse(arg)
-
-            this.setState(data)
-            console.log(data)
-        })
-    }
-
-    getChanelInfo = (chnl, e) => {
-        //console.log('XXX GPIO CH STRUCTURE #' + chnl)
-        var tempState = this.state.channelData
-        tempState[chnl - 1] = e
-        //console.log(e)
-        this.setState({ channelData: tempState })
-    }
-
-    createTable = () => {
+    const createChannels = () => {
         let table = []
         // Outer loop to create parent
-        for (let i = 0; i < this.state.numberOfChannels; i++) {
-            //Create the parent and add the children
-
-            //console.log(this.state)
+        for (let i = 0; i < state.numberOfChannels; i++) {
             table.push(
                 <div key={'gpioChannelDiv' + i} style={chnl}>
-                    <MidiGpioChannel
-                        key={'gpioChannel' + i}
-                        statex={this.state.channelData[i]}
-                        getChanelInfo={this.getChanelInfo}
-                        channel={i + 1}
-                        id={i + 1}
-                    />
+                    <MidiGpioChannelProvider key={'gpioChannelProvider' + i}>
+                        <MidiGpioChannel
+                            snapshot={savedSanpshot.channels[i]}
+                            key={'gpioChannel' + i}
+                            statex={state.channels[i]}
+                            getChanelInfo={getChanelInfo}
+                            channel={i + 1}
+                            id={i + 1}
+                        />
+                    </MidiGpioChannelProvider>
                 </div>
             )
         }
         return table
     }
 
-    render() {
-        let channels = this.createTable()
-
-        return (
-            <div>
-                <div style={{
-                    backgroundColor:'darkgrey',
-                    paddingBottom:'4px'
-                }}>
-                    <b style={{ display: 'block' }}>MIDI GPIO</b>
-                    <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.openBtnPress}
-                                    >Open</div>
-                                </td>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.saveBtnPress}
-                                    >Save</div>
-                                </td>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.saveAsBtnPress}
-                                    >Save As</div>
-                                </td>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.seeState}
-                                    >STATE</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                {channels}
-            </div>
-        )
+    const getChanelInfo = (chnl, e) => {
+        //console.log('XXX GPIO CH STRUCTURE #' + chnl)
+        state.channels[chnl - 1] = e
     }
+
+    const openBtnPress = () => {
+        console.log('OPEN btn press')
+        ipcRenderer.send('fileOpen', 'wbmgpio')
+    }
+
+    const saveBtnPress = () => {
+        console.log('SAVE btn press')
+        ipcRenderer.send('fileSave', 'wbmgpio', state)
+    }
+
+    const saveAsBtnPress = () => {
+        console.log('SAVE AS btn press')
+        console.log(state)
+        ipcRenderer.send('fileSaveAs', 'wbmgpio', JSON.stringify(state))
+    }
+
+    const seeState = () => {
+        console.log(state)
+    }
+
+    return (
+        <div>
+            <div style={{
+                backgroundColor: 'darkgrey',
+                paddingBottom: '4px'
+            }}>
+                <b style={{ display: 'block' }}>MIDI GPIO</b>
+                <table style={{ display: 'inline-block', paddingLeft: '6px', userSelect: 'none' }}>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={openBtnPress}
+                                >Open</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={saveBtnPress}
+                                >Save</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={saveAsBtnPress}
+                                >Save As</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={seeState}
+                                >STATE</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {createChannels()}
+        </div>
+    )
 }
 
 
@@ -142,5 +131,3 @@ const openSaveBtns = {
     fontSize: '12px',
     cursor: 'context-menu'
 }
-
-export default midiGpio

@@ -22,7 +22,7 @@ export default function MTCinput(props) {
         let out = input
 
         if (out.length >= 3) {
-            console.log('Too Long')
+            //console.log('Too Long')
             out = out.substr(out.length - 2)
         }
 
@@ -117,7 +117,7 @@ export default function MTCinput(props) {
                 fpsStyle.backgroundColor = 'lightgreen'
             }
 
-            out.push(<td style={fpsStyle} onMouseDown={() => setframeRate(theRate)}>{theRate}</td>)
+            out.push(<td key={'fpsBtn' + i + props.channel} style={fpsStyle} onMouseDown={() => setframeRate(theRate)}>{theRate}</td>)
         }
 
         return out

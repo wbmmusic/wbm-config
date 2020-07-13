@@ -11,7 +11,6 @@ function Header() {
             <Link to="/mtcDisplay" style={linkStyle}> MTC Display</Link> |
             <Link to="/midiAB" style={linkStyle}> MIDI A/B</Link> |
             <Link to="/drag" style={linkStyle}> Drag</Link> |
-            <Link to="/icc" style={linkStyle}> ICC</Link> |
             <Link to="/about" style={linkStyle}> About</Link>
         </header>
     )

@@ -11,6 +11,21 @@ export default function InputCommand(props) {
         props.nameChange(props.id, text)
     }
 
+    const cmdType = () => {
+        if (props.commandData.type) {
+            return (
+                <pre>
+                    Type: {props.commandData.type.label}
+                </pre>
+            )
+        }
+        return (
+            <pre>
+               Configure this Command
+            </pre>
+        )
+    }
+
     return (
         <div style={{ border: '1px solid black', backgroundColor: 'lightgrey' }}>
             <div style={{ backgroundColor: 'grey', width: '100%' }}>
@@ -54,9 +69,7 @@ export default function InputCommand(props) {
                 </table>
             </div>
             <div>
-                <pre>
-                    Info Goes Here
-                </pre>
+                {cmdType()}
             </div>
         </div>
     )

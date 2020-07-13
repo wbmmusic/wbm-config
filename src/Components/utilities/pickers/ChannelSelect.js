@@ -11,7 +11,7 @@ function bit_toggle(num, bit) {
 
 export default function ChannelSelect(props) {
     function handleClick(e) {
-        console.log(e.target.innerHTML + ' Pressed')
+        //console.log(e.target.innerHTML + ' Pressed')
         if (e.target.innerHTML === 'ALL') {
             var allSelected = true
             for (var i = 0; i < 16; i++) {
@@ -66,6 +66,7 @@ export default function ChannelSelect(props) {
             if (i > 0 && i < 9) {
                 topRow.push(
                     <td
+                        key={'channelBtn' + i + props.channel}
                         style={cellStyle}
                         onMouseDown={handleClick}
                     >
@@ -75,6 +76,7 @@ export default function ChannelSelect(props) {
             } else if (i > 8) {
                 bottomRow.push(
                     <td
+                        key={'channelBtn' + i + props.channel}
                         style={cellStyle}
                         onMouseDown={handleClick}
                     >
@@ -84,7 +86,7 @@ export default function ChannelSelect(props) {
             } else if (i === 0) {
                 topRow.push(
                     <td
-                        key={uuid()}
+                        key={'allBtn' + i + props.channel}
                         rowSpan="2"
                         style={cellStyle}
                         onMouseDown={handleClick}
@@ -96,13 +98,13 @@ export default function ChannelSelect(props) {
         }
 
         out.push(
-            <tr>
+            <tr key={'channelTopRow' + i + props.channel}>
                 {topRow}
             </tr>
         )
 
         out.push(
-            <tr>
+            <tr key={'channelBottomRow' + i + props.channel}>
                 {bottomRow}
             </tr>
         )

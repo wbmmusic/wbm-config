@@ -1,65 +1,65 @@
-import React, { Component } from 'react'
-import MidiLightChannel from './midiLightChannel'
+import React, { useState, useEffect } from 'react'
+import MidiLightChannel from './MidiLightChannel'
+import { MidiLightChannelProvider } from './MidiLightChannelContext'
+
 
 const { ipcRenderer } = window.require('electron')
 
-export class midiLight extends Component {
-    constructor(props) {
-        super(props)
-        //console.log('XXXX MIDI LIGHT TOP Constructor')
-
-        this.state = {
-            numberOfChannels: 6,
-            channelData: []
-        }
+export default function MidiLight() {
+    let state = {
+        numberOfChannels: 6,
+        channels: []
     }
 
-    openBtnPress = () => {
+    const [savedSanpshot, setsavedSanpshot] = useState(state)
+
+    const openFromFile = (event, arg) => {
+        console.log('GOT DATA FROM OPEN')
+        let data = JSON.parse(arg)
+        setsavedSanpshot(data)
+    }
+
+    useEffect(() => {
+        ipcRenderer.on('asynchronous-reply', openFromFile)
+        return () => {
+            console.log('LIGHT CLEANUP')
+            ipcRenderer.removeListener('asynchronous-reply', openFromFile)
+        }
+    }, [])
+
+    const openBtnPress = () => {
         console.log('OPEN btn press')
         ipcRenderer.send('fileOpen', 'wbmlight')
     }
 
-    saveBtnPress = () => {
+    const saveBtnPress = () => {
         console.log('SAVE btn press')
-        ipcRenderer.send('fileSave', 'wbmlight', this.state)
+        ipcRenderer.send('fileSave', 'wbmlight', state)
     }
 
-    sendBtnPress = () => {
+    const sendBtnPress = () => {
         console.log('SEND btn press')
-        ipcRenderer.send('send', 'wbmlight', JSON.stringify(this.state))
+        ipcRenderer.send('send', 'wbmlight', JSON.stringify(state))
     }
 
-    saveAsBtnPress = () => {
+    const saveAsBtnPress = () => {
         console.log('SAVE AS btn press')
-        ipcRenderer.send('fileSaveAs', 'wbmlight', JSON.stringify(this.state))
+        ipcRenderer.send('fileSaveAs', 'wbmlight', JSON.stringify(state))
     }
 
-    seeState = () => {
-        console.log(this.state)
+    const seeState = () => {
+        console.log(state)
+        console.log(JSON.stringify(state))
     }
 
-    getChanelInfo = (chnl, e) => {
-        //console.log('XXX LIGHT CH STRUCTURE #' + chnl)
-        var tempState = this.state.channelData
-        tempState[chnl - 1] = e
-        //console.log(e)
-        this.setState({ channelData: tempState })
+    const getChanelInfo = (chnl, e) => {
+        state.channels[chnl - 1] = e
     }
 
-    componentDidMount() {
-        ipcRenderer.on('asynchronous-reply', (event, arg) => {
-            console.log('GOT DATA FROM OPEN')
-            var data = JSON.parse(arg)
-
-            this.setState(data)
-            console.log(data)
-        })
-    }
-
-    createTable = () => {
+    const createTable = () => {
         let table = []
         // Outer loop to create parent
-        for (let i = 0; i < this.state.numberOfChannels; i++) {
+        for (let i = 0; i < state.numberOfChannels; i++) {
             //Create the parent and add the children
             //console.log('XXX make chnl #' + (i + 1))
             table.push(
@@ -70,63 +70,67 @@ export class midiLight extends Component {
                     }}
                     channel={(i + 1)}
                 >
-                    <MidiLightChannel
-                        key={'midiLightChannel' + i}
-                        getChanelInfo={this.getChanelInfo}
-                        statex={this.state.channelData[i]}
-                        id={'gpiochnl' + (i + 1)}
-                        channel={(i + 1)}
-                    />
+                    <MidiLightChannelProvider key={'midiLightChannelProvider' + i}>
+                        <MidiLightChannel
+                            snapshot={savedSanpshot.channels[i]}
+                            key={'midiLightChannel' + i}
+                            getChanelInfo={getChanelInfo}
+                            id={'midiLightChnl' + (i + 1)}
+                            channel={(i + 1)}
+                        />
+                    </MidiLightChannelProvider>
                 </div>
             )
         }
         return table
     }
 
-    render() {
-        return (
-            <div>
-                <div style={{
-                    backgroundColor: 'darkgrey',
-                    paddingBottom: '4px'
-                }}>
-                    <b style={{ display: 'block' }}>MIDI Light</b>
-                    <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.openBtnPress}
-                                    >Open</div>
-                                </td>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.saveBtnPress}
-                                    >Save</div>
-                                </td>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.saveAsBtnPress}
-                                    >Save As</div>
-                                </td>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.seeState}
-                                    >STATE</div>
-                                </td>
-                                <td>
-                                    <div style={openSaveBtns}
-                                        onMouseDown={this.sendBtnPress}
-                                    >Send</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                {this.createTable()}
+
+    console.log('MIDI LIGHT TOP RENDER')
+
+    return (
+        <div>
+            <div style={{
+                backgroundColor: 'darkgrey',
+                paddingBottom: '4px',
+                userSelect: 'none'
+            }}>
+                <b style={{ display: 'block' }}>MIDI Light</b>
+                <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={openBtnPress}
+                                >Open</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={saveBtnPress}
+                                >Save</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={saveAsBtnPress}
+                                >Save As</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={seeState}
+                                >STATE</div>
+                            </td>
+                            <td>
+                                <div style={openSaveBtns}
+                                    onMouseDown={sendBtnPress}
+                                >Send</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        )
-    }
+            {createTable()}
+        </div>
+    )
 }
 
 
@@ -137,5 +141,3 @@ const openSaveBtns = {
     fontSize: '12px',
     cursor: 'context-menu'
 }
-
-export default midiLight

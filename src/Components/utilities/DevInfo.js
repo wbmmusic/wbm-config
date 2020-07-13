@@ -1,26 +1,34 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
 
 const { ipcRenderer } = window.require('electron')
 
-export class DevInfo extends Component {
-    state = {
+export default function DevInfo() {
+    const defaultState = {
         list: []
     }
 
-    constructor(props) {
-        super(props)
-        ipcRenderer.send('showDevs')
-        ipcRenderer.on('devList', (event, devList) => {
-            this.makeDevTabel(devList)
-        })
+    const [state, setstate] = useState(defaultState)
 
-        this.makeDevTabel = this.makeDevTabel.bind(this)
+    var deviceEvent = (event, devList) => {
+        makeDevTabel(devList)
     }
 
-    makeDevTabel = (devList) => {
-        console.log('IN MAKE DEV TBL')
-        console.log(devList)
+    useEffect(() => {
+        ipcRenderer.on('devList', deviceEvent)
+        ipcRenderer.send('showDevs')
+        return () => {
+            ipcRenderer.removeListener('devList', deviceEvent)
+        }
+    }, [])
+
+    const makeDevTabel = (devList) => {
+        //console.log('IN MAKE DEV TBL')
+        //console.log(devList)
+
+        let deviceInfo = []
+        let tempState = { ...state }
+
         if (devList.length === 0) {
             deviceInfo = <b>No Devices</b>
         } else {
@@ -33,20 +41,14 @@ export class DevInfo extends Component {
             }
         }
 
-        this.setState({ list: deviceInfo })
+        tempState.list = deviceInfo
+        setstate(tempState)
     }
 
-    render() {
-        console.log('Info Render')
-        return (
-            <div>
-                <h2>Device Info</h2>
-                {deviceInfo}
-            </div>
-        )
-    }
+    return (
+        <div>
+            <h2>Device Info</h2>
+            {state.list}
+        </div>
+    )
 }
-
-let deviceInfo = <b>No Devices</b>
-
-export default DevInfo

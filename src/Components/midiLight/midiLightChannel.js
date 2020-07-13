@@ -1,138 +1,121 @@
-import React, { Component } from 'react'
-import { defaultStateData } from './../utilities/pickers/outputPicker/outputCmdPicker'
-import MidiLightLED from './midiLightLEDv2'
+import React, { useEffect, useContext } from 'react'
+import MidiLightLED from './MidiLightLED'
 import NameInput from '../utilities/NameInput';
 import CommandsContainer from '../utilities/pickers/CommandsContainer'
-
+import { MidiLightChannelContext } from './MidiLightChannelContext';
 
 const { ipcRenderer } = window.require('electron')
 
-export class midiLightChannel extends Component {
+export default function MidiLightChannel(props) {
+    const [channel, setChannel] = useContext(MidiLightChannelContext)
 
+    //console.log('Channel ' + props.channel + ' Render')
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            channel: this.props.channel,
-            name: 'LED Name',
-            pickerData: defaultStateData(this.props.channel),
-            ledData: []
+    useEffect(() => {
+        //console.log('Props Snapshot triggered update')
+        if (props.snapshot !== undefined) {
+            let tempChannel = { ...props.snapshot }
+            setChannel(tempChannel)
         }
-        //console.log('YXXX channel Constructor #' + this.state.channel)
-        //console.log(this.state.pickerData)
-        this.getPickerStructure = this.getPickerStructure.bind(this);
-        this.printState = this.printState.bind(this);
-    }
+    }, [props.snapshot])
 
-    getLedStructure = (chnl, e) => {
-        //console.log('XXX GOT STRUCTURE #' + chnl)
-        this.setState({ ledData: e })
+    useEffect(() => {
+        //console.log('Channel ' + props.channel + ' send state')
+        //console.log(channel)
+        props.getChanelInfo(props.channel, channel)
+    }, [channel])
 
-        let tempLedState = this.state
-        tempLedState.ledData = e
-        this.props.getChanelInfo(this.state.channel, tempLedState)
-    }
 
-    getPickerStructure = (chnl, e) => {
-        //console.log('XXX GOT STRUCTURE #' + chnl)
-        this.setState({ pickerData: e })
-
-        let tempUpdateState = this.state
-        tempUpdateState.pickerData = e
-        this.props.getChanelInfo(this.state.channel, tempUpdateState)
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.statex !== prevState) {
-            return nextProps.statex;
-        }
-        else return null;
-    }
-
-    makePicker = () => {
-        //console.log('Make Picker ' + this.state.channel)
+    const makePicker = () => {
+        //console.log('Make Picker ' + props.channel)
         return (
-            <CommandsContainer direction="in"/>
+            <CommandsContainer
+                key={"midiLightPickerCh" + props.channel}
+                sendCommands={getPickerStructure}
+                commands={channel.commands}
+                direction="in"
+            />
         )
     }
 
-    printState = () => {
-        console.log('Print CH #' + this.state.channel + ' STATE')
-        console.log(this.state)
+    const getLedStructure = (chnl, e) => {
+        //console.log('XXX GOT STRUCTURE #' + chnl)
+        let tempState = { ...channel }
+        tempState.ledData = e
+        setChannel(tempState)
     }
 
-    componentDidMount() {
-        //console.log('MIDI LIGHT CHANNEL DID MOUNT #' + this.state.channel)
-
-        if (this.props.getChanelInfo !== undefined) {
-            if (this.state !== this.props.statex) {
-                this.props.getChanelInfo(this.state.channel, this.state)
-            }
-        }
-
-
-    }
-
-    setName = (newName) => {
-
-        this.setState({ name: newName })
-
-        if (this.props.getChanelInfo !== undefined) {
-            let tempNameState = this.state
-            tempNameState.name = newName
-            this.props.getChanelInfo(this.state.channel, tempNameState)
-        }
+    const setName = (newName) => {
+        let tempState = { ...channel }
+        tempState.name = newName
+        setChannel(tempState)
 
         //Send info to color picker window
-        ipcRenderer.send('nameChange', this.state.channel, newName)
+        ipcRenderer.send('nameChange', props.channel, newName)
     }
 
-    render() {
+    const printState = () => {
+        console.log('Print CH #' + props.channel + ' STATE')
+        console.log(channel)
+    }
 
+    const getPickerStructure = (commands) => {
+        let tempChannel = { ...channel }
+        tempChannel.commands = commands
+        setChannel(tempChannel)
+    }
+
+    const chName = () => {
+        let tempChannel = { ...channel }
         return (
-            <div style={mainDiv}>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td style={tblcell}>
-                                <table style={{ width: '100%' }}>
-                                    <tbody>
-                                        <tr>
-                                            <td style={{ fontSize: '14px' }}>
-                                                <b>LED #{this.props.channel}</b>
-                                                <br />
-                                                {/* <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button> */}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style={tblcell}>
-                                                <NameInput value={this.state.name} setValue={this.setName} />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={tblcell}>
-                                <MidiLightLED
-                                    getStructure={this.getLedStructure}
-                                    statex={this.state.ledData}
-                                    channel={this.state.channel}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={tblcell}>
-                                {this.makePicker()}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            < NameInput value={tempChannel.name} setValue={setName} />
         )
     }
+
+    return (
+        <div style={mainDiv}>
+            <table>
+                <tbody>
+                    <tr>
+                        <td style={tblcell}>
+                            <table style={{ width: '100%' }}>
+                                <tbody>
+                                    <tr>
+                                        <td style={{ fontSize: '14px', userSelect: 'none' }}>
+                                            <b>LED #{props.channel}</b>
+                                            <br />
+                                            {/* <button style={{ borderRadius: '4px' }} onMouseDown={printState}>STATE</button> */}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={tblcell}>
+                                            {chName()}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style={tblcell}>
+                            <MidiLightLED
+                                key={"ledUICh" + props.channel}
+                                channel={props.channel}
+                                context={MidiLightChannelContext}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style={tblcell}>
+                            {makePicker()}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    )
 }
+
 
 const tblcell = {
     textAlign: 'center',
@@ -145,10 +128,9 @@ const mainDiv = {
     padding: '3px',
     border: '1px solid grey',
     boxShadow: '1px 1px 6px',
+    height: '100%',
     margin: '3px',
     borderRadius: "10px",
     fontSize: '12px',
     //height: '700px'
 }
-
-export default midiLightChannel

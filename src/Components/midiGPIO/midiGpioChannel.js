@@ -1,383 +1,331 @@
-import React, { Component } from 'react'
-import { defaultStateData } from './../utilities/pickers/outputPicker/outputCmdPicker'
+import React, { useEffect, useContext } from 'react'
 import NameInput from '../utilities/NameInput';
 import CommandsContainer from '../utilities/pickers/CommandsContainer'
+import { MidiGpioChannelContext } from './MidiGpioChannelContext';
 
-export class midiGpioChannel extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            channel: this.props.channel,
-            chName: 'Channel Name',
-            in: false,
-            trs: false,
-            pickRing: false,
-            tipPickerData: defaultStateData('tip'),
-            ringPickerData: defaultStateData('ring'),
-            nameFocus: false,
-            nameOver: false
+export default function MidiGpioChannel(props) {
+    const [channel, setChannel] = useContext(MidiGpioChannelContext)
+
+    useEffect(() => {
+        //console.log(props.snapshot)
+        if (props.snapshot !== undefined) {
+            setChannel(props.snapshot)
         }
+    }, [props.snapshot])
 
-        //console.log('GPIO CH CONSTRUCTOR #' + this.props.channel)
+    useEffect(() => {
+        props.getChanelInfo(props.channel, channel)
+        //console.log('Midi GPIO channel state change ' + props.channel)
+        //console.log('Ch ' + props.channel + ' Send State Up')
+    }, [channel])
 
-        this.inPress = this.inPress.bind(this);
-        this.outPress = this.outPress.bind(this);
-        this.tsPress = this.tsPress.bind(this);
-        this.trsPress = this.trsPress.bind(this);
-        this.tipSel = this.tipSel.bind(this);
-        this.ringSel = this.ringSel.bind(this);
-        this.getStructure = this.getStructure.bind(this);
+    const printState = () => {
+        console.log(channel)
     }
 
-    setName = (name) => {
-        var inPressTemp = this.state
-        inPressTemp.chName = name
-        if (this.props.getChanelInfo !== undefined) {
-            this.props.getChanelInfo(this.state.channel, inPressTemp)
+    const setName = (name) => {
+        let tempChannel = { ...channel }
+        tempChannel.name = name
+        setChannel(tempChannel)
+    }
+
+    const handlePress = (e) => {
+        let tempChannel = { ...channel }
+        switch (e.target.id) {
+            case 'ringBtn':
+                tempChannel.pickRing = true
+                break;
+
+            case 'tipBtn':
+                tempChannel.pickRing = false
+                break;
+
+            case 'outBtn':
+                tempChannel.in = false
+                break;
+
+            case 'inBtn':
+                tempChannel.in = true
+                break;
+
+            case 'tsBtn':
+                tempChannel.trs = false
+                tempChannel.pickRing = false
+                break;
+
+            case 'trsBtn':
+                tempChannel.trs = true
+                tempChannel.pickRing = false
+                break;
+
+            default:
+                alert('Error in handle press MIDI GPIO CHANNEL')
+                break;
         }
+        setChannel(tempChannel)
     }
 
-    printState = () => {
-        console.log(this.state)
-    }
-
-    getStructure = (chnl, e) => {
-        console.log('XXX GOT STRUCTURE #' + chnl)
-        console.log(chnl)
-        console.log(e)
-
-        if (chnl === 'tip') {
-            console.log('GPIO CH #' + this.state.channel + ' Tip Data Change')
-            var tipTemp = this.state
-            tipTemp.tipPickerData = e
-            this.setState({ tipPickerData: e })
-            this.props.getChanelInfo(this.state.channel, tipTemp)
-
-        } else if (chnl === 'ring') {
-            console.log('GPIO CH #' + this.state.channel + ' Ring Data Change')
-            var ringTemp = this.state
-            ringTemp.ringPickerData = e
-            this.setState({ ringPickerData: e })
-            this.props.getChanelInfo(this.state.channel, ringTemp)
-        }
-    }
-
-    componentDidMount() {
-        if (this.props.getChanelInfo !== undefined) {
-            if (this.state !== this.props.statex) {
-                this.props.getChanelInfo(this.state.channel, this.state)
-            }
-        }
-
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.statex !== prevState) {
-            return nextProps.statex;
-        }
-        else return null;
-    }
-
-    inPress = (e) => {
-        console.log('IN PRESS')
-        this.setState({ in: true })
-
-        if (this.props.getChanelInfo !== undefined) {
-            var inPressTemp = this.state
-            inPressTemp.in = true
-            this.props.getChanelInfo(this.state.channel, inPressTemp)
-        }
-    }
-
-    outPress = (e) => {
-        console.log('OUT PRESS')
-        this.setState({ in: false })
-
-        if (this.props.getChanelInfo !== undefined) {
-            var inPressTemp = this.state
-            inPressTemp.in = false
-            this.props.getChanelInfo(this.state.channel, inPressTemp)
-        }
-    }
-
-    tsPress = (e) => {
-        console.log('TS PRESS')
-        this.setState({ trs: false })
-        this.setState({ pickRing: false })
-
-        if (this.props.getChanelInfo !== undefined) {
-            var tsPressTemp = this.state
-            tsPressTemp.trs = false
-            tsPressTemp.pickRing = false
-            this.props.getChanelInfo(this.state.channel, tsPressTemp)
-        }
-
-    }
-
-    trsPress = (e) => {
-        console.log('TRS PRESS')
-        this.setState({ trs: true })
-        this.setState({ pickRing: false })
-
-        if (this.props.getChanelInfo !== undefined) {
-            var trsPressTemp = this.state
-            trsPressTemp.trs = true
-            trsPressTemp.pickRing = false
-            this.props.getChanelInfo(this.state.channel, trsPressTemp)
-        }
-    }
-
-    tipSel = (e) => {
-        console.log('TIP Selected')
-        this.setState({ pickRing: false })
-
-        if (this.props.getChanelInfo !== undefined) {
-            var tipSelTemp = this.state
-            tipSelTemp.pickRing = false
-            this.props.getChanelInfo(this.state.channel, tipSelTemp)
-        }
-    }
-
-    ringSel = (e) => {
-        if (this.state.trs) {
-            console.log('Ring Selected')
-            this.setState({ pickRing: true })
-
-            if (this.props.getChanelInfo !== undefined) {
-                var ringSelTemp = this.state
-                ringSelTemp.pickRing = true
-                this.props.getChanelInfo(this.state.channel, ringSelTemp)
-            }
-        }
-    }
-
-    tipRingBtns = () => {
-
-        if (!this.state.trs) {
+    const tipRingBtns = () => {
+        if (!channel.trs) {
             return
         } else {
             return (
-                <tr>
-                    <td>
-                        <div
-                            style={{
-                                backgroundColor: 'lightgrey',
-                                borderRadius: '10px',
-                                padding: '8px',
-                                border: '1px solid grey',
-                                boxShadow: 'inset 1px 1px 6px',
-                                fontSize: '12px'
-                            }}
-                        >
-                            View
-                            <hr />
-                            <table style={{ width: '100%' }}>
-                                <tbody>
-                                    <tr>
-                                        <td style={{ width: '50%' }}>
-                                            <div
-                                                style={{
-                                                    padding: '2px',
-                                                    border: '1px solid grey',
-                                                    borderRadius: '4px',
-                                                    cursor: 'context-menu',
-                                                    backgroundColor: this.state.pickRing ? 'white' : 'lightgreen',
-                                                    fontSize: '12px'
-                                                }}
-                                                onMouseDown={this.tipSel}>
-                                                TIP
+                <div
+                    style={{
+                        backgroundColor: 'lightgrey',
+                        borderRadius: '10px',
+                        padding: '8px',
+                        border: '1px solid grey',
+                        boxShadow: 'inset 1px 1px 6px',
+                        fontSize: '12px'
+                    }}
+                >
+                    View
+                    <hr />
+                    <table style={{ width: '100%' }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ width: '50%' }}>
+                                    <div
+                                        style={{
+                                            padding: '2px',
+                                            border: '1px solid grey',
+                                            borderRadius: '4px',
+                                            cursor: 'context-menu',
+                                            backgroundColor: channel.pickRing ? 'white' : 'lightgreen',
+                                            fontSize: '12px'
+                                        }}
+                                        id="tipBtn"
+                                        onMouseDown={handlePress}>
+                                        TIP
 
                                                 </div>
 
-                                        </td>
-                                        <td style={{ width: '50%' }}>
-                                            <div
-                                                style={{
-                                                    padding: '2px',
-                                                    border: '1px solid grey',
-                                                    borderRadius: '4px',
-                                                    cursor: 'context-menu',
-                                                    backgroundColor: this.state.pickRing ? 'lightgreen' : 'white',
-                                                    fontSize: '12px',
-                                                }}
-                                                onMouseDown={this.ringSel}>
-                                                RING
+                                </td>
+                                <td style={{ width: '50%' }}>
+                                    <div
+                                        style={{
+                                            padding: '2px',
+                                            border: '1px solid grey',
+                                            borderRadius: '4px',
+                                            cursor: 'context-menu',
+                                            backgroundColor: channel.pickRing ? 'lightgreen' : 'white',
+                                            fontSize: '12px',
+                                        }}
+                                        id="ringBtn"
+                                        onMouseDown={handlePress}>
+                                        RING
 
                                             </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             )
         }
     }
 
-    render() {
-        let pickerDisplay
+    const getStructure = (e) => {
+        //console.log('XXX GOT STRUCTURE #')
 
+        let tempChannel = { ...channel }
 
-        if (this.state.pickRing) {
-            if (!this.state.in) {
-                pickerDisplay = [
-                    <CommandsContainer direction="in" />
-                ]
-            } else {
-                pickerDisplay = [
-                    <CommandsContainer
-                        direction="out"
-                        getStructure={this.getStructure}
-                        statex={this.state.ringPickerData}
-                        channel={'ring'}
-                    />
-                ]
-            }
-
-
-        } else {
-            if (!this.state.in) {
-                pickerDisplay = [
-                    <CommandsContainer direction="in" />
-                ]
-            } else {
-                pickerDisplay = [
-                    <CommandsContainer
-                        direction="out"
-                        getStructure={this.getStructure}
-                        statex={this.state.tipPickerData}
-                        channel={'tip'}
-                    />
-                ]
-            }
-
+        if (channel.in && channel.trs) {
+            //console.log('Ring In Commands')
+            tempChannel.ringIn.commands = e
+        } else if (!channel.in && channel.trs) {
+            //console.log('Ring Out Commands')
+            tempChannel.ringOut.commands = e
+        } else if (channel.in && !channel.trs) {
+            //console.log('Tip In Commands')
+            tempChannel.tipIn.commands = e
+        } else if (!channel.in && !channel.trs) {
+            //console.log('Tip Out Commands')
+            tempChannel.tipOut.commands = e
         }
 
+        setChannel(tempChannel)
+
+    }
+
+    const makePicker = () => {
+        //console.log(channel)
+        if (channel.in && channel.pickRing) {
+            //console.log('Show GPI RING')
+            return (
+                <CommandsContainer
+                    key="gpiRingContainer"
+                    direction="out"
+                    sendCommands={getStructure}
+                    commands={channel.ringIn.commands}
+                />
+            )
+        } else if (!channel.in && channel.pickRing) {
+            //console.log('Show GPO RING')
+            return (
+                <CommandsContainer
+                    key="gpoRingContainer"
+                    direction="in"
+                    sendCommands={getStructure}
+                    commands={channel.ringOut.commands}
+                />
+            )
+        } else if (channel.in && !channel.pickRing) {
+            //console.log('Show GPI TIP')
+            return (
+                <CommandsContainer
+                    key="gpiTipContainer"
+                    direction="out"
+                    sendCommands={getStructure}
+                    commands={channel.tipIn.commands}
+                />
+            )
+        } else if (!channel.in && !channel.pickRing) {
+            //console.log('Show GPO TIP')
+            return (
+                <CommandsContainer
+                    key="gpoTipContainer"
+                    direction="in"
+                    sendCommands={getStructure}
+                    commands={channel.tipOut.commands}
+                />
+            )
+        } else {
+            console.log('---ERROR Choosing CommandContainer Settings')
+        }
+
+    }
+
+    const portSettings = () => {
         return (
-            <div style={{ width: '300px' }}>
+            <div
+                style={{
+                    backgroundColor: 'lightgrey',
+                    padding: '8px',
+                    borderRadius: '10px',
+                    border: '1px solid grey',
+                    boxShadow: 'inset 1px 1px 6px',
+                    fontSize: '12px'
+                }}
+            >
+                Port Settings
+                <hr />
                 <table style={{ width: '100%' }}>
                     <tbody>
                         <tr>
-                            <td style={{
-                                textAlign: 'center',
-                                fontSize: '14px'
-                            }}>
-                                <b style={{ userSelect: 'none' }}>I/O#{this.state.channel}</b>
-                                <div>
-                                    <NameInput value={this.state.chName} setValue={this.setName} />
-                                </div>
-                                {/* <button style={{ borderRadius: '4px' }} onMouseDown={this.printState.bind(this)}>STATE</button> */}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                            <td style={btnTd}>
                                 <div
+                                    id="inBtn"
+                                    onMouseDown={handlePress}
                                     style={{
-                                        backgroundColor: 'lightgrey',
-                                        padding: '8px',
-                                        borderRadius: '10px',
+                                        cursor: 'context-menu',
+                                        padding: '2px',
                                         border: '1px solid grey',
-                                        boxShadow: 'inset 1px 1px 6px',
+                                        borderRadius: '4px',
+                                        width: "100%",
+                                        backgroundColor: channel.in ? 'lightgreen' : 'white',
+                                        fontSize: '12px',
+                                    }}>
+                                    IN
+                                                </div>
+                            </td>
+                            <td style={btnTd}>
+                                <div
+                                    id="outBtn"
+                                    onMouseDown={handlePress}
+                                    style={{
+                                        cursor: 'context-menu',
+                                        padding: '2px',
+                                        border: '1px solid grey',
+                                        borderRadius: '4px',
+                                        width: "100%",
+                                        backgroundColor: channel.in ? 'white' : 'lightgreen',
                                         fontSize: '12px'
-                                    }}
-                                >
-                                    Port Settings
-                                    <hr />
-                                    <table style={{ width: '100%' }}>
-                                        <tbody>
-                                            <tr>
-                                                <td style={btnTd}>
-                                                    <div
-                                                        onMouseDown={this.inPress}
-                                                        style={{
-                                                            cursor: 'context-menu',
-                                                            padding: '2px',
-                                                            border: '1px solid grey',
-                                                            borderRadius: '4px',
-                                                            width: "100%",
-                                                            backgroundColor: this.state.in ? 'lightgreen' : 'white',
-                                                            fontSize: '12px',
-                                                        }}>
-                                                        IN
+                                    }}>
+                                    OUT
                                                 </div>
-                                                </td>
-                                                <td style={btnTd}>
-                                                    <div
-                                                        onMouseDown={this.outPress}
-                                                        style={{
-                                                            cursor: 'context-menu',
-                                                            padding: '2px',
-                                                            border: '1px solid grey',
-                                                            borderRadius: '4px',
-                                                            width: "100%",
-                                                            backgroundColor: this.state.in ? 'white' : 'lightgreen',
-                                                            fontSize: '12px'
-                                                        }}>
-                                                        OUT
+                            </td>
+                            <td style={{ width: '4%' }}></td>
+                            <td style={btnTd}>
+                                <div
+                                    id="tsBtn"
+                                    onMouseDown={handlePress}
+                                    style={
+                                        {
+                                            cursor: 'context-menu',
+                                            padding: '2px',
+                                            border: '1px solid grey',
+                                            borderRadius: '4px',
+                                            width: "100%",
+                                            backgroundColor: channel.trs ? 'white' : 'lightgreen',
+                                            fontSize: '12px'
+                                        }}>
+                                    TS
                                                 </div>
-                                                </td>
-                                                <td style={{width: '4%'}}></td>
-                                                <td style={btnTd}>
-                                                    <div
-                                                        onMouseDown={this.tsPress}
-                                                        style={
-                                                            {
-                                                                cursor: 'context-menu',
-                                                                padding: '2px',
-                                                                border: '1px solid grey',
-                                                                borderRadius: '4px',
-                                                                width: "100%",
-                                                                backgroundColor: this.state.trs ? 'white' : 'lightgreen',
-                                                                fontSize: '12px'
-                                                            }}>
-                                                        TS
+                            </td>
+                            <td style={btnTd}>
+                                <div
+                                    id="trsBtn"
+                                    onMouseDown={handlePress}
+                                    style={{
+                                        cursor: 'context-menu',
+                                        padding: '2px',
+                                        border: '1px solid grey',
+                                        borderRadius: '4px',
+                                        width: "100%",
+                                        backgroundColor: channel.trs ? 'lightgreen' : 'white',
+                                        fontSize: '12px'
+                                    }}>
+                                    TRS
                                                 </div>
-                                                </td>
-                                                <td style={btnTd}>
-                                                    <div
-                                                        onMouseDown={this.trsPress}
-                                                        style={{
-                                                            cursor: 'context-menu',
-                                                            padding: '2px',
-                                                            border: '1px solid grey',
-                                                            borderRadius: '4px',
-                                                            width: "100%",
-                                                            backgroundColor: this.state.trs ? 'lightgreen' : 'white',
-                                                            fontSize: '12px'
-                                                        }}>
-                                                        TRS
-                                                </div>
-                                                </td>
-                                            </tr>
+                            </td>
+                        </tr>
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        {this.tipRingBtns()}
-                        <tr>
-                            <td>
-                                {pickerDisplay}
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
-            </div >
+            </div>
         )
     }
+
+    return (
+        <div style={{ width: '300px' }}>
+            <table style={{ width: '100%' }}>
+                <tbody>
+                    <tr>
+                        <td style={{
+                            textAlign: 'center',
+                            fontSize: '14px'
+                        }}>
+                            <b style={{ userSelect: 'none' }}>I/O #{props.channel}</b>
+                            <div>
+                                <NameInput value={channel.name} setValue={setName} />
+                            </div>
+                            <button style={{ borderRadius: '4px' }} onMouseDown={printState}>STATE</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {portSettings()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {tipRingBtns()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {makePicker()}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div >
+    )
 }
 
 const btnTd = {
     padding: '1.5px 3px',
     width: '24%',
 }
-
-const lblStyle = {
-    userSelect: 'none',
-    fontSize: '12px',
-    textAlign: 'right',
-}
-
-export default midiGpioChannel

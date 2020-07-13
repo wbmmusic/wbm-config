@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 
 const momLatchOpts = ['Mom', 'Latch', 'Hold']
 
-export default function MidiBtnButton() {
+export default function MidiBtnButton(props) {
     const [type, settype] = useState(momLatchOpts[0])
 
     const lblStyle = {
@@ -31,6 +31,7 @@ export default function MidiBtnButton() {
 
             out.push(
                 <td
+                    key={'TypeBtn' + momLatchOpts[i] + props.id}
                     id={i}
                     style={cellStyle}
                     onMouseDown={handleTypeChange}
@@ -48,7 +49,7 @@ export default function MidiBtnButton() {
     function makeTable() {
         let table = []
         table.push(
-            <tr>
+            <tr key={'buttonPotions' + props.id}>
                 <td style={lblStyle}>
                     <b>Color:</b>
                 </td>
@@ -66,13 +67,13 @@ export default function MidiBtnButton() {
         )
 
         table.push(
-            <tr>
-                <td colSpan="2"><hr/></td>
+            <tr key={'hrvSpcr'+ table.length}>
+                <td colSpan="2"><hr /></td>
             </tr>
         )
 
         table.push(
-            <tr>
+            <tr  key={'typeSel'+ table.length}>
                 <td style={lblStyle}>
                     <b>Type:</b>
                 </td>

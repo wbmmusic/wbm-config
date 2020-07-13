@@ -24,6 +24,7 @@ export default function SelectionType(props) {
 
         tbl.push(
             <td
+                key={'selectionButton' + i + props.channel}
                 style={cellStyle}
                 onMouseDown={handleClick}
             >
@@ -33,7 +34,7 @@ export default function SelectionType(props) {
     }
 
     return (
-        <table style={{ width: '100%'}}>
+        <table style={{ width: '100%' }}>
             <tbody>
                 <tr>
                     {tbl}

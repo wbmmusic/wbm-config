@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import { HashRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Header from './Components/layout/header'
-import midiLight from './Components/midiLight/midiLight'
-import midiGpio from './Components/midiGPIO/midiGpio'
-import midiButton from './Components/midiButton/midiButton'
+import MidiLight from './Components/midiLight/MidiLight'
+import MidiGpio from './Components/midiGPIO/midiGpio'
+import MidiButton from './Components/midiButton/MidiButton'
 import mtcBox from './Components/mtcDisplay/mtcBox'
 import midiAB from './Components/midiAB/midiAB'
-import About from './Components/layout/about'
+import About from './Components/layout/About'
 import DevInfo from './Components/utilities/DevInfo'
 import Drag from './Components/utilities/drag/Drag'
-import Dummy from './Components/utilities/Dummy';
 
 export class App extends Component {
 
@@ -20,14 +19,13 @@ export class App extends Component {
         <div className="App">
           <div className="container">
             <Header />
-            <Route exact path='/midiLight' component={midiLight} />
-            <Route exact path='/midiGpio' component={midiGpio} />
-            <Route exact path='/midiButton' component={midiButton} />
+            <Route exact path='/midiLight' component={MidiLight} />
+            <Route exact path='/midiGpio' component={MidiGpio} />
+            <Route exact path='/midiButton' component={MidiButton} />
             <Route exact path='/mtcDisplay' component={mtcBox} />
             <Route exact path='/midiAB' component={midiAB} />
             <Route exact path='/about' component={About} />
             <Route exact path='/drag' component={Drag} />
-            <Route exact path='/icc' component={Dummy} />
             <Route exact path='/' component={DevInfo} />
           </div>
         </div>

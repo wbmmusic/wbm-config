@@ -13,58 +13,59 @@ import SelectionType from '../SelectionType'
 import SysExInput from '../SysExInput'
 import MTCinput from '../MTCinput'
 
-const defaultState = {
-    id: 'picker' + 1,
-    parentCh: 1,
-    type: {
-        label: 'None',
-        value: 0
-    },
-    command: 0,
-    channel: 11,
-    sysex: 'Enter HEX data here',
-    selectedIns: 0x01,
-    selectedCh: 256,
-    noteType: 'Specific',
-    note: {
-        label: 'Select A Note',
-        value: 129
-    },
-    pgmType: 'Specific',
-    program: {
-        label: 'Select A Program',
-        value: 129
-    },
-    ccType: 'Specific',
-    cc: {
-        label: 'Select A Controller',
-        value: 129
-    },
-    velType: 'Any',
-    valType: 'Any',
-    value: {
-        label: 'Select A Value',
-        value: 129
-    },
-    pbValType: 'Specific',
-    songType: 'Specific',
-    song: {
-        label: 'Select A Song',
-        value: 129
-    },
-    pbVal: 8192,
-    sysexText: 'Enter Sysex Data'
-}
+export default function InputCommandPicker(props) {
+    let defaultState = {
+        id: 'picker' + 1,
+        parentCh: 1,
+        type: {
+            label: 'None',
+            value: 0
+        },
+        command: 0,
+        channel: 11,
+        sysex: 'Enter HEX data here',
+        selectedIns: 0x01,
+        selectedCh: 256,
+        noteType: 'Specific',
+        note: {
+            label: 'Select A Note',
+            value: 129
+        },
+        pgmType: 'Specific',
+        program: {
+            label: 'Select A Program',
+            value: 129
+        },
+        ccType: 'Specific',
+        cc: {
+            label: 'Select A Controller',
+            value: 129
+        },
+        velType: 'Any',
+        valType: 'Any',
+        value: {
+            label: 'Select A Value',
+            value: 129
+        },
+        pbValType: 'Specific',
+        songType: 'Specific',
+        song: {
+            label: 'Select A Song',
+            value: 129
+        },
+        pbVal: 8192,
+        sysexText: 'Enter Sysex Data'
+    }
 
-export default function InputCommandPickerv2(props) {
+    if (props.data.pickerData.type) {
+        defaultState = props.data.pickerData
+    }
 
     const [state, setstate] = useState(defaultState)
 
     useEffect(() => {
-        console.log('State Changed')
-        return () => {
-            //cleanup
-        }
+        //console.log('State Changed')
+        props.sendData(props.id, state)
     }, [state])
 
     const getChannels = (channels) => {
@@ -109,7 +110,7 @@ export default function InputCommandPickerv2(props) {
 
     const channelSelect = () => {
         return (
-            < tr >
+            < tr key={'channelSelect' + props.channel} >
                 <td>
                     <b style={label}>CH:</b>
                 </td>
@@ -175,7 +176,7 @@ export default function InputCommandPickerv2(props) {
 
     const inputSelect = () => {
         return (
-            < tr >
+            < tr key={"inputSelcet" + props.id} >
                 <td>
                     <b style={label}>Input:</b>
                 </td>
@@ -197,6 +198,7 @@ export default function InputCommandPickerv2(props) {
         if (state.noteType === 'Specific') {
             xyz.push(
                 <Select
+                    key={'noteSelection' + props.channel}
                     name='noteSelector'
                     styles={selectStyle}
                     hideResetButton='true'
@@ -229,7 +231,7 @@ export default function InputCommandPickerv2(props) {
         }
 
         return (
-            < tr >
+            < tr key={'noteSelectOutput' + props.channel} >
                 <td>
                     <b style={label}>Note:</b>
                 </td>
@@ -247,6 +249,7 @@ export default function InputCommandPickerv2(props) {
         if (state.ccType === 'Specific') {
             body.push(
                 <Select
+                    key={'ccSpecificTypeSelect' + props.channel}
                     name='noteSelector'
                     styles={selectStyle}
                     hideResetButton='true'
@@ -261,7 +264,7 @@ export default function InputCommandPickerv2(props) {
 
 
         return (
-            < tr >
+            < tr key={'ccSelector' + props.channel}>
                 <td>
                     <b style={label}>CC#:</b>
                 </td>
@@ -277,6 +280,7 @@ export default function InputCommandPickerv2(props) {
         let pgm = []
         pgm.push(
             <Select
+                key={'pgmSelector' + props.channel}
                 name='typeSelector'
                 styles={selectStyle}
                 hideResetButton='true'
@@ -288,7 +292,7 @@ export default function InputCommandPickerv2(props) {
             />
         )
         return (
-            < tr >
+            < tr key={'pgmSelectorOut' + props.channel}>
                 <td>
                     <b style={label}>PGM#:</b>
                 </td>
@@ -302,7 +306,7 @@ export default function InputCommandPickerv2(props) {
 
     const mtcSelect = () => {
         return (
-            < tr >
+            < tr key={'mtcSelector' + props.channel}>
                 <td>
                     <b style={label}>Time:</b>
                 </td>
@@ -315,7 +319,7 @@ export default function InputCommandPickerv2(props) {
 
     const sysexData = () => {
         return (
-            < tr >
+            < tr key={'sysexDataInput' + props.id} >
                 <td>
                     <b style={label}>DATA:</b>
                 </td>
@@ -330,6 +334,7 @@ export default function InputCommandPickerv2(props) {
         let song = []
         song.push(
             <Select
+                key={'songSelector' + props.channel}
                 name='songSelector'
                 styles={selectStyle}
                 hideResetButton='true'
@@ -341,7 +346,7 @@ export default function InputCommandPickerv2(props) {
             />
         )
         return (
-            < tr >
+            < tr key={'songSelectorOut' + props.channel}>
                 <td>
                     <b style={label}>Song:</b>
                 </td>
@@ -355,7 +360,7 @@ export default function InputCommandPickerv2(props) {
 
     const velSelect = () => {
         return (
-            < tr >
+            < tr key={'velocityInput' + props.channel}>
                 <td>
                     <b style={label}>Vel:</b>
                 </td>
@@ -370,7 +375,7 @@ export default function InputCommandPickerv2(props) {
         let abc = []
         if (state.pbValType === 'Specific') {
             abc.push(
-                <Fragment>
+                <Fragment key={'pitchBendInput' + props.id}>
                     <input
                         name='PitchBend'
                         type="range"
@@ -436,7 +441,7 @@ export default function InputCommandPickerv2(props) {
 
 
         return (
-            < tr >
+            < tr key={'pitchBendInput' + props.channel}>
                 <td>
                     <b style={label}>Val:</b>
                 </td>
@@ -452,6 +457,7 @@ export default function InputCommandPickerv2(props) {
         let value = []
         value.push(
             <Select
+                key={'valueSelest' + props.channel}
                 name='valueSelector'
                 styles={selectStyle}
                 hideResetButton='true'
@@ -463,7 +469,7 @@ export default function InputCommandPickerv2(props) {
             />
         )
         return (
-            < tr >
+            < tr key={'valueSelector' + props.channel} >
                 <td>
                     <b style={label}>Val:</b>
                 </td>

@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Matraces from '../matrix/matraces'
 
-
-export class about extends Component {
-    state = {
+export default function About() {
+    const defaultState = {
         devices: [
             {
                 name: 'midi splitter',
@@ -18,19 +17,14 @@ export class about extends Component {
         ]
     }
 
-    render() {
+    const [state, setstate] = useState(defaultState)
 
-        return (
-            <div>
+
+    return (
+        <div>
                 <Matraces
-                    device={this.state.devices[0]}
+                    device={state.devices[0]}
                 />
             </div>
-        )
-    }
-
+    )
 }
-
-
-
-export default about

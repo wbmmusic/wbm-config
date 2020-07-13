@@ -162,11 +162,6 @@ usbDetect.on('add:1003', function (device) { checkIfWBMdevice(device) });
 usbDetect.on('remove:1003', function (device) { usbDisconnected(device) });
 //END USB Detection ///////////////////////////////////////////////////////
 
-
-let colorPickerWindow
-var colorPickerOpen = false
-var clPckrCh = 0
-
 //WINDOW SCALING BYPASS
 //app.commandLine.appendSwitch('high-dpi-support', 1)
 //app.commandLine.appendSwitch('force-device-scale-factor', 1)
@@ -216,79 +211,6 @@ app.on('ready', () => {
 })
 ///////////////////////
 
-////////// Color Picker Window //////////
-ipcMain.on('showColorPicker', function (event, ch, nm, clr) {
-  console.log("Color Picker " + ch)
-
-  if (!colorPickerOpen) {
-    colorPickerOpen = true
-    clPckrCh = ch
-    colorPickerWindow = new BrowserWindow(
-      {
-        width: 180,
-        height: 430,
-        frame: false,
-        transparent: true,
-        alwaysOnTop: true,
-        resizable: false,
-        //backgroundColor: 'black',
-        titleBarStyle: "customButtonsOnHover",
-        webPreferences: {
-          nodeIntegration: true
-        }
-      }
-    );
-
-    colorPickerWindow.setMenuBarVisibility(false)
-
-    colorPickerWindow.loadURL(url.format({
-      pathname: path.join(__dirname, 'colorPicker.html'),
-      protocol: 'file',
-      slashes: true
-    }));
-
-    colorPickerWindow.webContents.on('did-finish-load', function () {
-      colorPickerOpen = true
-      colorPickerWindow.send('channel', ch, nm, clr)
-    });
-
-    colorPickerWindow.on('closed', function () {
-      colorPickerOpen = false
-    });
-  } else if (ch !== clPckrCh) {
-    clPckrCh = ch
-
-    colorPickerWindow.send('channel', ch, nm, clr)
-
-    colorPickerWindow.on('closed', function () {
-      colorPickerOpen = false
-    });
-
-  } else if (ch === clPckrCh) {
-    /*
-    colorPickerOpen = false
-    clPckrCh = 0
-    colorPickerWindow.close()
-    */
-  }
-
-})
-
-ipcMain.on('nameChange', (event, chnl, name) => {
-  if (colorPickerOpen && chnl === clPckrCh) {
-    //log('SEND')
-    colorPickerWindow.webContents.send('nameToPicker', name)
-  }
-})
-
-ipcMain.on('selectedColor', (event, rgb, chnl, HSL) => {
-  //log('SelectedColor')
-  //log(rgb)
-  //log(chnl)
-  win.send('colorFromPicker', rgb, chnl, HSL)
-})
-/////////////////////////////////////////
-
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -324,10 +246,6 @@ function createWindow() {
   win.on('closed', () => {
     usbDetect.stopMonitoring()
     win = null
-    if (colorPickerOpen) {
-      colorPickerWindow.close()
-    }
-
   })
 
   checkYo()

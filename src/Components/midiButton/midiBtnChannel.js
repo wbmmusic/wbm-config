@@ -1,32 +1,41 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import NameInput from "../utilities/NameInput"
 import MidiBtnButton from './MidiBtnButton'
 import CommandsContainer from '../utilities/pickers/CommandsContainer'
+import { MidiButtonChannelContext } from './Mid ButtonChannelContext'
 
 
 export default function MidiBtnChannel(props) {
-    const [name, setname] = useState('Button Name')
+    const [channel, setChannel] = useContext(MidiButtonChannelContext)
 
     const lblStyle = {
         userSelect: 'none',
     }
 
     function setName(newName) {
-        setname(newName)
+        let tempChannel = { ...channel }
+        tempChannel.name = newName
+        setChannel(tempChannel)
+    }
+
+    const getStructure = (data) => {
+        let tempChannel = { ...channel }
+        tempChannel.commands = data
+        setChannel(tempChannel)
     }
 
     return (
-        <div>
-            <table>
+        <div style={{ width: '300px' }}>
+            <table style={{ width: '100%' }}>
                 <tbody>
                     <tr>
                         <td style={{ fontSize: '14px' }}>
-                            <b style={lblStyle}>Button # {props.channel}</b>
+                            <b style={lblStyle}>Button #{props.channel}</b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <NameInput value={name} setValue={setName} />
+                            <NameInput value={channel.name} setValue={setName} />
                         </td>
                     </tr>
                     <tr>
@@ -43,7 +52,12 @@ export default function MidiBtnChannel(props) {
                     </tr>
                     <tr>
                         <td>
-                            <CommandsContainer direction="out" />
+                            <CommandsContainer
+                                direction="out"
+                                key="midiBtnCommandsContainer"
+                                sendCommands={getStructure}
+                                commands={channel.commands}
+                            />
                         </td>
                     </tr>
                 </tbody>

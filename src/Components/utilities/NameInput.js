@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 export default function NameInput(props) {
     const [over, setover] = useState(false)
     const [focus, setfocus] = useState(false)
-    const [name, setname] = useState(props.value)
 
     var inStyle = {
         textAlign: 'center',
@@ -30,11 +29,9 @@ export default function NameInput(props) {
     }, [focus])
 
     function handelEvent(e) {
-        //console.log(e.type)
 
         switch (e.type) {
             case 'change':
-                setname(e.target.value)
                 props.setValue(e.target.value)
                 break;
 
@@ -68,13 +65,11 @@ export default function NameInput(props) {
         inStyle.backgroundColor = 'white'
     }
 
-    //console.log('Render | ' + props.value)
-
     return (
         <div>
             <input
                 type="text"
-                value={name}
+                value={props.value}
                 onMouseOver={handelEvent}
                 onMouseOut={handelEvent}
                 onChange={handelEvent}
