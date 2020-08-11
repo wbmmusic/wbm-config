@@ -375,22 +375,20 @@ function toggleDevelopeMenu() {
 
 
 ///////////////////// FILE OPEN AND SAVE //////////////////////////////
-ipcMain.on('OPEN', (event, arg) => {
-  console.log(arg) // prints "ping"
+ipcMain.on('fileOpen', (event, extension) => {
+  console.log('File Open .' + extension)
   dialog.showOpenDialog(win, {
     properties: ['openFile'],
     filters: [
-      { name: 'Config File', extensions: ['wbmtek'] },
-      { name: 'All Files', extensions: ['*'] }
+      { name: 'Config File', extensions: [extension] },
     ]
   }).then(result => {
     if (result.canceled) {
-      console.log('CANCLED')
+      console.log('FILE OPEN CANCELED')
     } else {
       console.log(result.filePaths)
       fs.readFile(result.filePaths[0], function (err, data) {
-        console.log(data.toString())
-        event.reply('asynchronous-reply', data)
+        event.reply('asynchronous-reply', data.toString())
       });
     }
   }).catch(err => {
@@ -405,7 +403,7 @@ ipcMain.on('SAVE', (event, arg, fileData) => {
     filters: [{ name: 'Config File', extensions: ['wbmtek'] },]
   }).then(result => {
     if (result.canceled) {
-      console.log('CANCLED')
+      console.log('SAVE CANCELED')
     } else {
       console.log(result.filePath)
       fs.writeFile(result.filePath, fileData, function (err) {
@@ -419,34 +417,14 @@ ipcMain.on('SAVE', (event, arg, fileData) => {
   })
 })
 
-ipcMain.on('fileOpen', (event, extension) => {
-  dialog.showOpenDialog(win, {
-    properties: ['openFile'],
-    filters: [
-      { name: 'Config File', extensions: [extension] },
-    ]
-  }).then(result => {
-    if (result.canceled) {
-      console.log('CANCLED')
-    } else {
-      console.log(result.filePaths)
-      fs.readFile(result.filePaths[0], function (err, data) {
-        event.reply('asynchronous-reply', data.toString())
-      });
-    }
-  }).catch(err => {
-    console.log(err)
-  })
-})
-
 ipcMain.on('fileSaveAs', (event, extension, fileData) => {
-  console.log('GOT A SAVE AS COMMAND') // prints "ping"
+  console.log('SAVE AS') // prints "ping"
   dialog.showSaveDialog(win, {
     properties: ['createDirectory', 'showOverwriteConfirmation'],
     filters: [{ name: 'Config File', extensions: [extension] },]
   }).then(result => {
     if (result.canceled) {
-      console.log('CANCLED')
+      console.log('SAVE AS CANCELED')
     } else {
       console.log(result.filePath)
       fs.writeFile(result.filePath, fileData, function (err) {
@@ -474,7 +452,7 @@ ipcMain.on('send', (event, extension, fileData) => {
     conDevs[targetPort].port.write('WBM END SEND FILE')
   }, 50);
 
-  
+
 
 })
 /////////////////// END FILE OPEN AND SAVE ////////////////////////////

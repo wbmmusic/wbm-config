@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import MidiLightChannel from './MidiLightChannel'
 import { MidiLightChannelProvider } from './MidiLightChannelContext'
 
-
 const { ipcRenderer } = window.require('electron')
 
 export default function MidiLight() {
@@ -85,42 +84,38 @@ export default function MidiLight() {
         return table
     }
 
-
-    console.log('MIDI LIGHT TOP RENDER')
-
     return (
         <div>
             <div style={{
                 backgroundColor: 'darkgrey',
                 paddingBottom: '4px',
-                userSelect: 'none'
             }}>
                 <b style={{ display: 'block' }}>MIDI Light</b>
                 <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
                     <tbody>
                         <tr>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={openBtnPress}
                                 >Open</div>
                             </td>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={saveBtnPress}
                                 >Save</div>
                             </td>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={saveAsBtnPress}
                                 >Save As</div>
                             </td>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={seeState}
                                 >STATE</div>
                             </td>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={sendBtnPress}
                                 >Send</div>
                             </td>
@@ -131,13 +126,4 @@ export default function MidiLight() {
             {createTable()}
         </div>
     )
-}
-
-
-const openSaveBtns = {
-    backgroundColor: 'grey',
-    padding: '4px',
-    borderRadius: '4px',
-    fontSize: '12px',
-    cursor: 'context-menu'
 }

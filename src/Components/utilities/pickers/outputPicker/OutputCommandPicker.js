@@ -1,68 +1,146 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import Select from 'react-select'
-import IOSelect from '../IOSelect'
+import InputSelect from '../IOSelect'
 import {
     inputTypesDropDown,
     one127,
     noteDropDown,
     ccDropDown,
     numberOfInputs
-} from '../inputPicker/inMidiTables'
+} from './outMidiTables'
 import ChannelSelect from '../ChannelSelect'
 import SysExInput from '../SysExInput'
 import MTCinput from '../MTCinput'
 
-export default function OutputCommandPickerv2(props) {
-    const defaultState = {
+export default function OutputCommandPicker(props) {
+    let defaultState = {
         id: 'picker' + 1,
         parentCh: 1,
         type: {
             label: 'None',
             value: 0
         },
-        command: 0,
-        channel: 11,
-        sysex: 'Enter HEX data here',
-        selectedIns: 0x01,
+        selectedOuts: 0x01,
         selectedCh: 256,
-        noteType: 'Specific',
+        channel: 11,
         note: {
             label: 'Select A Note',
             value: 129
         },
-        pgmType: 'Specific',
-        program: {
-            label: 'Select A Program',
-            value: 129
-        },
-        ccType: 'Specific',
         cc: {
             label: 'Select A Controller',
             value: 129
         },
-        velType: 'Any',
-        valType: 'Any',
+        program: {
+            label: 'Select A Program',
+            value: 129
+        },
+        velocity: {
+            label: 'Select A Velocity',
+            value: 129
+        },
         value: {
             label: 'Select A Value',
             value: 129
         },
-        pbValType: 'Specific',
-        songType: 'Specific',
+        pbVal: 8192,
         song: {
             label: 'Select A Song',
             value: 129
         },
-        pbVal: 8192,
-        sysexText: 'Enter Sysex Data'
+        mtc: {
+            rate: '29.97fps',
+            hour: '00',
+            min: '00',
+            sec: '00',
+            frame: '00',
+        },
+        sysexText: 'Enter Sysex Data',
+        sysex: 'Enter HEX data here'
     }
+
+    /////
     if (props.data.pickerData.type) {
-        defaultState = props.data.pickerData
+        //Merge shrunk picker data with defaultState
+        defaultState = Object.assign(defaultState, props.data.pickerData)
+        //defaultState = props.data.pickerData
     }
+
     const [state, setstate] = useState(defaultState)
 
     useEffect(() => {
-        props.sendData(props.id, state)
+        //console.log('State Changed')
+        props.sendData(props.id, shrinkPicker())
     }, [state])
+
+    const shrinkPicker = () => {
+        let shrunkState = {}
+
+        shrunkState.id = state.id
+        shrunkState.parentCh = state.parentCh
+        shrunkState.type = state.type
+
+        switch (state.type.label) {
+            case 'None':
+                break;
+
+            case 'Note Off' || 'Note On':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.note = state.note
+                shrunkState.velocity = state.velocity
+                break;
+
+            case 'Control Change':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.cc = state.cc
+                shrunkState.value = state.value
+
+                break;
+
+            case 'Program Change':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.program = state.program
+                break;
+
+            case 'Pitch Bend':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.pbVal = state.pbVal
+                break;
+
+            case 'Sys Ex':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.sysexText = state.sysexText
+                shrunkState.sysex = state.sysex
+                break;
+
+            case 'MTC':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.mtc = state.mtc
+                break;
+
+            case 'Song Select':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.song = state.song
+                break;
+
+            case 'Start' || 'Stop' || 'Continue' || 'System Reset':
+                shrunkState.selectedOuts = state.selectedOuts
+                break;
+
+            default:
+                return state
+        }
+        console.log(shrunkState)
+        return shrunkState
+    }
 
     const getChannels = (channels) => {
         let tempState = { ...state }
@@ -72,7 +150,7 @@ export default function OutputCommandPickerv2(props) {
 
     const channelSelect = () => {
         return (
-            < tr >
+            < tr key={'channelSelect' + props.channel} >
                 <td>
                     <b style={label}>CH:</b>
                 </td>
@@ -84,12 +162,22 @@ export default function OutputCommandPickerv2(props) {
     }
 
     const handleMtc = (rate, hour, min, sec, frm) => {
-        console.log(hour + ':' + min + ':' + sec + ':' + frm + ' ' + rate)
+        //console.log(hour + ':' + min + ':' + sec + ':' + frm + ' ' + rate)
+
+        let tempState = { ...state }
+        tempState.mtc.rate = rate
+        tempState.mtc.hour = hour
+        tempState.mtc.min = min
+        tempState.mtc.sec = sec
+        tempState.mtc.frame = frm
+        if (tempState.mtc !== state.mtc) {
+            setstate(tempState)
+        }
     }
 
     const handleInSelData = (theData) => {
         let tempState = { ...state }
-        tempState.selectedIns = theData
+        tempState.selectedOuts = theData
         setstate(tempState)
     }
 
@@ -117,6 +205,12 @@ export default function OutputCommandPickerv2(props) {
         setstate(tempState)
     }
 
+    const handleVelocityChange = (theData) => {
+        let tempState = { ...state }
+        tempState.velocity = theData
+        setstate(tempState)
+    }
+
     const handleSongChange = (theData) => {
         let tempState = { ...state }
         tempState.song = theData
@@ -138,15 +232,15 @@ export default function OutputCommandPickerv2(props) {
 
     const outputSelect = () => {
         return (
-            < tr >
+            < tr key={"outputSelcet" + props.id} >
                 <td>
                     <b style={label}>Output:</b>
                 </td>
                 <td>
-                    <IOSelect
+                    <InputSelect
                         data={{
                             ins: numberOfInputs,
-                            selection: state.selectedIns
+                            selection: state.selectedOuts
                         }}
                         sendData={handleInSelData}
                     />
@@ -156,79 +250,46 @@ export default function OutputCommandPickerv2(props) {
     }
 
     const noteSelect = () => {
-        let xyz = []
-        if (state.noteType === 'Specific') {
-            xyz.push(
-                <Select
-                    name='noteSelector'
-                    styles={selectStyle}
-                    hideResetButton='true'
-                    style={{ textAlign: 'left' }}
-                    options={noteDropDown()}
-                    value={state.note}
-                    theme="default"
-                    onChange={(e) => { handleNoteChange(e) }}
-                />
-            )
-        } else if (state.noteType === 'Multiple') {
-            xyz.push(
-                <b>Multi Select</b>
-            )
-        } else if (state.noteType === 'Range') {
-            xyz.push(
-                <input
-                    type="range"
-                    style={{
-                        width: '100%',
-                    }}
-                />
-            )
-        } else if (state.noteType === 'Any') {
-            //NOTHING
-        } else {
-            xyz.push(
-                <b>ERROR</b>
-            )
-        }
-
         return (
-            < tr >
+            < tr key={'noteSelectOutput' + props.channel} >
                 <td>
                     <b style={label}>Note:</b>
                 </td>
                 <td>
-                    {xyz}
+                    <Select
+                        key={'noteSelection' + props.channel}
+                        name='noteSelector'
+                        styles={selectStyle}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={noteDropDown()}
+                        value={state.note}
+                        theme="default"
+                        onChange={(e) => { handleNoteChange(e) }}
+                    />
                 </td>
             </tr >
         )
     }
 
     const ccSelect = () => {
-        let body = []
-
-        if (state.ccType === 'Specific') {
-            body.push(
-                <Select
-                    name='noteSelector'
-                    styles={selectStyle}
-                    hideResetButton='true'
-                    style={{ textAlign: 'left' }}
-                    options={ccDropDown()}
-                    value={state.cc}
-                    theme="default"
-                    onChange={(e) => { handleCcChange(e) }}
-                />
-            )
-        }
-
-
         return (
-            < tr >
+            < tr key={'ccSelector' + props.channel}>
                 <td>
                     <b style={label}>CC#:</b>
                 </td>
                 <td>
-                    {body}
+                    <Select
+                        key={'ccSpecificTypeSelect' + props.channel}
+                        name='noteSelector'
+                        styles={selectStyle}
+                        hideResetButton='true'
+                        style={{ textAlign: 'left' }}
+                        options={ccDropDown()}
+                        value={state.cc}
+                        theme="default"
+                        onChange={(e) => { handleCcChange(e) }}
+                    />
                 </td>
             </tr >
         )
@@ -238,7 +299,8 @@ export default function OutputCommandPickerv2(props) {
         let pgm = []
         pgm.push(
             <Select
-                name='typeSelector'
+                key={'pgmSelector' + props.channel}
+                name='pgmSelector'
                 styles={selectStyle}
                 hideResetButton='true'
                 style={{ textAlign: 'left' }}
@@ -249,7 +311,7 @@ export default function OutputCommandPickerv2(props) {
             />
         )
         return (
-            < tr >
+            < tr key={'pgmSelectorOut' + props.channel}>
                 <td>
                     <b style={label}>PGM#:</b>
                 </td>
@@ -262,12 +324,12 @@ export default function OutputCommandPickerv2(props) {
 
     const mtcSelect = () => {
         return (
-            < tr >
+            < tr key={'mtcSelector' + props.channel}>
                 <td>
                     <b style={label}>Time:</b>
                 </td>
                 <td>
-                    <MTCinput sendMtc={handleMtc} />
+                    <MTCinput sendMtc={handleMtc} data={state.mtc} />
                 </td>
             </tr >
         )
@@ -275,7 +337,7 @@ export default function OutputCommandPickerv2(props) {
 
     const sysexData = () => {
         return (
-            < tr >
+            < tr key={'sysexDataInput' + props.id} >
                 <td>
                     <b style={label}>DATA:</b>
                 </td>
@@ -290,6 +352,7 @@ export default function OutputCommandPickerv2(props) {
         let song = []
         song.push(
             <Select
+                key={'songSelector' + props.channel}
                 name='songSelector'
                 styles={selectStyle}
                 hideResetButton='true'
@@ -301,7 +364,7 @@ export default function OutputCommandPickerv2(props) {
             />
         )
         return (
-            < tr >
+            < tr key={'songSelectorOut' + props.channel}>
                 <td>
                     <b style={label}>Song:</b>
                 </td>
@@ -313,93 +376,61 @@ export default function OutputCommandPickerv2(props) {
     }
 
     const velSelect = () => {
+        let velocity = []
+        velocity.push(
+            <Select
+                key={'velocitySelest' + props.channel}
+                name='velocitySelector'
+                styles={selectStyle}
+                hideResetButton='true'
+                style={{ textAlign: 'left' }}
+                options={one127()}
+                value={state.velocity}
+                theme="default"
+                onChange={(e) => { handleVelocityChange(e) }}
+            />
+        )
         return (
-            < tr >
+            < tr key={'velocityInput' + props.channel}>
                 <td>
                     <b style={label}>Vel:</b>
                 </td>
                 <td>
+                    {velocity}
                 </td>
             </tr >
         )
     }
 
     const pitchBendSelect = () => {
-        let abc = []
-        if (state.pbValType === 'Specific') {
-            abc.push(
-                <Fragment>
-                    <input
-                        name='PitchBend'
-                        type="range"
-                        min="0"
-                        max="16383"
-                        value={state.pbVal}
-                        onChange={handleRangeChange}
-                        style={{
-                            width: '100%',
-                        }}
-                    />
-                    <input
-                        name='PitchBendBox'
-                        type="number"
-                        min="-8192"
-                        max="8191"
-                        value={state.pbVal - 8192}
-                        onChange={handleRangeChange}
-                        style={{
-                            textAlign: 'center'
-                        }}
-                    />
-                </Fragment>
-            )
-        } else if (state.pbValType === 'Multiple') {
-            abc.push(
-                <b>Multi Select</b>
-            )
-        } else if (state.pbValType === 'Range') {
-            abc.push(
-                <Fragment>
-                    <input
-                        name='PitchBend'
-                        type="range"
-                        min="0"
-                        max="16383"
-                        value={state.pbVal}
-                        onChange={handleRangeChange}
-                        style={{
-                            width: '100%',
-                        }}
-                    />
-                    <input
-                        name='PitchBendBox'
-                        type="number"
-                        min="-8192"
-                        max="8191"
-                        value={state.pbVal - 8192}
-                        onChange={handleRangeChange}
-                        style={{
-                            textAlign: 'center'
-                        }}
-                    />
-                </Fragment>
-            )
-        } else if (state.pbValType === 'Any') {
-            //NOTHING
-        } else {
-            abc.push(
-                <b>ERROR</b>
-            )
-        }
-
-
         return (
-            < tr >
+            < tr key={'pitchBendInput' + props.channel}>
                 <td>
                     <b style={label}>Val:</b>
                 </td>
                 <td>
-                    {abc}
+                    <input
+                        name='PitchBend'
+                        type="range"
+                        min="0"
+                        max="16383"
+                        value={state.pbVal}
+                        onChange={handleRangeChange}
+                        style={{
+                            width: '100%',
+                        }}
+                    />
+                    <input
+                        name='PitchBendBox'
+                        type="number"
+                        min="-8192"
+                        max="8191"
+                        value={state.pbVal - 8192}
+                        onChange={handleRangeChange}
+                        style={{
+                            textAlign: 'center'
+                        }}
+                    />
                 </td>
             </tr >
         )
@@ -409,6 +440,7 @@ export default function OutputCommandPickerv2(props) {
         let value = []
         value.push(
             <Select
+                key={'valueSelest' + props.channel}
                 name='valueSelector'
                 styles={selectStyle}
                 hideResetButton='true'
@@ -420,7 +452,7 @@ export default function OutputCommandPickerv2(props) {
             />
         )
         return (
-            < tr >
+            < tr key={'valueSelector' + props.channel} >
                 <td>
                     <b style={label}>Val:</b>
                 </td>
@@ -437,19 +469,11 @@ export default function OutputCommandPickerv2(props) {
         setstate(tempState)
     }
 
-    const handleChannelChange = (e) => {
-        //console.log(e)
-        let tempState = { ...state }
-        tempState.channel = e.value + 1
-        setstate(tempState)
-    }
-
     const printState = () => {
         console.log(state)
     }
 
     ///////////////////////////////////////////////////////////////////// RENDER
-
     let underType = 'Under Type'
     underType = []
     let spacer = []
@@ -602,7 +626,6 @@ const pickerTitle = {
     //border: '1px black solid',
     padding: '2px',
     textAlign: 'center',
-    userSelect: 'none'
 }
 
 const selectStyle = {
@@ -623,12 +646,11 @@ const selectStyle = {
         ...base,
         padding: '0px 8px'
     })
-};
+}
 
 const label = {
     textAlign: 'right',
     paddingLeft: '5px',
     fontSize: '12px',
-    userSelect: 'none',
 }
 //////////////////////////////////////////// Style //

@@ -543,7 +543,6 @@ const pickerTitle = {
     //border: '1px black solid',
     padding: '2px',
     textAlign: 'center',
-    userSelect: 'none',
 }
 
 const selectStyle = {
@@ -570,7 +569,6 @@ const label = {
     textAlign: 'right',
     paddingLeft: '5px',
     fontSize: '12px',
-    userSelect: 'none',
 }
 //////////////////////////////////////////// Style //
 

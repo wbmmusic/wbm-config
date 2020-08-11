@@ -3,11 +3,26 @@ import React, { useState, useEffect, Fragment } from 'react'
 export default function MTCinput(props) {
     const rates = ['24fps', '25fps', '29.97fps', '30fps']
 
-    const [hour, sethour] = useState('00')
-    const [minute, setminute] = useState('00')
-    const [second, setsecond] = useState('00')
-    const [frame, setframe] = useState('00')
-    const [frameRate, setframeRate] = useState(rates[3])
+    let defaultHr = '00'
+    let defaultMin = '00'
+    let defaultSec = '00'
+    let defaultFrm = '00'
+    let defaultRate = rates[3]
+
+    if (props.data) {
+        defaultHr = props.data.hour
+        defaultMin = props.data.min
+        defaultSec = props.data.sec
+        defaultFrm = props.data.frame
+        defaultRate = props.data.rate
+    }
+
+
+    const [hour, sethour] = useState(defaultHr)
+    const [minute, setminute] = useState(defaultMin)
+    const [second, setsecond] = useState(defaultSec)
+    const [frame, setframe] = useState(defaultFrm)
+    const [frameRate, setframeRate] = useState(defaultRate)
 
     useEffect(() => {
         //Send Data Up Here
@@ -110,7 +125,6 @@ export default function MTCinput(props) {
                 padding: '2px',
                 borderRadius: '3px',
                 border: '1px solid black',
-                userSelect: 'none'
             }
 
             if (frameRate === theRate) {

@@ -1,0 +1,36 @@
+.grid-container {
+    display: grid;
+    /* This is a (hacky) way to make the .grid element size to fit its content */
+    overflow: auto;
+    height: calc(100vh - 70px);
+    width: 100%;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.grid-col {
+    
+}
+
+.grid-item--header {
+    height: 47px;
+    min-height: 47px;
+    position: sticky;
+    position: -webkit-sticky;
+    background: blueviolet;
+    top: 0;
+}
+
+.grid-col--fixed-left {
+    position: sticky;
+    left: 0;
+    z-index: 9998;
+    background: rgb(180, 180, 180);
+}
+
+.grid-item {
+    
+}

@@ -41,7 +41,6 @@ export default function InputCommand(props) {
                                     onMouseDown={() => props.showPicker(props.id)}
                                     style={{
                                         fontSize: '12px',
-                                        userSelect: 'none',
                                         backgroundColor: 'darkgrey',
                                         padding: '3px',
                                         borderRadius: '3px'
@@ -55,7 +54,6 @@ export default function InputCommand(props) {
                                     onMouseDown={handelRemoveCommand}
                                     style={{
                                         fontSize: '12px',
-                                        userSelect: 'none',
                                         backgroundColor: 'darkgrey',
                                         padding: '3px',
                                         borderRadius: '3px'

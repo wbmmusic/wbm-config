@@ -96,14 +96,14 @@ export default function ColorPicker(props) {
     }
 
     const hueChange = (e) => {
-        console.log('Hue Change')
+        //console.log('Hue Change')
         let tempChannel = { ...channel }
         tempChannel.ledData.color[0] = e.target.value
         setChannel(tempChannel)
     }
 
     const brightnessChange = (e) => {
-        console.log('Brightness Change')
+        //console.log('Brightness Change')
         let tempChannel = { ...channel }
         tempChannel.ledData.color[2] = e.target.value
         setChannel(tempChannel)

@@ -21,19 +21,12 @@ export default function InputCommandPicker(props) {
             label: 'None',
             value: 0
         },
-        command: 0,
-        channel: 11,
-        sysex: 'Enter HEX data here',
         selectedIns: 0x01,
         selectedCh: 256,
+        channel: 11,
         noteType: 'Specific',
         note: {
             label: 'Select A Note',
-            value: 129
-        },
-        pgmType: 'Specific',
-        program: {
-            label: 'Select A Program',
             value: 129
         },
         ccType: 'Specific',
@@ -41,32 +34,132 @@ export default function InputCommandPicker(props) {
             label: 'Select A Controller',
             value: 129
         },
+        pgmType: 'Specific',
+        program: {
+            label: 'Select A Program',
+            value: 129
+        },
         velType: 'Any',
+        velocity: {
+            label: 'Select A Velocity',
+            value: 129
+        },
         valType: 'Any',
         value: {
             label: 'Select A Value',
             value: 129
         },
         pbValType: 'Specific',
+        pbVal: 8192,
         songType: 'Specific',
         song: {
             label: 'Select A Song',
             value: 129
         },
-        pbVal: 8192,
-        sysexText: 'Enter Sysex Data'
+        mtc: {
+            rate: '29.97fps',
+            hour: '00',
+            min: '00',
+            sec: '00',
+            frame: '00',
+        },
+        sysexText: 'Enter Sysex Data',
+        sysex: 'Enter HEX data here'
     }
 
+    /////
     if (props.data.pickerData.type) {
-        defaultState = props.data.pickerData
+        //Merge shrunk picker data with defaultState
+        defaultState = Object.assign(defaultState, props.data.pickerData)
+        //defaultState = props.data.pickerData
     }
 
     const [state, setstate] = useState(defaultState)
 
     useEffect(() => {
         //console.log('State Changed')
-        props.sendData(props.id, state)
+        props.sendData(props.id, shrinkPicker())
     }, [state])
+
+    const shrinkPicker = () => {
+        let shrunkState = {}
+
+        shrunkState.id = state.id
+        shrunkState.parentCh = state.parentCh
+        shrunkState.type = state.type
+
+        switch (state.type.label) {
+            case 'None':
+                break;
+
+            case 'Note Off' || 'Note On':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.noteType = state.noteType
+                shrunkState.note = state.note
+                shrunkState.velType = state.velType
+                shrunkState.velocity = state.velocity
+                break;
+
+            case 'Control Change':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.ccType = state.ccType
+                shrunkState.cc = state.cc
+                shrunkState.valType = state.valType
+                shrunkState.value = state.value
+
+                break;
+
+            case 'Program Change':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.pgmType = state.pgmType
+                shrunkState.program = state.program
+                break;
+
+            case 'Pitch Bend':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.pbValType = state.pbValType
+                shrunkState.pbVal = state.pbVal
+                break;
+
+            case 'Sys Ex':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.sysexText = state.sysexText
+                shrunkState.sysex = state.sysex
+                break;
+
+            case 'MTC':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.mtc = state.mtc
+                break;
+
+            case 'Song Select':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.songType = state.songType
+                shrunkState.song = state.song
+                break;
+
+            case 'Start' || 'Stop' || 'Continue' || 'System Reset':
+                shrunkState.selectedIns = state.selectedIns
+                break;
+
+            default:
+                return state
+        }
+
+
+
+
+        console.log(shrunkState)
+        return shrunkState
+    }
 
     const getChannels = (channels) => {
         let tempState = { ...state }
@@ -122,7 +215,18 @@ export default function InputCommandPicker(props) {
     }
 
     const handleMtc = (rate, hour, min, sec, frm) => {
-        console.log(hour + ':' + min + ':' + sec + ':' + frm + ' ' + rate)
+        //console.log(hour + ':' + min + ':' + sec + ':' + frm + ' ' + rate)
+
+        let tempState = { ...state }
+        tempState.mtc.rate = rate
+        tempState.mtc.hour = hour
+        tempState.mtc.min = min
+        tempState.mtc.sec = sec
+        tempState.mtc.frame = frm
+        if (tempState.mtc !== state.mtc) {
+            setstate(tempState)
+        }
+
     }
 
     const handleInSelData = (theData) => {
@@ -152,6 +256,12 @@ export default function InputCommandPicker(props) {
     const handleValueChange = (theData) => {
         let tempState = { ...state }
         tempState.value = theData
+        setstate(tempState)
+    }
+
+    const handleVelocityChange = (theData) => {
+        let tempState = { ...state }
+        tempState.velocity = theData
         setstate(tempState)
     }
 
@@ -311,7 +421,7 @@ export default function InputCommandPicker(props) {
                     <b style={label}>Time:</b>
                 </td>
                 <td>
-                    <MTCinput sendMtc={handleMtc} />
+                    <MTCinput sendMtc={handleMtc} data={state.mtc} />
                 </td>
             </tr >
         )
@@ -359,6 +469,20 @@ export default function InputCommandPicker(props) {
     }
 
     const velSelect = () => {
+        let velocity = []
+        velocity.push(
+            <Select
+                key={'velocitySelest' + props.channel}
+                name='velocitySelector'
+                styles={selectStyle}
+                hideResetButton='true'
+                style={{ textAlign: 'left' }}
+                options={one127()}
+                value={state.velocity}
+                theme="default"
+                onChange={(e) => { handleVelocityChange(e) }}
+            />
+        )
         return (
             < tr key={'velocityInput' + props.channel}>
                 <td>
@@ -366,6 +490,7 @@ export default function InputCommandPicker(props) {
                 </td>
                 <td>
                     <SelectionType type="Velocity" data={state.velType} sendData={typeSelection} />
+                    {velocity}
                 </td>
             </tr >
         )
@@ -484,13 +609,6 @@ export default function InputCommandPicker(props) {
     const handleTypeChange = (theData) => {
         let tempState = { ...state }
         tempState.type = theData
-        setstate(tempState)
-    }
-
-    const handleChannelChange = (e) => {
-        //console.log(e)
-        let tempState = { ...state }
-        tempState.channel = e.value + 1
         setstate(tempState)
     }
 
@@ -652,7 +770,6 @@ const pickerTitle = {
     //border: '1px black solid',
     padding: '2px',
     textAlign: 'center',
-    userSelect: 'none'
 }
 
 const selectStyle = {
@@ -673,12 +790,11 @@ const selectStyle = {
         ...base,
         padding: '0px 8px'
     })
-};
+}
 
 const label = {
     textAlign: 'right',
     paddingLeft: '5px',
     fontSize: '12px',
-    userSelect: 'none',
 }
 //////////////////////////////////////////// Style //

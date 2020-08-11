@@ -3,7 +3,7 @@ import InputCommand from './inputPicker/InputCommand'
 import { v4 as uuid } from 'uuid';
 import NameInput from '../NameInput';
 import InputCommandPicker from './inputPicker/InputCommandPicker';
-import OutputCommandPickerv2 from './outputPicker/OutputCommandPickerv2';
+import OutputCommandPicker from './outputPicker/OutputCommandPicker';
 
 export default function CommandsContainer(props) {
     const [commands, setcommands] = useState(props.commands)
@@ -65,8 +65,9 @@ export default function CommandsContainer(props) {
 
     const handleAdd = () => {
         let tempCommands = [...commands]
+        let theid = uuid()
         tempCommands.push({
-            id: uuid(),
+            id: theid,
             commandName: Math.floor(Math.random(0) * 100000) + 1,
             pickerData: {}
         })
@@ -114,7 +115,6 @@ export default function CommandsContainer(props) {
                                             padding: '3px',
                                             border: '1px solid black',
                                             borderRadius: '3px',
-                                            userSelect: 'none',
                                         }}
                                         onClick={handleAdd}
                                     >
@@ -189,7 +189,7 @@ export default function CommandsContainer(props) {
         if (props.direction === 'in') {
             thePicker = (<InputCommandPicker id={showPicker.id} data={tempCommand()[0]} sendData={setPickerData} />)
         } else if (props.direction === 'out') {
-            thePicker = (<OutputCommandPickerv2 sendData={setPickerData} />)
+            thePicker = (<OutputCommandPicker id={showPicker.id} data={tempCommand()[0]} sendData={setPickerData} />)
         } else {
             console.log('No direction prop')
         }
@@ -212,7 +212,6 @@ export default function CommandsContainer(props) {
                                             padding: '3px',
                                             border: '1px solid black',
                                             borderRadius: '3px',
-                                            userSelect: 'none',
                                         }}
                                         onClick={handleReturnToList}
                                     >
@@ -276,6 +275,5 @@ const redBar = {
     width: '100%',
     backgroundColor: 'darkgrey',
     borderRadius: '3px',
-    userSelect: 'none',
     border: '1px solid grey',
 }

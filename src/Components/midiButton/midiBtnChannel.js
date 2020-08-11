@@ -1,15 +1,27 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import NameInput from "../utilities/NameInput"
 import MidiBtnButton from './MidiBtnButton'
 import CommandsContainer from '../utilities/pickers/CommandsContainer'
 import { MidiButtonChannelContext } from './Mid ButtonChannelContext'
 
-
 export default function MidiBtnChannel(props) {
     const [channel, setChannel] = useContext(MidiButtonChannelContext)
 
+    useEffect(() => {
+        //console.log('Props Snapshot triggered update')
+        if (props.snapshot !== undefined) {
+            let tempChannel = { ...props.snapshot }
+            setChannel(tempChannel)
+        }
+    }, [props.snapshot])
+
+    useEffect(() => {
+        //console.log('Channel ' + props.channel + ' send state')
+        //console.log(channel)
+        props.getChanelInfo(props.channel, channel)
+    }, [channel])
+
     const lblStyle = {
-        userSelect: 'none',
     }
 
     function setName(newName) {
@@ -25,7 +37,7 @@ export default function MidiBtnChannel(props) {
     }
 
     return (
-        <div style={{ width: '300px' }}>
+        <div style={{ width: '300px' }} className="channelstyle">
             <table style={{ width: '100%' }}>
                 <tbody>
                     <tr>
@@ -39,15 +51,8 @@ export default function MidiBtnChannel(props) {
                         </td>
                     </tr>
                     <tr>
-                        <td style={{
-                            backgroundColor: 'lightgrey',
-                            border: '1px solid grey',
-                            borderRadius: '10px',
-                            padding: '8px',
-                            fontSize: '12px',
-                            boxShadow: 'inset 1px 1px 6px'
-                        }}>
-                            <MidiBtnButton />
+                        <td className="insetui">
+                            <MidiBtnButton channel={channel} context={channel} />
                         </td>
                     </tr>
                     <tr>

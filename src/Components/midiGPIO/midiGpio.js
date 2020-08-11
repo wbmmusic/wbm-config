@@ -13,9 +13,9 @@ export default function MidiGpio() {
     const [savedSanpshot, setsavedSanpshot] = useState(state)
 
     const openFromFile = (event, arg) => {
-        console.log('GOT DATA FROM OPEN')
+        //console.log('GOT DATA FROM OPEN')
         let data = JSON.parse(arg)
-        console.log(data)
+        //console.log(data)
         setsavedSanpshot(data)
     }
 
@@ -32,7 +32,7 @@ export default function MidiGpio() {
         // Outer loop to create parent
         for (let i = 0; i < state.numberOfChannels; i++) {
             table.push(
-                <div key={'gpioChannelDiv' + i} style={chnl}>
+                <div key={'gpioChannelDiv' + i} style={{ display: 'inline-block' }}>
                     <MidiGpioChannelProvider key={'gpioChannelProvider' + i}>
                         <MidiGpioChannel
                             snapshot={savedSanpshot.channels[i]}
@@ -55,7 +55,7 @@ export default function MidiGpio() {
     }
 
     const openBtnPress = () => {
-        console.log('OPEN btn press')
+        //console.log('OPEN btn press')
         ipcRenderer.send('fileOpen', 'wbmgpio')
     }
 
@@ -65,7 +65,7 @@ export default function MidiGpio() {
     }
 
     const saveAsBtnPress = () => {
-        console.log('SAVE AS btn press')
+        //console.log('SAVE AS btn press')
         console.log(state)
         ipcRenderer.send('fileSaveAs', 'wbmgpio', JSON.stringify(state))
     }
@@ -81,26 +81,26 @@ export default function MidiGpio() {
                 paddingBottom: '4px'
             }}>
                 <b style={{ display: 'block' }}>MIDI GPIO</b>
-                <table style={{ display: 'inline-block', paddingLeft: '6px', userSelect: 'none' }}>
+                <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
                     <tbody>
                         <tr>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={openBtnPress}
                                 >Open</div>
                             </td>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={saveBtnPress}
                                 >Save</div>
                             </td>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={saveAsBtnPress}
                                 >Save As</div>
                             </td>
                             <td>
-                                <div style={openSaveBtns}
+                                <div className="opensavebtns"
                                     onMouseDown={seeState}
                                 >STATE</div>
                             </td>
@@ -111,23 +111,4 @@ export default function MidiGpio() {
             {createChannels()}
         </div>
     )
-}
-
-
-const chnl = {
-    backgroundColor: 'darkgrey',
-    display: 'inline-block',
-    padding: '3px',
-    border: '1px solid grey',
-    boxShadow: '1px 1px 6px',
-    margin: '3px',
-    borderRadius: "10px",
-}
-
-const openSaveBtns = {
-    backgroundColor: 'grey',
-    padding: '4px',
-    borderRadius: '4px',
-    fontSize: '12px',
-    cursor: 'context-menu'
 }

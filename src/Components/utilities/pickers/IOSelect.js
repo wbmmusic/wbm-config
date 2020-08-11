@@ -50,7 +50,6 @@ export default function InputSelect(props) {
                 border: '1px solid black',
                 cursor: 'context-menu',
                 borderRadius: '5px',
-                userSelect: 'none',
                 backgroundColor: 'white'
             }
 

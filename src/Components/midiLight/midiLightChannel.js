@@ -9,8 +9,6 @@ const { ipcRenderer } = window.require('electron')
 export default function MidiLightChannel(props) {
     const [channel, setChannel] = useContext(MidiLightChannelContext)
 
-    //console.log('Channel ' + props.channel + ' Render')
-
     useEffect(() => {
         //console.log('Props Snapshot triggered update')
         if (props.snapshot !== undefined) {
@@ -24,7 +22,6 @@ export default function MidiLightChannel(props) {
         //console.log(channel)
         props.getChanelInfo(props.channel, channel)
     }, [channel])
-
 
     const makePicker = () => {
         //console.log('Make Picker ' + props.channel)
@@ -73,7 +70,7 @@ export default function MidiLightChannel(props) {
     }
 
     return (
-        <div style={mainDiv}>
+        <div className="channelstyle">
             <table>
                 <tbody>
                     <tr>
@@ -120,17 +117,4 @@ export default function MidiLightChannel(props) {
 const tblcell = {
     textAlign: 'center',
     width: '300px'
-}
-
-const mainDiv = {
-    backgroundColor: 'darkgrey',
-    display: 'inline-block',
-    padding: '3px',
-    border: '1px solid grey',
-    boxShadow: '1px 1px 6px',
-    height: '100%',
-    margin: '3px',
-    borderRadius: "10px",
-    fontSize: '12px',
-    //height: '700px'
 }

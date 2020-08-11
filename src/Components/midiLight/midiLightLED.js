@@ -69,7 +69,7 @@ export default function MidiLightLED(props) {
         return (
             <tr>
                 <td style={label}><b>{lable}</b></td>
-                <td style={td}>
+                <td>
                     {userInterface}
                 </td>
             </tr>
@@ -88,7 +88,7 @@ export default function MidiLightLED(props) {
         return (
             <tr>
                 <td style={label}><b>Style:</b></td>
-                <td style={td}>
+                <td>
                     <div>
                         <Select
                             styles={styles}
@@ -182,8 +182,8 @@ export default function MidiLightLED(props) {
     }
 
     return (
-        <div style={mainDiv}>
-            <div style={{ userSelect: 'none' }}>LED Options v2</div>
+        <div className="insetui">
+            <div>LED Options v2</div>
             <hr />
             <table style={{ width: '100%' }}>
                 <colgroup>
@@ -191,8 +191,8 @@ export default function MidiLightLED(props) {
                 </colgroup>
                 <tbody>
                     <tr>
-                        <td style={td}>
-                            <div style={{ userSelect: 'none' }}><b>Color:</b></div>
+                        <td>
+                            <div><b>Color:</b></div>
                         </td>
                         <td style={dotCell} onMouseDown={clrPckr}>
                             <span style={{
@@ -223,10 +223,6 @@ export default function MidiLightLED(props) {
 
 
 //STYLE///////////////////////////////////////////////
-const td = {
-    //border: '1px black solid'
-}
-
 const dotCell = {
     alignContents: 'center',
 }
@@ -235,18 +231,6 @@ const label = {
     textAlign: 'right',
     paddingLeft: '5px',
     fontSize: '12px',
-    userSelect: 'none'
-}
-
-const mainDiv = {
-    backgroundColor: 'lightgrey',
-    padding: '8px',
-    maxWidth: '500px',
-    borderRadius: '10px',
-    margin: '4px',
-    fontSize: '12px',
-    border: '1px solid grey',
-    boxShadow: 'inset 1px 1px 6px'
 }
 
 const styles = {

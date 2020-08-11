@@ -1,12 +1,16 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useContext } from 'react'
+import ColorPicker from '../utilities/pickers/ColorPicker'
+import { MidiButtonChannelContext } from './Mid ButtonChannelContext'
 
 const momLatchOpts = ['Mom', 'Latch', 'Hold']
 
 export default function MidiBtnButton(props) {
     const [type, settype] = useState(momLatchOpts[0])
+    const [channel, setchannel] = useContext(MidiButtonChannelContext)
+    const [showColorPicker, setshowColorPicker] = useState(false)
 
     const lblStyle = {
-        userSelect: 'none',
+        width: '60px'
     }
 
     function handleTypeChange(e) {
@@ -22,7 +26,6 @@ export default function MidiBtnButton(props) {
                 borderRadius: '3px',
                 border: '1px solid grey',
                 padding: '3px',
-                userSelect: 'none'
             }
 
             if (type === momLatchOpts[i]) {
@@ -40,9 +43,6 @@ export default function MidiBtnButton(props) {
                 </td>
             )
         }
-
-
-
         return out
     }
 
@@ -56,43 +56,61 @@ export default function MidiBtnButton(props) {
                 <td >
                     <div
                         style={{
-                            backgroundColor: 'yellow',
+                            backgroundColor: 'hsl(' +
+                                channel.ledData.color[0] + ',' +
+                                channel.ledData.color[1] + '%,' +
+                                channel.ledData.color[2] + '%' +
+                                ')',
                             height: '20px',
                             borderRadius: '3px',
-                            boxShadow: 'inset 1px 1px 1px'
+                            boxShadow: 'inset 1px 1px 1px',
+                        }}
+                        onMouseDown={() => {
+                            if (!showColorPicker) {
+                                setshowColorPicker(true)
+                            }
                         }}
                     />
                 </td>
             </tr>
         )
 
-        table.push(
-            <tr key={'hrvSpcr'+ table.length}>
-                <td colSpan="2"><hr /></td>
-            </tr>
-        )
+        if (showColorPicker) {
+            table.push(
+                <tr key={'colorPicker' + props.channel.id}>
+                    <td colSpan='2'>
+                        <hr />
+                        <ColorPicker close={() => setshowColorPicker(false)} context={MidiButtonChannelContext} />
+                    </td>
+                </tr>
+            )
+        } else {
+            table.push(
+                <tr key={'hrvSpcr' + table.length}>
+                    <td colSpan="2"><hr /></td>
+                </tr>
+            )
 
-        table.push(
-            <tr  key={'typeSel'+ table.length}>
-                <td style={lblStyle}>
-                    <b>Type:</b>
-                </td>
-                <td>
-                    <table style={{ width: '100%' }}>
-                        <tbody>
-                            <tr>
-                                {momLatch()}
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        )
+            table.push(
+                <tr key={'typeSel' + table.length}>
+                    <td style={lblStyle}>
+                        <b>Type:</b>
+                    </td>
+                    <td>
+                        <table style={{ width: '100%' }}>
+                            <tbody>
+                                <tr>
+                                    {momLatch()}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            )
+        }
 
         return table
     }
-
-
 
     return (
         <Fragment>

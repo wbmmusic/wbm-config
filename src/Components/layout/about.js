@@ -19,7 +19,6 @@ export default function About() {
 
     const [state, setstate] = useState(defaultState)
 
-
     return (
         <div>
                 <Matraces

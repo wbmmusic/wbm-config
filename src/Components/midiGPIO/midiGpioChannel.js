@@ -33,36 +33,53 @@ export default function MidiGpioChannel(props) {
         let tempChannel = { ...channel }
         switch (e.target.id) {
             case 'ringBtn':
-                tempChannel.pickRing = true
+                if (!tempChannel.pickRing) {
+                    tempChannel.pickRing = true
+                    setChannel(tempChannel)
+                }
                 break;
 
             case 'tipBtn':
-                tempChannel.pickRing = false
+                if (tempChannel.pickRing) {
+                    tempChannel.pickRing = false
+                    setChannel(tempChannel)
+                }
                 break;
 
             case 'outBtn':
-                tempChannel.in = false
+                if (tempChannel.in) {
+                    tempChannel.in = false
+                    setChannel(tempChannel)
+                }
                 break;
 
             case 'inBtn':
-                tempChannel.in = true
+                if (!tempChannel.in) {
+                    tempChannel.in = true
+                    setChannel(tempChannel)
+                }
                 break;
 
             case 'tsBtn':
-                tempChannel.trs = false
-                tempChannel.pickRing = false
+                if (tempChannel.trs || tempChannel.pickRing) {
+                    tempChannel.trs = false
+                    tempChannel.pickRing = false
+                    setChannel(tempChannel)
+                }
                 break;
 
             case 'trsBtn':
-                tempChannel.trs = true
-                tempChannel.pickRing = false
+                if (!tempChannel.trs || tempChannel.pickRing) {
+                    tempChannel.trs = true
+                    tempChannel.pickRing = false
+                    setChannel(tempChannel)
+                }
                 break;
 
             default:
                 alert('Error in handle press MIDI GPIO CHANNEL')
-                break;
+                return;
         }
-        setChannel(tempChannel)
     }
 
     const tipRingBtns = () => {
@@ -70,16 +87,7 @@ export default function MidiGpioChannel(props) {
             return
         } else {
             return (
-                <div
-                    style={{
-                        backgroundColor: 'lightgrey',
-                        borderRadius: '10px',
-                        padding: '8px',
-                        border: '1px solid grey',
-                        boxShadow: 'inset 1px 1px 6px',
-                        fontSize: '12px'
-                    }}
-                >
+                <div className="insetui">
                     View
                     <hr />
                     <table style={{ width: '100%' }}>
@@ -131,22 +139,22 @@ export default function MidiGpioChannel(props) {
 
         let tempChannel = { ...channel }
 
-        if (channel.in && channel.trs) {
+        if (channel.in && channel.pickRing) {
             //console.log('Ring In Commands')
             tempChannel.ringIn.commands = e
-        } else if (!channel.in && channel.trs) {
+        } else if (!channel.in && channel.pickRing) {
             //console.log('Ring Out Commands')
             tempChannel.ringOut.commands = e
-        } else if (channel.in && !channel.trs) {
+        } else if (channel.in && !channel.pickRing) {
             //console.log('Tip In Commands')
             tempChannel.tipIn.commands = e
-        } else if (!channel.in && !channel.trs) {
+        } else if (!channel.in && !channel.pickRing) {
             //console.log('Tip Out Commands')
             tempChannel.tipOut.commands = e
+        } else {
+            alert('Error In Channel Get Structure')
         }
-
         setChannel(tempChannel)
-
     }
 
     const makePicker = () => {
@@ -155,7 +163,7 @@ export default function MidiGpioChannel(props) {
             //console.log('Show GPI RING')
             return (
                 <CommandsContainer
-                    key="gpiRingContainer"
+                    key={"gpiRingContainer" + props.id}
                     direction="out"
                     sendCommands={getStructure}
                     commands={channel.ringIn.commands}
@@ -165,7 +173,7 @@ export default function MidiGpioChannel(props) {
             //console.log('Show GPO RING')
             return (
                 <CommandsContainer
-                    key="gpoRingContainer"
+                    key={"gpoRingContainer" + props.id}
                     direction="in"
                     sendCommands={getStructure}
                     commands={channel.ringOut.commands}
@@ -175,7 +183,7 @@ export default function MidiGpioChannel(props) {
             //console.log('Show GPI TIP')
             return (
                 <CommandsContainer
-                    key="gpiTipContainer"
+                    key={"gpiTipContainer" + props.id}
                     direction="out"
                     sendCommands={getStructure}
                     commands={channel.tipIn.commands}
@@ -185,7 +193,7 @@ export default function MidiGpioChannel(props) {
             //console.log('Show GPO TIP')
             return (
                 <CommandsContainer
-                    key="gpoTipContainer"
+                    key={"gpoTipContainer" + props.id}
                     direction="in"
                     sendCommands={getStructure}
                     commands={channel.tipOut.commands}
@@ -194,21 +202,11 @@ export default function MidiGpioChannel(props) {
         } else {
             console.log('---ERROR Choosing CommandContainer Settings')
         }
-
     }
 
     const portSettings = () => {
         return (
-            <div
-                style={{
-                    backgroundColor: 'lightgrey',
-                    padding: '8px',
-                    borderRadius: '10px',
-                    border: '1px solid grey',
-                    boxShadow: 'inset 1px 1px 6px',
-                    fontSize: '12px'
-                }}
-            >
+            <div className="insetui">
                 Port Settings
                 <hr />
                 <table style={{ width: '100%' }}>
@@ -289,7 +287,7 @@ export default function MidiGpioChannel(props) {
     }
 
     return (
-        <div style={{ width: '300px' }}>
+        <div style={{ width: '300px' }} className="channelstyle">
             <table style={{ width: '100%' }}>
                 <tbody>
                     <tr>
@@ -297,11 +295,11 @@ export default function MidiGpioChannel(props) {
                             textAlign: 'center',
                             fontSize: '14px'
                         }}>
-                            <b style={{ userSelect: 'none' }}>I/O #{props.channel}</b>
+                            <b>I/O #{props.channel}</b>
                             <div>
                                 <NameInput value={channel.name} setValue={setName} />
                             </div>
-                            <button style={{ borderRadius: '4px' }} onMouseDown={printState}>STATE</button>
+                            {/* <button style={{ borderRadius: '4px' }} onMouseDown={printState}>STATE</button> */}
                         </td>
                     </tr>
                     <tr>

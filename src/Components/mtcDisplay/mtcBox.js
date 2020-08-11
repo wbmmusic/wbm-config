@@ -52,7 +52,7 @@ export class mtcBox extends Component {
                 padding: '20px',
                 margin: '0 auto'
             }}>
-                <b style={{ display: 'block', userSelect: 'none' }}>MTC Display</b>
+                <b style={{ display: 'block' }}>MTC Display</b>
                 <br></br>
                 <div>
                     <MtcDisplay
@@ -69,10 +69,10 @@ export class mtcBox extends Component {
                     <table>
                         <tbody>
                             <tr>
-                                <td style={{ userSelect: 'none' }}>
+                                <td>
                                     Rate:
                                 </td>
-                                <td style={{ userSelect: 'none' }}>
+                                <td>
                                     {this.state.frameRate}
                                 </td>
                             </tr>

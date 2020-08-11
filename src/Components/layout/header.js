@@ -21,7 +21,7 @@ const headerStyle = {
     color: 'white',
     textAlign: 'center',
     paddingBottom: '10px',
-    paddingTop: '22px'
+    paddingTop: '22px',
 }
 
 const linkStyle = {
