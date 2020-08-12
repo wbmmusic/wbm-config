@@ -11,7 +11,8 @@ export default function DevInfo() {
     const [state, setstate] = useState(defaultState)
 
     var deviceEvent = (event, devList) => {
-        makeDevTabel(devList)
+        console.log('IN DEV LIST')
+        makeDevTabel(JSON.parse(devList))
     }
 
     useEffect(() => {

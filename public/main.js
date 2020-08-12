@@ -35,10 +35,8 @@ const { autoUpdater } = require('electron-updater');
 //File System
 var fs = require('fs');
 
-
 //TABLE OF CONNECTED DEVICES
 let conDevs = []
-
 
 var menuTemplate = [
   // { role: 'appMenu' }
@@ -506,6 +504,9 @@ function createPort(path, serNum) {
   //Add the serial number
   conDevs[targetPort].info.serialNumber = serNum
 
+  //console.log('HEREEEE')
+  //console.log(conDevs[targetPort])
+
   //request the devices info
   console.log("REQUESTING DEV INFO")
   conDevs[targetPort].port.write('WBM ID REQ')
@@ -559,7 +560,7 @@ function createPort(path, serNum) {
 
     //Update the Devices menu to display new device
     redrawDeviceMenu()
-    win.webContents.send('devList', conDevs)
+    win.webContents.send('devList', JSON.stringify(conDevs))
   })
 }
 
@@ -629,7 +630,7 @@ function usbDisconnected(device) {
 
       //Remove it from the devices menu
       redrawDeviceMenu()
-      win.webContents.send('devList', conDevs)
+      win.webContents.send('devList', JSON.stringify(conDevs))
     }
   }
 }
@@ -718,7 +719,8 @@ function findSerNumInAvailPorts(targetSerNum) {
 
 //Renderer wants to see conDevs
 ipcMain.on('showDevs', (event) => {
-  event.reply('devList', conDevs)
+  console.log('GOT SHOW DEVS REQUEST')
+  event.reply('devList', JSON.stringify(conDevs))
 })
 
 //IF A DEVICE IS SELECTED IN THE DEVICES MENU
