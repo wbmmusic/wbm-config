@@ -1,21 +1,21 @@
 import React from 'react'
 
-function bit_test(num, bit) {
+const bit_test = (num, bit) => {
     return ((num >> bit) % 2 != 0)
 }
 
-function bit_set(num, bit) {
+const bit_set = (num, bit) => {
     return num | (1 << bit);
 }
 
-function bit_toggle(num, bit) {
+const bit_toggle = (num, bit) => {
     return num ^= (1 << bit);
 }
 
 
 export default function InputSelect(props) {
 
-    function handleClick(e) {
+    const handleClick = (e) => {
         var tempData = props.data.selection
 
         if (e.target.id === 'ALL') {
@@ -42,15 +42,16 @@ export default function InputSelect(props) {
         }
     }
 
-    function makeTable() {
+    const makeTable = () => {
         let tbl = []
 
         for (var i = 0; i <= props.data.ins; i++) {
             var cellSty = {
                 border: '1px solid black',
-                cursor: 'context-menu',
+                cursor: 'pointer',
                 borderRadius: '5px',
-                backgroundColor: 'white'
+                backgroundColor: 'white',
+                textAlign: 'center'
             }
 
             // A channel Button
@@ -93,9 +94,7 @@ export default function InputSelect(props) {
                     </td>
                 )
             }
-
         }
-
         return tbl
     }
 

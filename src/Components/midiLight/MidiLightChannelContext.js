@@ -11,7 +11,13 @@ export const MidiLightChannelProvider = (props) => {
                 label: 'Solid',
                 value: 0
             },
-            sliderval: 20
+            sliderval: 20,
+            rise: 15,
+            fall: 30,
+            drtn: 45,
+            len: 60,
+            freq: 75,
+            low: 90
         },
         commands: []
     })

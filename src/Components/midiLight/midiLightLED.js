@@ -1,14 +1,15 @@
 import React, { useEffect, Fragment, useContext, useState } from 'react'
 import Select from 'react-select'
-import Slider, { Range } from 'rc-slider';
+import Slider from 'rc-slider';
 
 import 'rc-slider/assets/index.css';
 import ColorPicker from '../utilities/pickers/ColorPicker';
+import { defaultSliderStyle } from '../../Styles/SliderStyle';
 
 const { ipcRenderer } = window.require('electron')
 
 export default function MidiLightLED(props) {
-    let allTypes = ['Solid', 'Flash', 'Blink', 'Breath']
+    let allTypes = ['Solid', 'Flash', 'Blink', 'Breathe']
     let typesDropDown = []
     createOptions(allTypes, typesDropDown)
 
@@ -37,9 +38,76 @@ export default function MidiLightLED(props) {
         setshowColorPicker(true)
     }
 
-    const aSlider = (val) => {
+    const sliderChange = (name, value) => {
+        let tempChannel = { ...channel }
+        switch (name) {
+            case 'Rise':
+                tempChannel.ledData.rise = value
+                setChannel(tempChannel)
+                break;
+
+            case 'Fall':
+                tempChannel.ledData.fall = value
+                setChannel(tempChannel)
+                break;
+
+            case 'Drtn':
+                tempChannel.ledData.drtn = value
+                setChannel(tempChannel)
+                break;
+
+            case 'Len':
+                tempChannel.ledData.len = value
+                setChannel(tempChannel)
+                break;
+
+            case 'Freq':
+                tempChannel.ledData.freq = value
+                setChannel(tempChannel)
+                break;
+
+            case 'Low':
+                tempChannel.ledData.low = value
+                setChannel(tempChannel)
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    const aSlider = (sliderType) => {
+        let thisVal
+        switch (sliderType) {
+            case 'Rise':
+                thisVal = channel.ledData.rise
+                break;
+
+            case 'Fall':
+                thisVal = channel.ledData.fall
+                break;
+
+            case 'Drtn':
+                thisVal = channel.ledData.drtn
+                break;
+
+            case 'Len':
+                thisVal = channel.ledData.len
+                break;
+
+            case 'Freq':
+                thisVal = channel.ledData.freq
+                break;
+
+            case 'Low':
+                thisVal = channel.ledData.low
+                break;
+
+            default:
+                break;
+        }
         return (
-            <table key="aSlider" style={{ width: '100%' }}>
+            <table key={sliderType + 'SliderCh' + props.channel} style={{ width: '100%' }}>
                 <tbody>
                     <tr>
                         <td style={label}>
@@ -50,7 +118,11 @@ export default function MidiLightLED(props) {
                             padding: "0px 12px"
                         }}>
                             <div>
-                                <Slider />
+                                <Slider
+                                    {...defaultSliderStyle}
+                                    value={thisVal}
+                                    onChange={(e) => sliderChange(sliderType, e)}
+                                />
                             </div>
                         </td>
                     </tr>
@@ -120,9 +192,9 @@ export default function MidiLightLED(props) {
                         <Fragment>
                             {stylePicker()}
                             {horizontalLine()}
-                            {slot('Rise:', aSlider())}
+                            {slot('Rise:', aSlider('Rise'))}
                             {horizontalLine()}
-                            {slot('Fall:', aSlider())}
+                            {slot('Fall:', aSlider('Fall'))}
                         </Fragment>
                     )
 
@@ -131,11 +203,11 @@ export default function MidiLightLED(props) {
                         <Fragment>
                             {stylePicker()}
                             {horizontalLine()}
-                            {slot('Drtn:', aSlider())}
+                            {slot('Drtn:', aSlider('Drtn'))}
                             {horizontalLine()}
-                            {slot('Rise:', aSlider())}
+                            {slot('Rise:', aSlider('Rise'))}
                             {horizontalLine()}
-                            {slot('Fall:', aSlider())}
+                            {slot('Fall:', aSlider('Fall'))}
                         </Fragment>
                     )
 
@@ -144,22 +216,22 @@ export default function MidiLightLED(props) {
                         <Fragment>
                             {stylePicker()}
                             {horizontalLine()}
-                            {slot('Freq:', aSlider())}
+                            {slot('Freq:', aSlider('Freq'))}
                             {horizontalLine()}
-                            {slot('Len:', aSlider())}
+                            {slot('Len:', aSlider('Len'))}
                             {horizontalLine()}
-                            {slot('Fall:', aSlider())}
+                            {slot('Fall:', aSlider('Fall'))}
                         </Fragment>
                     )
 
-                case 'Breath':
+                case 'Breathe':
                     return (
                         <Fragment>
                             {stylePicker()}
                             {horizontalLine()}
-                            {slot('Freq:', aSlider())}
+                            {slot('Freq:', aSlider('Freq'))}
                             {horizontalLine()}
-                            {slot('Low:', aSlider())}
+                            {slot('Low:', aSlider('Low'))}
                         </Fragment>
                     )
 
@@ -183,7 +255,7 @@ export default function MidiLightLED(props) {
 
     return (
         <div className="insetui">
-            <div>LED Options v2</div>
+            <div>LED Options</div>
             <hr />
             <table style={{ width: '100%' }}>
                 <colgroup>
@@ -197,7 +269,7 @@ export default function MidiLightLED(props) {
                         <td style={dotCell} onMouseDown={clrPckr}>
                             <span style={{
                                 height: '20px',
-                                width: '90%',
+                                width: '100%',
                                 backgroundColor: 'hsl(' +
                                     channel.ledData.color[0] + ',' +
                                     channel.ledData.color[1] + '%,' +
@@ -219,7 +291,6 @@ export default function MidiLightLED(props) {
         </div>
     )
 }
-
 
 
 //STYLE///////////////////////////////////////////////

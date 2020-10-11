@@ -25,7 +25,7 @@ export default function CommandsContainer(props) {
 
         for (var i = 0; i < commands.length; i++) {
             if (commands[i].id === idx) {
-                console.log('--------Got A Match at ' + i)
+                //console.log('--------Got A Match at ' + i)
                 let tempCmd = [...commands]
                 tempCmd[i].pickerData = data
                 setcommands(tempCmd)
@@ -161,6 +161,7 @@ export default function CommandsContainer(props) {
                         </tbody>
                     </table>
                 </div>
+                <button onMouseDown={handleShowCommands}>Log Commands</button>
             </Fragment>
         )
     }
@@ -230,16 +231,6 @@ export default function CommandsContainer(props) {
                 <div>
                     {thePicker}
                 </div>
-                <div
-                    style={{
-                        fontSize: '12px',
-                        backgroundColor: 'lightgrey',
-                        borderRadius: '3px',
-                        padding: '2px'
-                    }}
-                >
-                    {showPicker.id}
-                </div>
             </Fragment>
         )
     }
@@ -265,7 +256,6 @@ export default function CommandsContainer(props) {
         >
             <div style={{ margin: '8px' }}>
                 {makeBody()}
-                <button onMouseDown={handleShowCommands}>Log Commands</button>
             </div>
         </div>
     )

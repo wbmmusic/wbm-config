@@ -239,8 +239,6 @@ export class outputCmdPicker extends Component {
     
 
     render() {
-        //console.log('Render')
-        //Rows default to being empty
         let byte0data = []
         let byte1data = []
         let byte2data = []

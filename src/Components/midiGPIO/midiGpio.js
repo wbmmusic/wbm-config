@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import MidiGpioChannel from './midiGpioChannel'
 import { MidiGpioChannelProvider } from './MidiGpioChannelContext'
+import NameInput from '../utilities/NameInput'
 
 const { ipcRenderer } = window.require('electron')
 
@@ -9,6 +10,8 @@ export default function MidiGpio() {
         numberOfChannels: 6,
         channels: []
     }
+
+    let deviceName = 'Name Me'
 
     const [savedSanpshot, setsavedSanpshot] = useState(state)
 
@@ -74,6 +77,10 @@ export default function MidiGpio() {
         console.log(state)
     }
 
+    const setdeviceName = (newName) => {
+        
+    }
+
     return (
         <div>
             <div style={{
@@ -81,6 +88,7 @@ export default function MidiGpio() {
                 paddingBottom: '4px'
             }}>
                 <b style={{ display: 'block' }}>MIDI GPIO</b>
+                <NameInput value={deviceName} setValue={setdeviceName} />
                 <table style={{ display: 'inline-block', paddingLeft: '6px' }}>
                     <tbody>
                         <tr>

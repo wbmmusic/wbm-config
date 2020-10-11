@@ -50,7 +50,9 @@ export class mtcBox extends Component {
         return (
             <div style={{
                 padding: '20px',
-                margin: '0 auto'
+                margin: '0 auto',
+                textAlign: 'center',
+                backgroundColor:'grey'
             }}>
                 <b style={{ display: 'block' }}>MTC Display</b>
                 <br></br>

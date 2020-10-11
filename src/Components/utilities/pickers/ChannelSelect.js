@@ -40,9 +40,10 @@ export default function ChannelSelect(props) {
         for (var i = 0; i < 17; i++) {
             let cellStyle = {
                 border: '1px solid black',
-                cursor: 'context-menu',
+                cursor: 'pointer',
                 borderRadius: '5px',
-                backgroundColor: 'white'
+                backgroundColor: 'white',
+                textAlign:'center'
             }
 
             if (i === 0) {

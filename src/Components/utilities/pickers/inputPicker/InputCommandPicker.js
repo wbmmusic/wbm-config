@@ -12,6 +12,9 @@ import ChannelSelect from '../ChannelSelect'
 import SelectionType from '../SelectionType'
 import SysExInput from '../SysExInput'
 import MTCinput from '../MTCinput'
+import { Range } from 'rc-slider'
+import { defaultSliderStyle, defaultRangeStyle } from '../../../../Styles/SliderStyle'
+import Slider from 'rc-slider'
 
 export default function InputCommandPicker(props) {
     let defaultState = {
@@ -25,37 +28,20 @@ export default function InputCommandPicker(props) {
         selectedCh: 256,
         channel: 11,
         noteType: 'Specific',
-        note: {
-            label: 'Select A Note',
-            value: 129
-        },
+        note: null,
         ccType: 'Specific',
-        cc: {
-            label: 'Select A Controller',
-            value: 129
-        },
+        cc: null,
         pgmType: 'Specific',
-        program: {
-            label: 'Select A Program',
-            value: 129
-        },
+        program: null,
         velType: 'Any',
-        velocity: {
-            label: 'Select A Velocity',
-            value: 129
-        },
+        velocity: null,
         valType: 'Any',
-        value: {
-            label: 'Select A Value',
-            value: 129
-        },
+        value: null,
         pbValType: 'Specific',
-        pbVal: 8192,
+        pbVal: 0,
+        pbRange: [-2000, 2000],
         songType: 'Specific',
-        song: {
-            label: 'Select A Song',
-            value: 129
-        },
+        song: null,
         mtc: {
             rate: '29.97fps',
             hour: '00',
@@ -102,6 +88,16 @@ export default function InputCommandPicker(props) {
                 shrunkState.velocity = state.velocity
                 break;
 
+            case 'Note On':
+                shrunkState.selectedIns = state.selectedIns
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.noteType = state.noteType
+                shrunkState.note = state.note
+                shrunkState.velType = state.velType
+                shrunkState.velocity = state.velocity
+                break;
+
             case 'Control Change':
                 shrunkState.selectedIns = state.selectedIns
                 shrunkState.selectedCh = state.selectedCh
@@ -127,6 +123,7 @@ export default function InputCommandPicker(props) {
                 shrunkState.channel = state.channel
                 shrunkState.pbValType = state.pbValType
                 shrunkState.pbVal = state.pbVal
+                shrunkState.pbRange = state.pbRange
                 break;
 
             case 'Sys Ex':
@@ -153,11 +150,6 @@ export default function InputCommandPicker(props) {
             default:
                 return state
         }
-
-
-
-
-        console.log(shrunkState)
         return shrunkState
     }
 
@@ -271,17 +263,37 @@ export default function InputCommandPicker(props) {
         setstate(tempState)
     }
 
-    const handleRangeChange = (e) => {
-        var tempName = e.target.name
-        if (tempName === 'PitchBend') {
-            let tempState = { ...state }
-            tempState.pbVal = e.target.value
-            setstate(tempState)
-        } else if (tempName === 'PitchBendBox') {
-            let tempState = { ...state }
-            tempState.pbVal = parseInt(e.target.value) + 8192
-            setstate(tempState)
-        }
+    const handleSpecificPbChange = (e) => {
+        let tempState = { ...state }
+        tempState.pbVal = parseInt(e.target.value)
+        setstate(tempState)
+    }
+
+    const handleSpecificPbSliderChange = (e) => {
+        let tempState = { ...state }
+        tempState.pbVal = e
+        setstate(tempState)
+    }
+
+    const handlePbRangeSliderChange = (e) => {
+        //console.log(e)
+        let tempState = { ...state }
+        tempState.pbRange = [...e]
+        setstate(tempState)
+    }
+
+    const handleRangeLowPbChange = (e) => {
+        console.log(e)
+        let tempState = { ...state }
+        tempState.pbRange[0] = e.target.value
+        setstate(tempState)
+    }
+
+    const handleRangeHighPbChange = (e) => {
+        console.log(e)
+        let tempState = { ...state }
+        tempState.pbRange[1] = e.target.value
+        setstate(tempState)
     }
 
     const inputSelect = () => {
@@ -321,16 +333,28 @@ export default function InputCommandPicker(props) {
             )
         } else if (state.noteType === 'Multiple') {
             xyz.push(
-                <b>Multi Select</b>
+                <Select
+                    key={'noteSelection' + props.channel}
+                    name='noteSelector'
+                    isMulti
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={noteDropDown()}
+                    value={state.note}
+                    theme="default"
+                    onChange={(e) => { handleNoteChange(e) }}
+                />
             )
         } else if (state.noteType === 'Range') {
             xyz.push(
-                <input
-                    type="range"
-                    style={{
-                        width: '100%',
-                    }}
-                />
+                <div key="noteRange" style={rangeDiv}                >
+                    <Range
+                        {...defaultRangeStyle}
+                        min={0}
+                        max={127}
+                    />
+                </div>
             )
         } else if (state.noteType === 'Any') {
             //NOTHING
@@ -370,6 +394,31 @@ export default function InputCommandPicker(props) {
                     onChange={(e) => { handleCcChange(e) }}
                 />
             )
+        } else if (state.ccType === 'Multiple') {
+            body.push(
+                <Select
+                    key={'ccSpecificTypeSelect' + props.channel}
+                    name='noteSelector'
+                    isMulti
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={ccDropDown()}
+                    value={state.cc}
+                    theme="default"
+                    onChange={(e) => { handleCcChange(e) }}
+                />
+            )
+        } else if (state.ccType === 'Range') {
+            body.push(
+                <div key="pbRange" style={rangeDiv}                >
+                    <Range
+                        {...defaultRangeStyle}
+                        min={0}
+                        max={127}
+                    />
+                </div>
+            )
         }
 
 
@@ -388,19 +437,48 @@ export default function InputCommandPicker(props) {
 
     const pgmSelect = () => {
         let pgm = []
-        pgm.push(
-            <Select
-                key={'pgmSelector' + props.channel}
-                name='typeSelector'
-                styles={selectStyle}
-                hideResetButton='true'
-                style={{ textAlign: 'left' }}
-                options={one127()}
-                value={state.program}
-                theme="default"
-                onChange={(e) => { handlePgmChange(e) }}
-            />
-        )
+
+        if (state.pgmType === 'Specific') {
+            pgm.push(
+                <Select
+                    key={'pgmSelector' + props.channel}
+                    name='typeSelector'
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.program}
+                    theme="default"
+                    onChange={(e) => { handlePgmChange(e) }}
+                />
+            )
+        } else if (state.pgmType === 'Multiple') {
+            pgm.push(
+                <Select
+                    key={'pgmSelector' + props.channel}
+                    name='typeSelector'
+                    isMulti
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.program}
+                    theme="default"
+                    onChange={(e) => { handlePgmChange(e) }}
+                />
+            )
+        } else if (state.pgmType === 'Range') {
+            pgm.push(
+                <div key="pbRange" style={rangeDiv}                >
+                    <Range
+                        {...defaultRangeStyle}
+                        min={0}
+                        max={127}
+                    />
+                </div>
+            )
+        }
+
         return (
             < tr key={'pgmSelectorOut' + props.channel}>
                 <td>
@@ -442,19 +520,43 @@ export default function InputCommandPicker(props) {
 
     const songSelect = () => {
         let song = []
-        song.push(
-            <Select
-                key={'songSelector' + props.channel}
-                name='songSelector'
-                styles={selectStyle}
-                hideResetButton='true'
-                style={{ textAlign: 'left' }}
-                options={one127()}
-                value={state.song}
-                theme="default"
-                onChange={(e) => { handleSongChange(e) }}
-            />
-        )
+
+        if (state.songType === 'Specific') {
+            song.push(
+                <Select
+                    key={'songSelector' + props.channel}
+                    name='songSelector'
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.song}
+                    theme="default"
+                    onChange={(e) => { handleSongChange(e) }}
+                />
+            )
+        } else if (state.songType === 'Multiple') {
+            song.push(
+                <Select
+                    key={'songSelector' + props.channel}
+                    name='songSelector'
+                    isMulti
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.song}
+                    theme="default"
+                    onChange={(e) => { handleSongChange(e) }}
+                />
+            )
+        } else if (state.songType === 'Range') {
+            song.push(
+                <div key="songRange" style={rangeDiv}                >
+                    <Range {...defaultRangeStyle} />
+                </div>
+            )
+        }
         return (
             < tr key={'songSelectorOut' + props.channel}>
                 <td>
@@ -470,19 +572,48 @@ export default function InputCommandPicker(props) {
 
     const velSelect = () => {
         let velocity = []
-        velocity.push(
-            <Select
-                key={'velocitySelest' + props.channel}
-                name='velocitySelector'
-                styles={selectStyle}
-                hideResetButton='true'
-                style={{ textAlign: 'left' }}
-                options={one127()}
-                value={state.velocity}
-                theme="default"
-                onChange={(e) => { handleVelocityChange(e) }}
-            />
-        )
+
+        if (state.velType === 'Specific') {
+            velocity.push(
+                <Select
+                    key={'velocitySelest' + props.channel}
+                    name='velocitySelector'
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.velocity}
+                    theme="default"
+                    onChange={(e) => { handleVelocityChange(e) }}
+                />
+            )
+        } else if (state.velType === 'Multiple') {
+            velocity.push(
+                <Select
+                    key={'velocitySelest' + props.channel}
+                    name='velocitySelector'
+                    isMulti
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.velocity}
+                    theme="default"
+                    onChange={(e) => { handleVelocityChange(e) }}
+                />
+            )
+        } else if (state.velType === 'Range') {
+            velocity.push(
+                <div key="pbRange" style={rangeDiv}                >
+                    <Range
+                        {...defaultRangeStyle}
+                        min={0}
+                        max={127}
+                    />
+                </div>
+            )
+        }
+
         return (
             < tr key={'velocityInput' + props.channel}>
                 <td>
@@ -500,25 +631,22 @@ export default function InputCommandPicker(props) {
         let abc = []
         if (state.pbValType === 'Specific') {
             abc.push(
-                <Fragment key={'pitchBendInput' + props.id}>
-                    <input
-                        name='PitchBend'
-                        type="range"
-                        min="0"
-                        max="16383"
+                <Fragment key={'pbInputCh' + props.channel}>
+                    <Slider
+                        {...defaultSliderStyle}
+                        onChange={handleSpecificPbSliderChange}
+                        min={-8192}
+                        max={8191}
                         value={state.pbVal}
-                        onChange={handleRangeChange}
-                        style={{
-                            width: '100%',
-                        }}
                     />
                     <input
+                        key={'pitchBendInput' + props.id}
                         name='PitchBendBox'
                         type="number"
                         min="-8192"
                         max="8191"
-                        value={state.pbVal - 8192}
-                        onChange={handleRangeChange}
+                        value={state.pbVal}
+                        onChange={handleSpecificPbChange}
                         style={{
                             textAlign: 'center'
                         }}
@@ -531,25 +659,35 @@ export default function InputCommandPicker(props) {
             )
         } else if (state.pbValType === 'Range') {
             abc.push(
-                <Fragment>
+                <Fragment key={'pbRangeInputCh' + props.channel}>
+                    <div style={rangeDiv}                >
+                        <Range
+                            {...defaultRangeStyle}
+                            min={-8192}
+                            max={8191}
+                            value={state.pbRange}
+                            onChange={handlePbRangeSliderChange}
+                        />
+                    </div>
                     <input
-                        name='PitchBend'
-                        type="range"
-                        min="0"
-                        max="16383"
-                        value={state.pbVal}
-                        onChange={handleRangeChange}
-                        style={{
-                            width: '100%',
-                        }}
-                    />
-                    <input
-                        name='PitchBendBox'
+                        name={'PitchBendRangeLowBoxCh' + props.channel}
                         type="number"
                         min="-8192"
                         max="8191"
-                        value={state.pbVal - 8192}
-                        onChange={handleRangeChange}
+                        value={state.pbRange[0]}
+                        onChange={handleRangeLowPbChange}
+                        style={{
+                            textAlign: 'center'
+                        }}
+                    />
+                    {' - '}
+                    <input
+                        name={'PitchBendRangeHighBoxCh' + props.channel}
+                        type="number"
+                        min="-8192"
+                        max="8191"
+                        value={state.pbRange[1]}
+                        onChange={handleRangeHighPbChange}
                         style={{
                             textAlign: 'center'
                         }}
@@ -580,19 +718,48 @@ export default function InputCommandPicker(props) {
 
     const valSelect = () => {
         let value = []
-        value.push(
-            <Select
-                key={'valueSelest' + props.channel}
-                name='valueSelector'
-                styles={selectStyle}
-                hideResetButton='true'
-                style={{ textAlign: 'left' }}
-                options={one127()}
-                value={state.value}
-                theme="default"
-                onChange={(e) => { handleValueChange(e) }}
-            />
-        )
+
+        if (state.valType === 'Specific') {
+            value.push(
+                <Select
+                    key={'valueSelest' + props.channel}
+                    name='valueSelector'
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.value}
+                    theme="default"
+                    onChange={(e) => { handleValueChange(e) }}
+                />
+            )
+        } else if (state.valType === 'Multiple') {
+            value.push(
+                <Select
+                    key={'valueSelest' + props.channel}
+                    name='valueSelector'
+                    isMulti
+                    styles={selectStyle}
+                    hideResetButton='true'
+                    style={{ textAlign: 'left' }}
+                    options={one127()}
+                    value={state.value}
+                    theme="default"
+                    onChange={(e) => { handleValueChange(e) }}
+                />
+            )
+        } else if (state.valType === 'Range') {
+            value.push(
+                <div key="pbRange" style={rangeDiv}                >
+                    <Range
+                        {...defaultRangeStyle}
+                        min={0}
+                        max={127}
+                    />
+                </div>
+            )
+        }
+
         return (
             < tr key={'valueSelector' + props.channel} >
                 <td>
@@ -721,7 +888,7 @@ export default function InputCommandPicker(props) {
                 <tbody>
                     <tr>
                         <td colSpan="2" style={pickerTitle}>
-                            Input Command Picker v2
+                            Input Command Picker
                             </td>
                     </tr>
                     {horizontalSpacer}
@@ -796,5 +963,10 @@ const label = {
     textAlign: 'right',
     paddingLeft: '5px',
     fontSize: '12px',
+}
+
+const rangeDiv = {
+    marginTop: '10px',
+    padding: '0px 10px'
 }
 //////////////////////////////////////////// Style //

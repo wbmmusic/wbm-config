@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function MTCinput(props) {
     const rates = ['24fps', '25fps', '29.97fps', '30fps']

@@ -88,7 +88,9 @@ export default function MidiGpioChannel(props) {
         } else {
             return (
                 <div className="insetui">
-                    View
+                    <div style={{ textAlign: 'center' }}>
+                        View
+                    </div>
                     <hr />
                     <table style={{ width: '100%' }}>
                         <tbody>
@@ -96,12 +98,8 @@ export default function MidiGpioChannel(props) {
                                 <td style={{ width: '50%' }}>
                                     <div
                                         style={{
-                                            padding: '2px',
-                                            border: '1px solid grey',
-                                            borderRadius: '4px',
-                                            cursor: 'context-menu',
+                                            ...buttonStyle,
                                             backgroundColor: channel.pickRing ? 'white' : 'lightgreen',
-                                            fontSize: '12px'
                                         }}
                                         id="tipBtn"
                                         onMouseDown={handlePress}>
@@ -113,12 +111,8 @@ export default function MidiGpioChannel(props) {
                                 <td style={{ width: '50%' }}>
                                     <div
                                         style={{
-                                            padding: '2px',
-                                            border: '1px solid grey',
-                                            borderRadius: '4px',
-                                            cursor: 'context-menu',
+                                            ...buttonStyle,
                                             backgroundColor: channel.pickRing ? 'lightgreen' : 'white',
-                                            fontSize: '12px',
                                         }}
                                         id="ringBtn"
                                         onMouseDown={handlePress}>
@@ -207,7 +201,9 @@ export default function MidiGpioChannel(props) {
     const portSettings = () => {
         return (
             <div className="insetui">
-                Port Settings
+                <div style={{ textAlign: 'center' }}>
+                    Port Settings
+                </div>
                 <hr />
                 <table style={{ width: '100%' }}>
                     <tbody>
@@ -217,13 +213,8 @@ export default function MidiGpioChannel(props) {
                                     id="inBtn"
                                     onMouseDown={handlePress}
                                     style={{
-                                        cursor: 'context-menu',
-                                        padding: '2px',
-                                        border: '1px solid grey',
-                                        borderRadius: '4px',
-                                        width: "100%",
+                                        ...buttonStyle,
                                         backgroundColor: channel.in ? 'lightgreen' : 'white',
-                                        fontSize: '12px',
                                     }}>
                                     IN
                                                 </div>
@@ -233,13 +224,8 @@ export default function MidiGpioChannel(props) {
                                     id="outBtn"
                                     onMouseDown={handlePress}
                                     style={{
-                                        cursor: 'context-menu',
-                                        padding: '2px',
-                                        border: '1px solid grey',
-                                        borderRadius: '4px',
-                                        width: "100%",
+                                        ...buttonStyle,
                                         backgroundColor: channel.in ? 'white' : 'lightgreen',
-                                        fontSize: '12px'
                                     }}>
                                     OUT
                                                 </div>
@@ -249,16 +235,10 @@ export default function MidiGpioChannel(props) {
                                 <div
                                     id="tsBtn"
                                     onMouseDown={handlePress}
-                                    style={
-                                        {
-                                            cursor: 'context-menu',
-                                            padding: '2px',
-                                            border: '1px solid grey',
-                                            borderRadius: '4px',
-                                            width: "100%",
-                                            backgroundColor: channel.trs ? 'white' : 'lightgreen',
-                                            fontSize: '12px'
-                                        }}>
+                                    style={{
+                                        ...buttonStyle,
+                                        backgroundColor: channel.trs ? 'white' : 'lightgreen',
+                                    }}>
                                     TS
                                                 </div>
                             </td>
@@ -267,13 +247,8 @@ export default function MidiGpioChannel(props) {
                                     id="trsBtn"
                                     onMouseDown={handlePress}
                                     style={{
-                                        cursor: 'context-menu',
-                                        padding: '2px',
-                                        border: '1px solid grey',
-                                        borderRadius: '4px',
-                                        width: "100%",
+                                        ...buttonStyle,
                                         backgroundColor: channel.trs ? 'lightgreen' : 'white',
-                                        fontSize: '12px'
                                     }}>
                                     TRS
                                                 </div>
@@ -326,4 +301,13 @@ export default function MidiGpioChannel(props) {
 const btnTd = {
     padding: '1.5px 3px',
     width: '24%',
+}
+
+const buttonStyle = {
+    textAlign: 'center',
+    padding: '2px',
+    border: '1px solid grey',
+    borderRadius: '4px',
+    fontSize: '12px',
+    cursor: 'pointer'
 }

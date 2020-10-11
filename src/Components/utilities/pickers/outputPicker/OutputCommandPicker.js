@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import Select from 'react-select'
 import InputSelect from '../IOSelect'
 import {
@@ -7,10 +7,12 @@ import {
     noteDropDown,
     ccDropDown,
     numberOfInputs
-} from './outMidiTables'
+} from '../inputPicker/inMidiTables'
 import ChannelSelect from '../ChannelSelect'
 import SysExInput from '../SysExInput'
 import MTCinput from '../MTCinput'
+import Slider from 'rc-slider'
+import { defaultSliderStyle } from '../../../../Styles/SliderStyle'
 
 export default function OutputCommandPicker(props) {
     let defaultState = {
@@ -23,31 +25,13 @@ export default function OutputCommandPicker(props) {
         selectedOuts: 0x01,
         selectedCh: 256,
         channel: 11,
-        note: {
-            label: 'Select A Note',
-            value: 129
-        },
-        cc: {
-            label: 'Select A Controller',
-            value: 129
-        },
-        program: {
-            label: 'Select A Program',
-            value: 129
-        },
-        velocity: {
-            label: 'Select A Velocity',
-            value: 129
-        },
-        value: {
-            label: 'Select A Value',
-            value: 129
-        },
-        pbVal: 8192,
-        song: {
-            label: 'Select A Song',
-            value: 129
-        },
+        note: null,
+        cc: null,
+        program: null,
+        velocity: null,
+        value: null,
+        pbVal: 0,
+        song: null,
         mtc: {
             rate: '29.97fps',
             hour: '00',
@@ -72,7 +56,7 @@ export default function OutputCommandPicker(props) {
         //console.log('State Changed')
         props.sendData(props.id, shrinkPicker())
     }, [state])
-
+    
     const shrinkPicker = () => {
         let shrunkState = {}
 
@@ -84,7 +68,15 @@ export default function OutputCommandPicker(props) {
             case 'None':
                 break;
 
-            case 'Note Off' || 'Note On':
+            case 'Note Off':
+                shrunkState.selectedOuts = state.selectedOuts
+                shrunkState.selectedCh = state.selectedCh
+                shrunkState.channel = state.channel
+                shrunkState.note = state.note
+                shrunkState.velocity = state.velocity
+                break;
+
+            case 'Note On':
                 shrunkState.selectedOuts = state.selectedOuts
                 shrunkState.selectedCh = state.selectedCh
                 shrunkState.channel = state.channel
@@ -136,9 +128,9 @@ export default function OutputCommandPicker(props) {
                 break;
 
             default:
+                console.log("TYPE ERROR " + state.type.label)
                 return state
         }
-        console.log(shrunkState)
         return shrunkState
     }
 
@@ -163,7 +155,6 @@ export default function OutputCommandPicker(props) {
 
     const handleMtc = (rate, hour, min, sec, frm) => {
         //console.log(hour + ':' + min + ':' + sec + ':' + frm + ' ' + rate)
-
         let tempState = { ...state }
         tempState.mtc.rate = rate
         tempState.mtc.hour = hour
@@ -218,21 +209,22 @@ export default function OutputCommandPicker(props) {
     }
 
     const handleRangeChange = (e) => {
-        var tempName = e.target.name
-        if (tempName === 'PitchBend') {
-            let tempState = { ...state }
-            tempState.pbVal = e.target.value
-            setstate(tempState)
-        } else if (tempName === 'PitchBendBox') {
-            let tempState = { ...state }
-            tempState.pbVal = parseInt(e.target.value) + 8192
-            setstate(tempState)
-        }
+        let tempState = { ...state }
+        tempState.pbVal = parseInt(e.target.value)
+        setstate(tempState)
+    }
+
+    const handleRangeSliderChange = (e) => {
+        console.log(e)
+        let tempState = { ...state }
+        tempState.pbVal = e
+        setstate(tempState)
+
     }
 
     const outputSelect = () => {
         return (
-            < tr key={"outputSelcet" + props.id} >
+            < tr key={"inputSelcet" + props.id} >
                 <td>
                     <b style={label}>Output:</b>
                 </td>
@@ -250,46 +242,58 @@ export default function OutputCommandPicker(props) {
     }
 
     const noteSelect = () => {
+        let xyz = []
+        xyz.push(
+            <Select
+                key={'noteSelection' + props.channel}
+                name='noteSelector'
+                styles={selectStyle}
+                hideResetButton='true'
+                style={{ textAlign: 'left' }}
+                options={noteDropDown()}
+                value={state.note}
+                theme="default"
+                onChange={(e) => { handleNoteChange(e) }}
+            />
+        )
+
+
         return (
             < tr key={'noteSelectOutput' + props.channel} >
                 <td>
                     <b style={label}>Note:</b>
                 </td>
                 <td>
-                    <Select
-                        key={'noteSelection' + props.channel}
-                        name='noteSelector'
-                        styles={selectStyle}
-                        hideResetButton='true'
-                        style={{ textAlign: 'left' }}
-                        options={noteDropDown()}
-                        value={state.note}
-                        theme="default"
-                        onChange={(e) => { handleNoteChange(e) }}
-                    />
+                    {xyz}
                 </td>
             </tr >
         )
     }
 
     const ccSelect = () => {
+        let body = []
+
+        body.push(
+            <Select
+                key={'ccSelect' + props.channel}
+                name='ccSelector'
+                styles={selectStyle}
+                hideResetButton='true'
+                style={{ textAlign: 'left' }}
+                options={ccDropDown()}
+                value={state.cc}
+                theme="default"
+                onChange={(e) => { handleCcChange(e) }}
+            />
+        )
+
         return (
             < tr key={'ccSelector' + props.channel}>
                 <td>
                     <b style={label}>CC#:</b>
                 </td>
                 <td>
-                    <Select
-                        key={'ccSpecificTypeSelect' + props.channel}
-                        name='noteSelector'
-                        styles={selectStyle}
-                        hideResetButton='true'
-                        style={{ textAlign: 'left' }}
-                        options={ccDropDown()}
-                        value={state.cc}
-                        theme="default"
-                        onChange={(e) => { handleCcChange(e) }}
-                    />
+                    {body}
                 </td>
             </tr >
         )
@@ -300,7 +304,7 @@ export default function OutputCommandPicker(props) {
         pgm.push(
             <Select
                 key={'pgmSelector' + props.channel}
-                name='pgmSelector'
+                name='typeSelector'
                 styles={selectStyle}
                 hideResetButton='true'
                 style={{ textAlign: 'left' }}
@@ -403,34 +407,41 @@ export default function OutputCommandPicker(props) {
     }
 
     const pitchBendSelect = () => {
+        let abc = []
+        abc.push(
+            <Fragment key={'pitchBendInput' + props.id}>
+                <div style={{ paddingBottom: '10px' }}>
+                    <Slider
+                        {...defaultSliderStyle}
+                        min={-8192}
+                        max={8191}
+                        value={state.pbVal}
+                        onChange={handleRangeSliderChange}
+                    />
+                </div>
+                <input
+                    name='PitchBendBox'
+                    type="number"
+                    min="-8192"
+                    max="8191"
+                    value={state.pbVal}
+                    onChange={handleRangeChange}
+                    style={{
+                        textAlign: 'center'
+                    }}
+                />
+            </Fragment>
+        )
+
+
+
         return (
             < tr key={'pitchBendInput' + props.channel}>
                 <td>
                     <b style={label}>Val:</b>
                 </td>
                 <td>
-                    <input
-                        name='PitchBend'
-                        type="range"
-                        min="0"
-                        max="16383"
-                        value={state.pbVal}
-                        onChange={handleRangeChange}
-                        style={{
-                            width: '100%',
-                        }}
-                    />
-                    <input
-                        name='PitchBendBox'
-                        type="number"
-                        min="-8192"
-                        max="8191"
-                        value={state.pbVal - 8192}
-                        onChange={handleRangeChange}
-                        style={{
-                            textAlign: 'center'
-                        }}
-                    />
+                    {abc}
                 </td>
             </tr >
         )
@@ -474,6 +485,7 @@ export default function OutputCommandPicker(props) {
     }
 
     ///////////////////////////////////////////////////////////////////// RENDER
+
     let underType = 'Under Type'
     underType = []
     let spacer = []
@@ -576,9 +588,7 @@ export default function OutputCommandPicker(props) {
                 </colgroup>
                 <tbody>
                     <tr>
-                        <td colSpan="2" style={pickerTitle}>
-                            Output Command Picker v2
-                            </td>
+                        <td colSpan="2" style={pickerTitle}>Output Command Picker</td>
                     </tr>
                     {horizontalSpacer}
                     <tr>
