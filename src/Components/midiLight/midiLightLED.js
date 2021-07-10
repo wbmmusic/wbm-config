@@ -16,18 +16,19 @@ export default function MidiLightLED(props) {
     const [channel, setChannel] = useContext(props.context)
     const [showColorPicker, setshowColorPicker] = useState(false)
 
-    const doDis = (event, rgb, chnl, HSL) => {
 
-        if (chnl === props.channel) {
-            console.log('COLOR')
-            let tempChannel = { ...channel }
-            tempChannel.ledData.color = [parseInt(HSL[0]), HSL[1], HSL[2]]
-            console.log(tempChannel)
-            setChannel(tempChannel)
-        }
-    }
 
     useEffect(() => {
+        const doDis = (event, rgb, chnl, HSL) => {
+            if (chnl === props.channel) {
+                console.log('COLOR')
+                let tempChannel = { ...channel }
+                tempChannel.ledData.color = [parseInt(HSL[0]), HSL[1], HSL[2]]
+                console.log(tempChannel)
+                setChannel(tempChannel)
+            }
+        }
+
         ipcRenderer.on('colorFromPicker', (event, rgb, chnl, HSL) => doDis(event, rgb, chnl, HSL))
         return () => {
             ipcRenderer.removeListener('colorFromPicker', doDis)

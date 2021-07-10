@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import Select from 'react-select'
 import InputSelect from '../IOSelect'
 import {
@@ -53,86 +53,88 @@ export default function OutputCommandPicker(props) {
     const [state, setstate] = useState(defaultState)
 
     useEffect(() => {
+        const shrinkPicker = () => {
+            let shrunkState = {}
+    
+            shrunkState.id = state.id
+            shrunkState.parentCh = state.parentCh
+            shrunkState.type = state.type
+    
+            switch (state.type.label) {
+                case 'None':
+                    break;
+    
+                case 'Note Off':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.note = state.note
+                    shrunkState.velocity = state.velocity
+                    break;
+    
+                case 'Note On':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.note = state.note
+                    shrunkState.velocity = state.velocity
+                    break;
+    
+                case 'Control Change':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.cc = state.cc
+                    shrunkState.value = state.value
+    
+                    break;
+    
+                case 'Program Change':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.program = state.program
+                    break;
+    
+                case 'Pitch Bend':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.pbVal = state.pbVal
+                    break;
+    
+                case 'Sys Ex':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.sysexText = state.sysexText
+                    shrunkState.sysex = state.sysex
+                    break;
+    
+                case 'MTC':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.mtc = state.mtc
+                    break;
+    
+                case 'Song Select':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    shrunkState.song = state.song
+                    break;
+    
+                case 'Start' || 'Stop' || 'Continue' || 'System Reset':
+                    shrunkState.selectedOuts = state.selectedOuts
+                    break;
+    
+                default:
+                    console.log("TYPE ERROR " + state.type.label)
+                    return state
+            }
+            return shrunkState
+        }
+        
         //console.log('State Changed')
         props.sendData(props.id, shrinkPicker())
     }, [state])
     
-    const shrinkPicker = () => {
-        let shrunkState = {}
-
-        shrunkState.id = state.id
-        shrunkState.parentCh = state.parentCh
-        shrunkState.type = state.type
-
-        switch (state.type.label) {
-            case 'None':
-                break;
-
-            case 'Note Off':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.note = state.note
-                shrunkState.velocity = state.velocity
-                break;
-
-            case 'Note On':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.note = state.note
-                shrunkState.velocity = state.velocity
-                break;
-
-            case 'Control Change':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.cc = state.cc
-                shrunkState.value = state.value
-
-                break;
-
-            case 'Program Change':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.program = state.program
-                break;
-
-            case 'Pitch Bend':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.pbVal = state.pbVal
-                break;
-
-            case 'Sys Ex':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.sysexText = state.sysexText
-                shrunkState.sysex = state.sysex
-                break;
-
-            case 'MTC':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.mtc = state.mtc
-                break;
-
-            case 'Song Select':
-                shrunkState.selectedOuts = state.selectedOuts
-                shrunkState.song = state.song
-                break;
-
-            case 'Start' || 'Stop' || 'Continue' || 'System Reset':
-                shrunkState.selectedOuts = state.selectedOuts
-                break;
-
-            default:
-                console.log("TYPE ERROR " + state.type.label)
-                return state
-        }
-        return shrunkState
-    }
+    
 
     const getChannels = (channels) => {
         let tempState = { ...state }

@@ -63,95 +63,97 @@ export default function InputCommandPicker(props) {
     const [state, setstate] = useState(defaultState)
 
     useEffect(() => {
+        const shrinkPicker = () => {
+            let shrunkState = {}
+    
+            shrunkState.id = state.id
+            shrunkState.parentCh = state.parentCh
+            shrunkState.type = state.type
+    
+            switch (state.type.label) {
+                case 'None':
+                    break;
+    
+                case 'Note Off' || 'Note On':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.noteType = state.noteType
+                    shrunkState.note = state.note
+                    shrunkState.velType = state.velType
+                    shrunkState.velocity = state.velocity
+                    break;
+    
+                case 'Note On':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.noteType = state.noteType
+                    shrunkState.note = state.note
+                    shrunkState.velType = state.velType
+                    shrunkState.velocity = state.velocity
+                    break;
+    
+                case 'Control Change':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.ccType = state.ccType
+                    shrunkState.cc = state.cc
+                    shrunkState.valType = state.valType
+                    shrunkState.value = state.value
+    
+                    break;
+    
+                case 'Program Change':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.pgmType = state.pgmType
+                    shrunkState.program = state.program
+                    break;
+    
+                case 'Pitch Bend':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.selectedCh = state.selectedCh
+                    shrunkState.channel = state.channel
+                    shrunkState.pbValType = state.pbValType
+                    shrunkState.pbVal = state.pbVal
+                    shrunkState.pbRange = state.pbRange
+                    break;
+    
+                case 'Sys Ex':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.sysexText = state.sysexText
+                    shrunkState.sysex = state.sysex
+                    break;
+    
+                case 'MTC':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.mtc = state.mtc
+                    break;
+    
+                case 'Song Select':
+                    shrunkState.selectedIns = state.selectedIns
+                    shrunkState.songType = state.songType
+                    shrunkState.song = state.song
+                    break;
+    
+                case 'Start' || 'Stop' || 'Continue' || 'System Reset':
+                    shrunkState.selectedIns = state.selectedIns
+                    break;
+    
+                default:
+                    return state
+            }
+            return shrunkState
+        }
+        
         //console.log('State Changed')
         props.sendData(props.id, shrinkPicker())
     }, [state])
 
-    const shrinkPicker = () => {
-        let shrunkState = {}
-
-        shrunkState.id = state.id
-        shrunkState.parentCh = state.parentCh
-        shrunkState.type = state.type
-
-        switch (state.type.label) {
-            case 'None':
-                break;
-
-            case 'Note Off' || 'Note On':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.noteType = state.noteType
-                shrunkState.note = state.note
-                shrunkState.velType = state.velType
-                shrunkState.velocity = state.velocity
-                break;
-
-            case 'Note On':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.noteType = state.noteType
-                shrunkState.note = state.note
-                shrunkState.velType = state.velType
-                shrunkState.velocity = state.velocity
-                break;
-
-            case 'Control Change':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.ccType = state.ccType
-                shrunkState.cc = state.cc
-                shrunkState.valType = state.valType
-                shrunkState.value = state.value
-
-                break;
-
-            case 'Program Change':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.pgmType = state.pgmType
-                shrunkState.program = state.program
-                break;
-
-            case 'Pitch Bend':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.selectedCh = state.selectedCh
-                shrunkState.channel = state.channel
-                shrunkState.pbValType = state.pbValType
-                shrunkState.pbVal = state.pbVal
-                shrunkState.pbRange = state.pbRange
-                break;
-
-            case 'Sys Ex':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.sysexText = state.sysexText
-                shrunkState.sysex = state.sysex
-                break;
-
-            case 'MTC':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.mtc = state.mtc
-                break;
-
-            case 'Song Select':
-                shrunkState.selectedIns = state.selectedIns
-                shrunkState.songType = state.songType
-                shrunkState.song = state.song
-                break;
-
-            case 'Start' || 'Stop' || 'Continue' || 'System Reset':
-                shrunkState.selectedIns = state.selectedIns
-                break;
-
-            default:
-                return state
-        }
-        return shrunkState
-    }
+    
 
     const getChannels = (channels) => {
         let tempState = { ...state }

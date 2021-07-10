@@ -1,7 +1,7 @@
 import React from 'react'
 
 const bit_test = (num, bit) => {
-    return ((num >> bit) % 2 != 0)
+    return ((num >> bit) % 2 !== 0)
 }
 
 const bit_set = (num, bit) => {

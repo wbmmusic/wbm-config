@@ -30,7 +30,7 @@ export default function TopMtx2() {
 
             if (col === 0) {
                 console.log('In Dis')
-                for (var row = 0; row <= state.numOfIns; row++) {
+                for (let row = 0; row <= state.numOfIns; row++) {
                     if (row === 0) {
                         column.push(
                             <div key="leftColHeader" className="grid-item grid-item--header">
@@ -54,7 +54,7 @@ export default function TopMtx2() {
                     </div>
                 )
             } else {
-                for (var row = 0; row <= state.numOfIns; row++) {
+                for (let row = 0; row <= state.numOfIns; row++) {
                     if (row === 0) {
                         column.push(
                             <div key={'col' + col + 'header'} className="grid-item grid-item--header">

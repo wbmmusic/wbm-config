@@ -8,10 +8,68 @@ export default function ColorPicker(props) {
     const brightnessRef = React.useRef(null)
 
     useEffect(() => {
+        const drwaColorBar = () => {
+            var canvas = canvasRef.current
+            var ctx = canvas.getContext('2d');
+            var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            var data = imageData.data;
+
+            var cWidth = imageData.width
+            var cHeight = imageData.height
+            var hCnt = 0
+            var pointer = 0
+
+            for (var d = 0; d < cHeight; d++) {
+                hCnt = 0
+                for (var i = 0; i < (cWidth * 4); i += 4) {
+
+                    var RedGreenBlue = hslToRgb((hCnt / cWidth), 1, .5)
+
+                    data[pointer] = RedGreenBlue[0];     // red
+                    data[pointer + 1] = RedGreenBlue[1]; // green
+                    data[pointer + 2] = RedGreenBlue[2]; // blue
+                    data[pointer + 3] = 255; // blue
+                    pointer = (pointer + 4)
+                    hCnt++
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+
+
+
+            canvas = brightnessRef.current
+            ctx = canvas.getContext('2d');
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            data = imageData.data;
+
+            cWidth = imageData.width
+            cHeight = imageData.height
+            hCnt = 0
+            pointer = 0
+
+            for (d = 0; d < cHeight; d++) {
+                hCnt = 0
+                for (i = 0; i < (cWidth * 4); i += 4) {
+
+                    RedGreenBlue = hslToRgb(0, 0, (hCnt / cWidth))
+
+                    data[pointer] = RedGreenBlue[0];     // red
+                    data[pointer + 1] = RedGreenBlue[1]; // green
+                    data[pointer + 2] = RedGreenBlue[2]; // blue
+                    data[pointer + 3] = 255; // blue
+                    pointer = (pointer + 4)
+                    hCnt++
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
         drwaColorBar()
     }, [])
 
-    function hslToRgb(h, s, l) {
+    const hslToRgb = (h, s, l) => {
         var r, g, b;
 
         if (s === 0) {
@@ -37,63 +95,7 @@ export default function ColorPicker(props) {
     }
 
 
-    function drwaColorBar() {
-        var canvas = canvasRef.current
-        var ctx = canvas.getContext('2d');
-        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        var data = imageData.data;
 
-        var cWidth = imageData.width
-        var cHeight = imageData.height
-        var hCnt = 0
-        var pointer = 0
-
-        for (var d = 0; d < cHeight; d++) {
-            hCnt = 0
-            for (var i = 0; i < (cWidth * 4); i += 4) {
-
-                var RedGreenBlue = hslToRgb((hCnt / cWidth), 1, .5)
-
-                data[pointer] = RedGreenBlue[0];     // red
-                data[pointer + 1] = RedGreenBlue[1]; // green
-                data[pointer + 2] = RedGreenBlue[2]; // blue
-                data[pointer + 3] = 255; // blue
-                pointer = (pointer + 4)
-                hCnt++
-            }
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-
-
-
-        canvas = brightnessRef.current
-        ctx = canvas.getContext('2d');
-        imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        data = imageData.data;
-
-        cWidth = imageData.width
-        cHeight = imageData.height
-        hCnt = 0
-        pointer = 0
-
-        for (d = 0; d < cHeight; d++) {
-            hCnt = 0
-            for (i = 0; i < (cWidth * 4); i += 4) {
-
-                RedGreenBlue = hslToRgb(0, 0, (hCnt / cWidth))
-
-                data[pointer] = RedGreenBlue[0];     // red
-                data[pointer + 1] = RedGreenBlue[1]; // green
-                data[pointer + 2] = RedGreenBlue[2]; // blue
-                data[pointer + 3] = 255; // blue
-                pointer = (pointer + 4)
-                hCnt++
-            }
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-    }
 
     const hueChange = (e) => {
         //console.log('Hue Change')

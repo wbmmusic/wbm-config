@@ -4,7 +4,7 @@ import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTh, faPlus, faInfo, faBars, faChevronCircleLeft, faLightbulb, faExchangeAlt, faHandPointUp, faTools } from '@fortawesome/free-solid-svg-icons'
+import { faTh, faPlus, faBars, faChevronCircleLeft, faLightbulb, faExchangeAlt, faHandPointUp, faTools } from '@fortawesome/free-solid-svg-icons'
 import GpioSettings from './GpioSettings';
 import MidiGpioChannel from '../midiGPIO/midiGpioChannel';
 import { MidiGpioChannelProvider } from '../midiGPIO/MidiGpioChannelContext';
@@ -34,15 +34,15 @@ export default function DevInfo() {
         channels: []
     }
 
-    const [state, setstate] = useState(defaultState)
+    const [state, setState] = useState(defaultState)
 
-    const [savedSanpshot, setsavedSanpshot] = useState(defaultState)
-
-    var deviceEvent = (event, devList) => {
-        makeDevTable(JSON.parse(devList))
-    }
+    const [savedSnapshot, setSavedSnapshot] = useState(defaultState)
 
     useEffect(() => {
+        var deviceEvent = (event, devList) => {
+            makeDevTable(JSON.parse(devList))
+        }
+
         ipcRenderer.on('devList', deviceEvent)
         ipcRenderer.send('showDevs')
         return () => {
@@ -60,13 +60,17 @@ export default function DevInfo() {
 
         if (devList.length === 0) {
             deviceInfo = [
-                <b>No Devices</b>
+                <tr>
+                    <td colSpan="3" style={{ textAlign: 'center' }}>
+                        <b>No Devices</b>
+                    </td>
+                </tr>
             ]
         } else {
             deviceInfo = []
             for (var i = 0; i < devList.length; i++) {
                 deviceInfo.push(
-                    <tr key={i}>
+                    <tr key={"deviceInfoRow" + i}>
                         <td>{devList[i].info.Model}</td>
                         <td>{devList[i].info.UserName}</td>
                         <td>{devList[i].info.serialNumber}</td>
@@ -76,38 +80,38 @@ export default function DevInfo() {
         }
 
         tempState.list = deviceInfo
-        setstate(tempState)
+        setState(tempState)
     }
 
 
-    const setcurrentMenu = (menu) => {
-        let tempstate = { ...state }
-        tempstate.currentMenu = menu
-        setstate(tempstate)
+    const setCurrentMenu = (menu) => {
+        let tempState = { ...state }
+        tempState.currentMenu = menu
+        setState(tempState)
     }
 
-    const setcurrentDevice = (device) => {
-        let tempstate = { ...state }
-        tempstate.currentDevice = device
-        setstate(tempstate)
+    const setCurrentDevice = (device) => {
+        let tempState = { ...state }
+        tempState.currentDevice = device
+        setState(tempState)
     }
 
     const doThis = (menu, page, serNum) => {
-        let tempstate = { ...state }
-        tempstate.currentMenu = menu
-        tempstate.currentDevice = serNum
-        tempstate.currentPage = page
-        setstate(tempstate)
+        let tempState = { ...state }
+        tempState.currentMenu = menu
+        tempState.currentDevice = serNum
+        tempState.currentPage = page
+        setState(tempState)
     }
 
     const selectChannel = (chnl) => {
         //console.log(chnl)
-        let tempstate = { ...state }
-        tempstate.currentMenu = 'GPIO'
-        tempstate.currentDevice = state.currentDevice
-        tempstate.currentPage = 'CHNL'
-        tempstate.currentChannel = chnl
-        setstate(tempstate)
+        let tempState = { ...state }
+        tempState.currentMenu = 'GPIO'
+        tempState.currentDevice = state.currentDevice
+        tempState.currentPage = 'CHNL'
+        tempState.currentChannel = chnl
+        setState(tempState)
     }
 
     let side = []
@@ -127,7 +131,7 @@ export default function DevInfo() {
                 switch (state.devList[i].info.Model) {
                     case 'MIDI GPIO':
                         deviceList.push(
-                            <MenuItem icon={gpioIcn} onClick={() => doThis('GPIO', 'SETTINGS', serNum)}>MIDI GPIO</MenuItem>
+                            <MenuItem key={"midiGpioMenuItem" + i} icon={gpioIcn} onClick={() => doThis('GPIO', 'SETTINGS', serNum)}>MIDI GPIO</MenuItem>
                         )
                         break;
 
@@ -139,7 +143,7 @@ export default function DevInfo() {
 
 
         side.push(
-            <Menu iconShape="circle">
+            <Menu key={'sideMenu'} iconShape="circle">
                 {deviceList}
                 <MenuItem icon={lightIcn}>MIDI Light</MenuItem>
                 <MenuItem icon={btnIcn}>MIDI Button</MenuItem>
@@ -164,10 +168,11 @@ export default function DevInfo() {
     } else if (state.currentMenu === 'GPIO') {
         let channels = []
 
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             let channel = i + 1
             channels.push(
                 <MenuItem
+                    key={"gpioChannel" + i}
                     onClick={() => selectChannel(channel)}
                 >
                     {i + 1}: User Name
@@ -176,7 +181,7 @@ export default function DevInfo() {
         }
 
         side.push(
-            <Menu iconShape="circle">
+            <Menu key={'sidebar' + i} iconShape="circle">
                 <MenuItem icon={backIcn} onClick={() => doThis('HOME')}>Back</MenuItem>
                 <MenuItem icon={infoIcn} onClick={() => doThis('GPIO', 'SETTINGS', state.currentDevice)}>Settings</MenuItem>
                 <MenuItem icon={matrix} onClick={() => doThis('GPIO', 'ROUTE', state.currentDevice)}>Routing Matrix</MenuItem>
@@ -190,7 +195,7 @@ export default function DevInfo() {
     const theList = () => {
         let out = []
 
-        for (var i = 0; i < state.list.length; i++) {
+        for (let i = 0; i < state.list.length; i++) {
             out.push(
                 state.list[i]
             )
@@ -215,44 +220,41 @@ export default function DevInfo() {
 
     if (state.currentMenu === 'HOME') {
         body.push(
-            <>
+            <div key={'home' + i}>
                 <div style={{ textAlign: 'center' }}>
                     <b>Devices</b>
                 </div>
                 {theList()}
-            </>
+            </div>
         )
     } else if (state.currentMenu === 'GPIO') {
         switch (state.currentPage) {
             case 'SETTINGS':
                 body.push(
-                    <GpioSettings />
+                    <GpioSettings key={'gpioChannelSettings' + i} />
                 )
                 break;
 
             case 'ROUTE':
                 body.push(
-                    <>
+                    <div key={'gpioChannelRoute' + i}>
                         Routing
                         <TopMtx2 />
-                    </>
+                    </div>
                 )
                 break;
 
             case 'CHNL':
                 body.push(
-                    <>
-                        <MidiGpioChannelProvider key={'gpioChannelProvider' + i}>
-                            <MidiGpioChannel
-                                snapshot={savedSanpshot.channels[i]}
-                                key={'gpioChannel' + i}
-                                statex={state.channels[i]}
-                                getChanelInfo={getChanelInfo}
-                                channel={state.currentChannel}
-                                id={state.currentChannel}
-                            />
-                        </MidiGpioChannelProvider>
-                    </>
+                    <MidiGpioChannelProvider key={'gpioChannelProvider' + i}>
+                        <MidiGpioChannel
+                            snapshot={savedSnapshot.channels[i]}
+                            key={'gpioChannel' + i}
+                            getChanelInfo={getChanelInfo}
+                            channel={state.currentChannel}
+                            id={state.currentChannel}
+                        />
+                    </MidiGpioChannelProvider>
                 )
                 break;
 

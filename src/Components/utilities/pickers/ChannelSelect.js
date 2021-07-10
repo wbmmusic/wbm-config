@@ -1,5 +1,4 @@
 import React from 'react'
-import { v4 as uuid } from 'uuid';
 
 function bit_test(num, bit) {
     return ((num >> bit) % 2 !== 0)

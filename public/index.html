@@ -22,6 +22,7 @@
 </style>
 
 <head>
+  <base href="./">
   <meta charset="utf-8" />
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -56,7 +57,7 @@
 
     ipcRenderer.send('app_version');
     ipcRenderer.on('app_version', (event, arg) => {
-      ipcRenderer.removeAllListeners('app_version');
+      oveAllListeners('app_version');
       version.innerText = 'WBM Config App --- v' + arg.version;
     });
 
@@ -85,7 +86,7 @@
     });
 
     ipcRenderer.on('mainlog', (event, arg) => {
-      console.log('main.js: '+arg) // prints "pong"
+      console.log('main.js: ' + arg) // prints "pong"
     })
 
     ipcRenderer.send('react-is-up')

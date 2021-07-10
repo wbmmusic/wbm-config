@@ -35,13 +35,6 @@ export default function MidiLightChannel(props) {
         )
     }
 
-    const getLedStructure = (chnl, e) => {
-        //console.log('XXX GOT STRUCTURE #' + chnl)
-        let tempState = { ...channel }
-        tempState.ledData = e
-        setChannel(tempState)
-    }
-
     const setName = (newName) => {
         let tempState = { ...channel }
         tempState.name = newName
@@ -74,7 +67,7 @@ export default function MidiLightChannel(props) {
             <table>
                 <tbody>
                     <tr>
-                        <td style={tblcell}>
+                        <td style={tableCellStyle}>
                             <table style={{ width: '100%' }}>
                                 <tbody>
                                     <tr>
@@ -85,7 +78,7 @@ export default function MidiLightChannel(props) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style={tblcell}>
+                                        <td style={tableCellStyle}>
                                             {chName()}
                                         </td>
                                     </tr>
@@ -94,7 +87,7 @@ export default function MidiLightChannel(props) {
                         </td>
                     </tr>
                     <tr>
-                        <td style={tblcell}>
+                        <td style={tableCellStyle}>
                             <MidiLightLED
                                 key={"ledUICh" + props.channel}
                                 channel={props.channel}
@@ -103,7 +96,7 @@ export default function MidiLightChannel(props) {
                         </td>
                     </tr>
                     <tr>
-                        <td style={tblcell}>
+                        <td style={tableCellStyle}>
                             {makePicker()}
                         </td>
                     </tr>
@@ -114,7 +107,7 @@ export default function MidiLightChannel(props) {
 }
 
 
-const tblcell = {
+const tableCellStyle = {
     textAlign: 'center',
     width: '300px'
 }
