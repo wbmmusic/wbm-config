@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class midiAB extends Component {
+export class MidiAB extends Component {
     render() {
         return (
             <div>
@@ -18,4 +18,4 @@ export class midiAB extends Component {
     }
 }
 
-export default midiAB
+export default MidiAB

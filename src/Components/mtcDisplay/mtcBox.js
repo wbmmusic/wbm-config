@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import MtcDisplay from './mtcDisplay'
 
-export class mtcBox extends Component {
+export class MtcBox extends Component {
     state = {
         frameRate: '29.97 drop',
         hours: '',
@@ -86,4 +86,4 @@ export class mtcBox extends Component {
     }
 }
 
-export default mtcBox
+export default MtcBox

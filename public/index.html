@@ -57,7 +57,7 @@
 
     ipcRenderer.send('app_version');
     ipcRenderer.on('app_version', (event, arg) => {
-      oveAllListeners('app_version');
+      removeAllListeners('app_version');
       version.innerText = 'WBM Config App --- v' + arg.version;
     });
 

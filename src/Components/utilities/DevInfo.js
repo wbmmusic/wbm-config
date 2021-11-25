@@ -131,7 +131,9 @@ export default function DevInfo() {
                 switch (state.devList[i].info.Model) {
                     case 'MIDI GPIO':
                         deviceList.push(
-                            <MenuItem key={"midiGpioMenuItem" + i} icon={gpioIcn} onClick={() => doThis('GPIO', 'SETTINGS', serNum)}>MIDI GPIO</MenuItem>
+                            <MenuItem key={"midiGpioMenuItem" + i} icon={gpioIcn} onClick={() => doThis('GPIO', 'SETTINGS', serNum)}>
+                                MIDI GPIO
+                            </MenuItem>
                         )
                         break;
 
@@ -176,7 +178,7 @@ export default function DevInfo() {
                     onClick={() => selectChannel(channel)}
                 >
                     {i + 1}: User Name
-          </MenuItem>
+                </MenuItem>
             )
         }
 
@@ -196,9 +198,7 @@ export default function DevInfo() {
         let out = []
 
         for (let i = 0; i < state.list.length; i++) {
-            out.push(
-                state.list[i]
-            )
+            out.push(state.list[i])
         }
         return (
             <Table striped>
@@ -230,9 +230,7 @@ export default function DevInfo() {
     } else if (state.currentMenu === 'GPIO') {
         switch (state.currentPage) {
             case 'SETTINGS':
-                body.push(
-                    <GpioSettings key={'gpioChannelSettings' + i} />
-                )
+                body.push(<GpioSettings key={'gpioChannelSettings' + i} />)
                 break;
 
             case 'ROUTE':
