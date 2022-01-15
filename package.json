@@ -21,12 +21,12 @@
     "rc-slider": "^9.7.5",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
-    "react-bootstrap": "^2.1.0",
+    "react-bootstrap": "^2.1.1",
     "react-dom": "^17.0.2",
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "react-select": "^5.2.1",
+    "react-select": "^5.2.2",
     "serialport": "^9.2.8",
     "styled-components": "^5.3.3",
     "usb-detection": "^4.13.0",
@@ -121,10 +121,10 @@
     }
   },
   "devDependencies": {
-    "electron": "^16.0.6",
+    "electron": "^16.0.7",
     "electron-builder": "^22.14.5",
     "electron-devtools-installer": "^3.2.0",
-    "electron-rebuild": "^3.2.5",
+    "electron-rebuild": "^3.2.7",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "node-abi": "^3.5.0"
