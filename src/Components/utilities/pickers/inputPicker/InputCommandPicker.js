@@ -16,8 +16,7 @@ import {
   defaultSliderStyle,
   defaultRangeStyle,
 } from "../../../../Styles/SliderStyle";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
+import Slider, { Range } from "rc-slider";
 
 export default function InputCommandPicker(props) {
   let defaultState = {
@@ -354,7 +353,7 @@ export default function InputCommandPicker(props) {
     } else if (state.noteType === "Range") {
       xyz.push(
         <div key="noteRange" style={rangeDiv}>
-          <Slider range {...defaultRangeStyle} min={0} max={127} />
+          <Range {...defaultRangeStyle} min={0} max={127} />
         </div>
       );
     } else if (state.noteType === "Any") {
@@ -419,7 +418,7 @@ export default function InputCommandPicker(props) {
     } else if (state.ccType === "Range") {
       body.push(
         <div key="pbRange" style={rangeDiv}>
-          <Slider range {...defaultRangeStyle} min={0} max={127} />
+          <Range {...defaultRangeStyle} min={0} max={127} />
         </div>
       );
     }
@@ -480,7 +479,7 @@ export default function InputCommandPicker(props) {
     } else if (state.pgmType === "Range") {
       pgm.push(
         <div key="pbRange" style={rangeDiv}>
-          <Slider range {...defaultRangeStyle} min={0} max={127} />
+          <Range {...defaultRangeStyle} min={0} max={127} />
         </div>
       );
     }
@@ -567,7 +566,7 @@ export default function InputCommandPicker(props) {
     } else if (state.songType === "Range") {
       song.push(
         <div key="songRange" style={rangeDiv}>
-          <Slider range {...defaultRangeStyle} />
+          <Range {...defaultRangeStyle} />
         </div>
       );
     }
@@ -627,7 +626,7 @@ export default function InputCommandPicker(props) {
     } else if (state.velType === "Range") {
       velocity.push(
         <div key="pbRange" style={rangeDiv}>
-          <Slider range {...defaultRangeStyle} min={0} max={127} />
+          <Range {...defaultRangeStyle} min={0} max={127} />
         </div>
       );
     }
@@ -681,8 +680,7 @@ export default function InputCommandPicker(props) {
       abc.push(
         <Fragment key={"pbRangeInputCh" + props.channel}>
           <div style={rangeDiv}>
-            <Slider
-              range
+            <Range
               {...defaultRangeStyle}
               min={-8192}
               max={8191}
@@ -777,7 +775,7 @@ export default function InputCommandPicker(props) {
     } else if (state.valType === "Range") {
       value.push(
         <div key="pbRange" style={rangeDiv}>
-          <Slider range {...defaultRangeStyle} min={0} max={127} />
+          <Range {...defaultRangeStyle} min={0} max={127} />
         </div>
       );
     }
@@ -950,6 +948,10 @@ const mainDiv = {
   borderRadius: "10px",
   margin: "4px",
   fontSize: "12px",
+};
+
+const td = {
+  border: "1px black solid",
 };
 
 const pickerTitle = {
