@@ -7,10 +7,10 @@
     "main": "public/main.js",
     "private": true,
     "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "^6.1.0",
-        "@fortawesome/free-solid-svg-icons": "^6.1.0",
+        "@fortawesome/fontawesome-svg-core": "^6.1.1",
+        "@fortawesome/free-solid-svg-icons": "^6.1.1",
         "@fortawesome/react-fontawesome": "^0.1.18",
-        "@testing-library/jest-dom": "^5.16.2",
+        "@testing-library/jest-dom": "^5.16.3",
         "@testing-library/react": "^12.1.4",
         "@testing-library/user-event": "^13.5.0",
         "axios": "^0.26.1",
@@ -19,7 +19,7 @@
         "foreman": "^3.0.1",
         "jquery": "^3.6.0",
         "port": "^0.8.1",
-        "rc-slider": "^9.7.5",
+        "rc-slider": "9.7.5",
         "react": "^17.0.2",
         "react-beautiful-dnd": "^13.1.0",
         "react-bootstrap": "^2.2.1",
@@ -30,7 +30,7 @@
         "react-select": "^5.2.2",
         "serial": "^0.0.9",
         "serialport": "^10.4.0",
-        "styled-components": "^5.3.3",
+        "styled-components": "^5.3.5",
         "usb-detection": "^4.14.1",
         "uuid": "^8.3.2"
     },
@@ -83,8 +83,7 @@
         "mac": {
             "gatekeeperAssess": "true",
             "icon": "public/logo.icns",
-            "fileAssociations": [
-                {
+            "fileAssociations": [{
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.icns"
                 },
@@ -106,8 +105,7 @@
             "extraFiles": [
                 "public/bossacwin.exe"
             ],
-            "fileAssociations": [
-                {
+            "fileAssociations": [{
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.ico"
                 },
@@ -123,7 +121,7 @@
         }
     },
     "devDependencies": {
-        "electron": "^17.1.2",
+        "electron": "^17.2.0",
         "electron-builder": "^22.14.13",
         "electron-devtools-installer": "^3.2.0",
         "electron-rebuild": "^3.2.7",
