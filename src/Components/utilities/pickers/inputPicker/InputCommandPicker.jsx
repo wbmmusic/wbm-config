@@ -7,54 +7,50 @@ import {
   noteDropDown,
   ccDropDown,
   numberOfInputs,
-} from "../inputPicker/inMidiTables";
+} from "./inMidiTables";
 import ChannelSelect from "../ChannelSelect";
 import SelectionType from "../SelectionType";
 import SysExInput from "../SysExInput";
 import MTCinput from "../MTCinput";
-import {
-  defaultSliderStyle,
-  defaultRangeStyle,
-} from "../../../../Styles/SliderStyle";
-import Slider, { Range } from "rc-slider";
+import { Slider } from "@mui/material";
+
+let defaultState = {
+  id: "picker" + 1,
+  parentCh: 1,
+  type: {
+    label: "None",
+    value: 0,
+  },
+  selectedIns: 0x01,
+  selectedCh: 256,
+  channel: 11,
+  noteType: "Specific",
+  note: null,
+  ccType: "Specific",
+  cc: null,
+  pgmType: "Specific",
+  program: null,
+  velType: "Any",
+  velocity: null,
+  valType: "Any",
+  value: null,
+  pbValType: "Specific",
+  pbVal: 0,
+  pbRange: [-2000, 2000],
+  songType: "Specific",
+  song: null,
+  mtc: {
+    rate: "29.97fps",
+    hour: "00",
+    min: "00",
+    sec: "00",
+    frame: "00",
+  },
+  sysexText: "Enter Sysex Data",
+  sysex: "Enter HEX data here",
+};
 
 export default function InputCommandPicker(props) {
-  let defaultState = {
-    id: "picker" + 1,
-    parentCh: 1,
-    type: {
-      label: "None",
-      value: 0,
-    },
-    selectedIns: 0x01,
-    selectedCh: 256,
-    channel: 11,
-    noteType: "Specific",
-    note: null,
-    ccType: "Specific",
-    cc: null,
-    pgmType: "Specific",
-    program: null,
-    velType: "Any",
-    velocity: null,
-    valType: "Any",
-    value: null,
-    pbValType: "Specific",
-    pbVal: 0,
-    pbRange: [-2000, 2000],
-    songType: "Specific",
-    song: null,
-    mtc: {
-      rate: "29.97fps",
-      hour: "00",
-      min: "00",
-      sec: "00",
-      frame: "00",
-    },
-    sysexText: "Enter Sysex Data",
-    sysex: "Enter HEX data here",
-  };
-
   /////
   if (props.data.pickerData.type) {
     //Merge shrunk picker data with defaultState
@@ -156,41 +152,25 @@ export default function InputCommandPicker(props) {
   }, [state]);
 
   const getChannels = channels => {
-    let tempState = { ...state };
-    tempState.selectedCh = channels;
-    setstate(tempState);
+    setstate(old => ({ ...old, selectedCh: channels }));
   };
 
   const typeSelection = (type, data) => {
     //console.log(data)
     if (type === "Velocity") {
-      let tempState = { ...state };
-      tempState.velType = data;
-      setstate(tempState);
+      setstate(old => ({ ...old, velType: data }));
     } else if (type === "Note") {
-      let tempState = { ...state };
-      tempState.noteType = data;
-      setstate(tempState);
+      setstate(old => ({ ...old, noteType: data }));
     } else if (type === "ControlChange") {
-      let tempState = { ...state };
-      tempState.ccType = data;
-      setstate(tempState);
+      setstate(old => ({ ...old, ccType: data }));
     } else if (type === "Value") {
-      let tempState = { ...state };
-      tempState.valType = data;
-      setstate(tempState);
+      setstate(old => ({ ...old, valType: data }));
     } else if (type === "Program") {
-      let tempState = { ...state };
-      tempState.pgmType = data;
-      setstate(tempState);
+      setstate(old => ({ ...old, pgmType: data }));
     } else if (type === "Song") {
-      let tempState = { ...state };
-      tempState.songType = data;
-      setstate(tempState);
+      setstate(old => ({ ...old, songType: data }));
     } else if (type === "PitchBend") {
-      let tempState = { ...state };
-      tempState.pbValType = data;
-      setstate(tempState);
+      setstate(old => ({ ...old, pbValType: data }));
     }
   };
 
@@ -222,78 +202,51 @@ export default function InputCommandPicker(props) {
   };
 
   const handleInSelData = theData => {
-    let tempState = { ...state };
-    tempState.selectedIns = theData;
-    setstate(tempState);
+    setstate(old => ({ ...old, selectedIns: theData }));
   };
 
   const handleNoteChange = theData => {
-    let tempState = { ...state };
-    tempState.note = theData;
-    setstate(tempState);
+    setstate(old => ({ ...old, note: theData }));
   };
 
   const handlePgmChange = theData => {
-    let tempState = { ...state };
-    tempState.program = theData;
-    setstate(tempState);
+    setstate(old => ({ ...old, program: theData }));
   };
 
   const handleCcChange = theData => {
-    let tempState = { ...state };
-    tempState.cc = theData;
-    setstate(tempState);
+    setstate(old => ({ ...old, cc: theData }));
   };
 
   const handleValueChange = theData => {
-    let tempState = { ...state };
-    tempState.value = theData;
-    setstate(tempState);
+    setstate(old => ({ ...old, value: theData }));
   };
 
   const handleVelocityChange = theData => {
-    let tempState = { ...state };
-    tempState.velocity = theData;
-    setstate(tempState);
+    setstate(old => ({ ...old, velocity: theData }));
   };
 
   const handleSongChange = theData => {
-    let tempState = { ...state };
-    tempState.song = theData;
-    setstate(tempState);
+    setstate(old => ({ ...old, song: theData }));
   };
 
   const handleSpecificPbChange = e => {
-    let tempState = { ...state };
-    tempState.pbVal = parseInt(e.target.value);
-    setstate(tempState);
+    setstate(old => ({ ...old, pbVal: parseInt(e.target.value) }));
   };
 
   const handleSpecificPbSliderChange = e => {
-    let tempState = { ...state };
-    tempState.pbVal = e;
-    setstate(tempState);
+    setstate(old => ({ ...old, pbVal: e.target.value }));
   };
 
   const handlePbRangeSliderChange = e => {
-    //console.log(e)
-    let tempState = { ...state };
-    tempState.pbRange = [...e];
-    setstate(tempState);
+    setstate(old => ({ ...old, pbRange: e.target.value }));
   };
 
   const handleRangeLowPbChange = e => {
-    console.log(e);
-    let tempState = { ...state };
-    tempState.pbRange[0] = e.target.value;
-    setstate(tempState);
+    setstate(old => ({ ...old, pbRange: e.target.value }));
   };
 
   const handleRangeHighPbChange = e => {
-    console.log(e);
-    let tempState = { ...state };
-    tempState.pbRange[1] = e.target.value;
-    setstate(tempState);
+    setstate(old => ({ ...old, pbRange: [old.pbRange[0], e.target.value] }));
   };
 
   const inputSelect = () => {
@@ -353,7 +306,7 @@ export default function InputCommandPicker(props) {
     } else if (state.noteType === "Range") {
       xyz.push(
         <div key="noteRange" style={rangeDiv}>
-          <Range {...defaultRangeStyle} min={0} max={127} />
+          <Slider min={0} max={127} />
         </div>
       );
     } else if (state.noteType === "Any") {
@@ -418,7 +371,7 @@ export default function InputCommandPicker(props) {
     } else if (state.ccType === "Range") {
       body.push(
         <div key="pbRange" style={rangeDiv}>
-          <Range {...defaultRangeStyle} min={0} max={127} />
+          <Slider min={0} max={127} />
         </div>
       );
     }
@@ -479,7 +432,7 @@ export default function InputCommandPicker(props) {
     } else if (state.pgmType === "Range") {
       pgm.push(
         <div key="pbRange" style={rangeDiv}>
-          <Range {...defaultRangeStyle} min={0} max={127} />
+          <Slider min={0} max={127} />
         </div>
       );
     }
@@ -566,7 +519,7 @@ export default function InputCommandPicker(props) {
     } else if (state.songType === "Range") {
       song.push(
         <div key="songRange" style={rangeDiv}>
-          <Range {...defaultRangeStyle} />
+          <Slider />
         </div>
       );
     }
@@ -626,7 +579,7 @@ export default function InputCommandPicker(props) {
     } else if (state.velType === "Range") {
       velocity.push(
         <div key="pbRange" style={rangeDiv}>
-          <Range {...defaultRangeStyle} min={0} max={127} />
+          <Slider min={0} max={127} />
         </div>
       );
     }
@@ -654,7 +607,6 @@ export default function InputCommandPicker(props) {
       abc.push(
         <Fragment key={"pbInputCh" + props.channel}>
           <Slider
-            {...defaultSliderStyle}
             onChange={handleSpecificPbSliderChange}
             min={-8192}
             max={8191}
@@ -680,8 +632,7 @@ export default function InputCommandPicker(props) {
       abc.push(
         <Fragment key={"pbRangeInputCh" + props.channel}>
           <div style={rangeDiv}>
-            <Range
-              {...defaultRangeStyle}
+            <Slider
               min={-8192}
               max={8191}
               value={state.pbRange}
@@ -775,7 +726,7 @@ export default function InputCommandPicker(props) {
     } else if (state.valType === "Range") {
       value.push(
         <div key="pbRange" style={rangeDiv}>
-          <Range {...defaultRangeStyle} min={0} max={127} />
+          <Slider min={0} max={127} />
         </div>
       );
     }
