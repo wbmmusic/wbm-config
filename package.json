@@ -12,7 +12,7 @@
         "@fortawesome/fontawesome-svg-core": "^6.1.1",
         "@fortawesome/free-solid-svg-icons": "^6.1.1",
         "@fortawesome/react-fontawesome": "^0.1.18",
-        "@mui/material": "^5.7.0",
+        "@mui/material": "^5.8.0",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.2.0",
         "@testing-library/user-event": "^14.2.0",
@@ -125,7 +125,7 @@
         }
     },
     "devDependencies": {
-        "electron": "^18.2.3",
+        "electron": "^18.2.4",
         "electron-builder": "^23.0.3",
         "electron-devtools-installer": "^3.2.0",
         "electron-rebuild": "^3.2.7",
