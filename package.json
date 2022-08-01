@@ -20,8 +20,6 @@
         "bootstrap": "^5.2.0",
         "electron-updater": "^5.2.1",
         "foreman": "^3.0.1",
-        "jquery": "^3.6.0",
-        "port": "^0.8.1",
         "react": "^18.2.0",
         "react-beautiful-dnd": "^13.1.0",
         "react-bootstrap": "^2.4.0",
@@ -30,7 +28,6 @@
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
         "react-select": "^5.4.0",
-        "serial": "^0.0.9",
         "serialport": "^10.4.0",
         "styled-components": "^5.3.5",
         "usb-detection": "^4.14.1",
@@ -84,7 +81,8 @@
         "mac": {
             "gatekeeperAssess": "true",
             "icon": "public/logo.icns",
-            "fileAssociations": [{
+            "fileAssociations": [
+                {
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.icns"
                 },
@@ -106,7 +104,8 @@
             "extraFiles": [
                 "public/bossacwin.exe"
             ],
-            "fileAssociations": [{
+            "fileAssociations": [
+                {
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.ico"
                 },
@@ -125,7 +124,6 @@
         "electron": "^19.0.10",
         "electron-builder": "^23.3.3",
         "electron-devtools-installer": "^3.2.0",
-        "electron-rebuild": "^3.2.8",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.6",
         "node-abi": "^3.22.0"
