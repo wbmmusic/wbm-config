@@ -7,8 +7,8 @@
     "main": "public/main.js",
     "private": true,
     "dependencies": {
-        "@emotion/react": "^11.9.3",
-        "@emotion/styled": "^11.9.3",
+        "@emotion/react": "^11.10.0",
+        "@emotion/styled": "^11.10.0",
         "@fortawesome/fontawesome-svg-core": "^6.1.2",
         "@fortawesome/free-solid-svg-icons": "^6.1.2",
         "@fortawesome/react-fontawesome": "^0.2.0",
@@ -18,7 +18,7 @@
         "@testing-library/user-event": "^14.3.0",
         "axios": "^0.27.2",
         "bootstrap": "^5.2.0",
-        "electron-updater": "^5.0.5",
+        "electron-updater": "^5.2.1",
         "foreman": "^3.0.1",
         "jquery": "^3.6.0",
         "port": "^0.8.1",
@@ -126,7 +126,7 @@
     },
     "devDependencies": {
         "electron": "^19.0.10",
-        "electron-builder": "^23.1.0",
+        "electron-builder": "^23.3.3",
         "electron-devtools-installer": "^3.2.0",
         "electron-rebuild": "^3.2.8",
         "enzyme": "^3.11.0",
