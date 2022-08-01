@@ -1,6 +1,6 @@
 {
     "name": "wbm-config",
-    "version": "0.0.108",
+    "version": "0.0.109",
     "author": "Marece Williams",
     "description": "App for configuring WBM Tek devices",
     "homepage": "./",
@@ -44,14 +44,13 @@
         "testWatch": "react-scripts test --watchAll",
         "eject": "react-scripts eject",
         "electron": "electron .",
+        "postinstall": "electron-builder install-app-deps",
         "ebuild": "yarn build && node_modules/.bin/build",
         "package": "electron-builder build -c.extraMetadata.main=build/main.js --publish never",
         "deploy": "electron-builder build -c.extraMetadata.main=build/main.js --publish always",
-        "rebuild": "electron-rebuild -f",
-        "install": "electron-rebuild",
         "backup": "git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master",
         "upload": "yarn build && git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master && yarn deploy",
-        "refresh": "yarn upgrade --latest && yarn rebuild"
+        "refresh": "yarn upgrade --latest"
     },
     "repository": {
         "type": "git",
@@ -85,8 +84,7 @@
         "mac": {
             "gatekeeperAssess": "true",
             "icon": "public/logo.icns",
-            "fileAssociations": [
-                {
+            "fileAssociations": [{
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.icns"
                 },
@@ -108,8 +106,7 @@
             "extraFiles": [
                 "public/bossacwin.exe"
             ],
-            "fileAssociations": [
-                {
+            "fileAssociations": [{
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.ico"
                 },
