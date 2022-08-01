@@ -1,6 +1,6 @@
 {
     "name": "wbm-config",
-    "version": "0.0.110",
+    "version": "0.0.111",
     "author": "Marece Williams",
     "description": "App for configuring WBM Tek devices",
     "homepage": "./",
@@ -81,8 +81,7 @@
         "mac": {
             "gatekeeperAssess": "true",
             "icon": "public/logo.icns",
-            "fileAssociations": [
-                {
+            "fileAssociations": [{
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.icns"
                 },
@@ -104,8 +103,7 @@
             "extraFiles": [
                 "public/bossacwin.exe"
             ],
-            "fileAssociations": [
-                {
+            "fileAssociations": [{
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.ico"
                 },
