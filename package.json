@@ -12,10 +12,10 @@
         "@fortawesome/fontawesome-svg-core": "^6.1.2",
         "@fortawesome/free-solid-svg-icons": "^6.1.2",
         "@fortawesome/react-fontawesome": "^0.2.0",
-        "@mui/material": "^5.9.2",
+        "@mui/material": "^5.9.3",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.3.0",
-        "@testing-library/user-event": "^14.3.0",
+        "@testing-library/user-event": "^14.4.1",
         "axios": "^0.27.2",
         "bootstrap": "^5.2.0",
         "electron-updater": "^5.2.1",
@@ -81,7 +81,8 @@
         "mac": {
             "gatekeeperAssess": "true",
             "icon": "public/logo.icns",
-            "fileAssociations": [{
+            "fileAssociations": [
+                {
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.icns"
                 },
@@ -103,7 +104,8 @@
             "extraFiles": [
                 "public/bossacwin.exe"
             ],
-            "fileAssociations": [{
+            "fileAssociations": [
+                {
                     "ext": "wbmlight",
                     "icon": "public/wbmlight.ico"
                 },
@@ -119,11 +121,11 @@
         }
     },
     "devDependencies": {
-        "electron": "^19.0.10",
+        "electron": "^20.0.1",
         "electron-builder": "^23.3.3",
         "electron-devtools-installer": "^3.2.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.6",
-        "node-abi": "^3.22.0"
+        "node-abi": "^3.24.0"
     }
 }
