@@ -14,7 +14,7 @@
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@mui/material": "^5.10.3",
         "@testing-library/jest-dom": "^5.16.5",
-        "@testing-library/react": "^13.3.0",
+        "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^14.4.3",
         "axios": "^0.27.2",
         "bootstrap": "^5.2.0",
@@ -31,7 +31,7 @@
         "serialport": "^10.4.0",
         "styled-components": "^5.3.5",
         "usb-detection": "^4.14.1",
-        "uuid": "^8.3.2"
+        "uuid": "^9.0.0"
     },
     "scripts": {
         "dev": "nf start",
