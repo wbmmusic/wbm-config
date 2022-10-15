@@ -9199,10 +9199,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-pro-sidebar@^1.0.0-alpha.5:
-  version "1.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/react-pro-sidebar/-/react-pro-sidebar-1.0.0-alpha.5.tgz#8bdc2abf908cf52642e34efee5f799f9fd67fcbf"
-  integrity sha512-IVhxWVSXiy6kgt313sZPtl4gTQ1QfNimjFRbkC59ZLXn076ZiPZCh/oUzwapDKgHVwDH+DvUNiAZSVZWa+SQbw==
+react-pro-sidebar@^1.0.0-alpha.6:
+  version "1.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/react-pro-sidebar/-/react-pro-sidebar-1.0.0-alpha.6.tgz#3aefcac2dbe541a9ca59eb4ef1c8bbf3772cdfdb"
+  integrity sha512-uXK3hZcLD4zxXMkuugw1JG5raRjW6FTUtxi0kdwE4i8EARc95sJpyYHQeITD5gnlbuykTWzI2I/OywFwmiD5Qg==
   dependencies:
     "@popperjs/core" "^2.11.6"
     classnames "^2.3.2"
