@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { HashRouter } from "react-router-dom";
+import { ProSidebarProvider } from "react-pro-sidebar";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <HashRouter>
-    <App />
+    <ProSidebarProvider>
+      <App />
+    </ProSidebarProvider>
   </HashRouter>
 );
 
