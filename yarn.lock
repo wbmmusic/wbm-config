@@ -4920,10 +4920,10 @@ electron-updater@^5.3.0:
     semver "^7.3.5"
     typed-emitter "^2.1.0"
 
-electron@^22.0.1:
-  version "22.0.1"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-22.0.1.tgz#32a8533848e41f07e53f6feb0656207da57d8707"
-  integrity sha512-05X/UmQOtUYwFmytY4/rc+4Iz+LYzHhftRZDkx1GQzyX/BxopStddG8LMcx3SESNk25F2J93oHv1Lzs6QWeCjA==
+electron@^22.0.2:
+  version "22.0.2"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-22.0.2.tgz#256c3f7749bcab5d68dc0ba4ae86c1b60852f0b3"
+  integrity sha512-NdJlA2+FMgDJBhQFKMPyWJY8ng/tWpFlrRsW2JkZgSzYPXOnIu9muO3b83YHGoDn+GTyS8ghPsgcAwPMXtxirA==
   dependencies:
     "@electron/get" "^2.0.0"
     "@types/node" "^16.11.26"
@@ -9266,10 +9266,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-pro-sidebar@^1.0.0-alpha.10:
-  version "1.0.0-alpha.10"
-  resolved "https://registry.yarnpkg.com/react-pro-sidebar/-/react-pro-sidebar-1.0.0-alpha.10.tgz#92affd637669a2cbd3ef5ad502b17ec57176401b"
-  integrity sha512-lkDGUxdaoZLygI/QtetA2FgLeVcl4ADHEVRsIgHHQte9T4bCi0LZ/c7XW0w7mqyGP+CZMgGGbFK2L0TO5N4eGQ==
+react-pro-sidebar@^1.0.0-beta.2:
+  version "1.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/react-pro-sidebar/-/react-pro-sidebar-1.0.0-beta.2.tgz#fd87be7a4e9244179e18a5562a455961106ffe88"
+  integrity sha512-9wIz4ZHAC2BThHtPbL9nqUkyMgdfOmjDu0OheRAEEm39YqWaF2V0AroWXCqHOV8N4gYjxNKXGSQSrWBEdFjFJA==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
