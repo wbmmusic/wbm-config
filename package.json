@@ -12,7 +12,7 @@
         "@fortawesome/fontawesome-svg-core": "^6.2.1",
         "@fortawesome/free-solid-svg-icons": "^6.2.1",
         "@fortawesome/react-fontawesome": "^0.2.0",
-        "@mui/material": "^5.11.7",
+        "@mui/material": "^5.11.8",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^14.4.3",
@@ -25,7 +25,7 @@
         "react-bootstrap": "^2.7.0",
         "react-dom": "^18.2.0",
         "react-pro-sidebar": "^1.0.0",
-        "react-router-dom": "^6.8.0",
+        "react-router-dom": "^6.8.1",
         "react-scripts": "5.0.1",
         "react-select": "^5.7.0",
         "serialport": "^10.5.0",
@@ -121,11 +121,11 @@
         }
     },
     "devDependencies": {
-        "electron": "^22.2.0",
+        "electron": "^23.0.0",
         "electron-builder": "^23.6.0",
         "electron-devtools-installer": "^3.2.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.7",
-        "node-abi": "^3.31.0"
+        "node-abi": "^3.32.0"
     }
 }
