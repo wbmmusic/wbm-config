@@ -10927,10 +10927,10 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-usb-detection@^4.14.1:
-  version "4.14.1"
-  resolved "https://registry.yarnpkg.com/usb-detection/-/usb-detection-4.14.1.tgz#fe0d4a28299e98b77fe75e416408ebeda38feb0e"
-  integrity sha512-o9JCWXILJDXnlNhjc2abMa/9JTrARVGTjTSYNhgTa1iVJvIwuvmZ5r6hvTeAEZhndC0l1BSFdctMD6QeGwLpOw==
+usb-detection@^4.14.2:
+  version "4.14.2"
+  resolved "https://registry.yarnpkg.com/usb-detection/-/usb-detection-4.14.2.tgz#86563e7b38af6b342f579bd91c0789dc31755c85"
+  integrity sha512-bDWuytXW3tJq/Nkr6pucIMW4QtOTgu1KHwk2g0Dk/xXRvXW+/IEMDFJdQxDwiWfz41ADvs9amZuKirD9VM0gWA==
   dependencies:
     bindings "^1.5.0"
     eventemitter2 "^5.0.1"
