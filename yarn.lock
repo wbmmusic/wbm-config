@@ -8026,10 +8026,10 @@ node-abi@^3.3.0:
   dependencies:
     semver "^7.3.5"
 
-node-abi@^3.35.0:
-  version "3.35.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.35.0.tgz#c7f171af995cc5286fa95612c4ca97b3910eaa79"
-  integrity sha512-jAlSOFR1Bls963NmFwxeQkNTzqjUF0NThm8Le7eRIRGzFUVJuMOFZDLv5Y30W/Oaw+KEebEJLAigwO9gQHoEmw==
+node-abi@^3.37.0:
+  version "3.37.0"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.37.0.tgz#188fc3dabd79d5b374108f0cbf528e14b1b14a56"
+  integrity sha512-Wplt4KQCwXfzbzhoDf4n7nOkc7jrY6pKj/m9gb4uLxSGx0ApDxVu2UCbfoiKRj3cSgvxlvnN8jhTgH/p529Ydg==
   dependencies:
     semver "^7.3.5"
 
