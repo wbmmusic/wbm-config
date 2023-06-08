@@ -121,11 +121,11 @@
         }
     },
     "devDependencies": {
-        "electron": "^25.0.1",
+        "electron": "^25.1.0",
         "electron-builder": "^23.6.0",
         "electron-devtools-installer": "^3.2.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.7",
-        "node-abi": "^3.43.0"
+        "node-abi": "^3.44.0"
     }
 }
