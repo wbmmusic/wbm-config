@@ -29,7 +29,7 @@
         "react-scripts": "5.0.1",
         "react-select": "^5.7.3",
         "serialport": "^11.0.0",
-        "styled-components": "^6.0.2",
+        "styled-components": "^6.0.3",
         "usb-detection": "^4.14.2",
         "uuid": "^9.0.0"
     },
