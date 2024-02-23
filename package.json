@@ -17,8 +17,8 @@
         "@testing-library/react": "^14.2.1",
         "@testing-library/user-event": "^14.5.2",
         "axios": "^1.6.7",
-        "bootstrap": "^5.3.2",
-        "electron-updater": "^6.1.7",
+        "bootstrap": "^5.3.3",
+        "electron-updater": "^6.1.8",
         "foreman": "^3.0.1",
         "react": "^18.2.0",
         "react-beautiful-dnd": "^13.1.1",
@@ -121,11 +121,11 @@
         }
     },
     "devDependencies": {
-        "electron": "^28.2.3",
-        "electron-builder": "^24.9.1",
+        "electron": "^29.0.1",
+        "electron-builder": "^24.12.0",
         "electron-devtools-installer": "^3.2.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.8",
-        "node-abi": "^3.54.0"
+        "node-abi": "^3.55.0"
     }
 }
