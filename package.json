@@ -14,7 +14,7 @@
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@mui/material": "^5.15.15",
         "@testing-library/jest-dom": "^6.4.2",
-        "@testing-library/react": "^14.3.0",
+        "@testing-library/react": "^15.0.2",
         "@testing-library/user-event": "^14.5.2",
         "axios": "^1.6.8",
         "bootstrap": "^5.3.3",
@@ -121,11 +121,11 @@
         }
     },
     "devDependencies": {
-        "electron": "^29.2.0",
+        "electron": "^30.0.0",
         "electron-builder": "^24.13.3",
         "electron-devtools-installer": "^3.2.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.8",
-        "node-abi": "^3.57.0"
+        "node-abi": "^3.58.0"
     }
 }
