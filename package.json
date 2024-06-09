@@ -15,11 +15,11 @@
         "@mui/material": "^5.15.19",
         "@serialport/parser-regex": "^12.0.0",
         "@testing-library/jest-dom": "^6.4.5",
-        "@testing-library/react": "^15.0.7",
+        "@testing-library/react": "^16.0.0",
         "@testing-library/user-event": "^14.5.2",
         "axios": "^1.7.2",
         "bootstrap": "^5.3.3",
-        "electron-updater": "^6.1.8",
+        "electron-updater": "^6.2.1",
         "foreman": "^3.0.1",
         "react": "^18.3.1",
         "react-beautiful-dnd": "^13.1.1",
@@ -33,7 +33,7 @@
         "serialport": "^12.0.0",
         "styled-components": "^6.1.11",
         "usb-detection": "^4.14.2",
-        "uuid": "^9.0.1"
+        "uuid": "^10.0.0"
     },
     "scripts": {
         "dev": "nf start",
@@ -43,12 +43,12 @@
         "testWatch": "react-scripts test --watchAll",
         "eject": "react-scripts eject",
         "electron": "electron .",
-        "ebuild": "yarn build && node_modules/.bin/build",
+        "ebuild": "pnpm build && node_modules/.bin/build",
         "package": "electron-builder build -c.extraMetadata.main=build/main.js --publish never",
         "deploy": "electron-builder build -c.extraMetadata.main=build/main.js --publish always",
         "backup": "git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master",
-        "upload": "yarn build && git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master && yarn deploy",
-        "refresh": "yarn upgrade --latest",
+        "upload": "pnpm build && git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master && pnpm deploy",
+        "refresh": "pnpm upgrade --latest",
         "postinstall": "electron-builder install-app-deps"
     },
     "repository": {
@@ -123,11 +123,12 @@
         }
     },
     "devDependencies": {
-        "electron": "^30.0.9",
+        "electron": "^30.1.0",
         "electron-builder": "^24.13.3",
         "electron-devtools-installer": "^3.2.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.8",
-        "node-abi": "^3.62.0"
-    }
+        "node-abi": "^3.63.0"
+    },
+    "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }
