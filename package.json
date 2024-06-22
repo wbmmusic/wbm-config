@@ -23,7 +23,7 @@
         "foreman": "^3.0.1",
         "react": "^18.3.1",
         "react-beautiful-dnd": "^13.1.1",
-        "react-bootstrap": "^2.10.2",
+        "react-bootstrap": "^2.10.3",
         "react-dom": "^18.3.1",
         "react-pro-sidebar": "^1.1.0",
         "react-router": "^6.23.1",
@@ -123,7 +123,7 @@
         }
     },
     "devDependencies": {
-        "electron": "^31.0.1",
+        "electron": "^31.0.2",
         "electron-builder": "^24.13.3",
         "electron-devtools-installer": "^3.2.0",
         "enzyme": "^3.11.0",
