@@ -75,8 +75,8 @@ importers:
         specifier: 5.0.1
         version: 5.0.1(@babel/plugin-syntax-flow@7.26.0(@babel/core@7.25.8))(@babel/plugin-transform-react-jsx@7.25.9(@babel/core@7.25.8))(@types/babel__core@7.20.5)(eslint@9.13.0(jiti@2.3.3))(react@18.3.1)(type-fest@4.26.1)(typescript@5.6.3)
       react-select:
-        specifier: ^5.8.1
-        version: 5.8.1(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.8.2
+        version: 5.8.2(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       serialport:
         specifier: ^12.0.0
         version: 12.0.0
@@ -1101,8 +1101,18 @@ packages:
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
 
+  '@eslint-community/eslint-utils@4.4.1':
+    resolution: {integrity: sha512-s3O3waFUrMV8P/XaF/+ZTp1X9XBZW1a4B97ZnjQF2KYWaFD2A8KyFBsrsfSjEmjn3RGWAIuvlneuZm3CUK3jbA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+
   '@eslint-community/regexpp@4.11.1':
     resolution: {integrity: sha512-m4DVN9ZqskZoLU5GlWZadwDnYo3vAEydiUayB9widCl9ffWx2IvPnp6n3on5rJmziJSw9Bv+Z3ChDVdMwXCY8Q==}
+    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+
+  '@eslint-community/regexpp@4.11.2':
+    resolution: {integrity: sha512-2WwyTYNVaMNUWPZTOJdkax9iqTdirrApgTbk+Qoq5EPX6myqZvG8QGFRgdKmkjKVG6/G/a565vpPauHk0+hpBA==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
   '@eslint/config-array@0.18.0':
@@ -5882,8 +5892,8 @@ packages:
       typescript:
         optional: true
 
-  react-select@5.8.1:
-    resolution: {integrity: sha512-RT1CJmuc+ejqm5MPgzyZujqDskdvB9a9ZqrdnVLsvAHjJ3Tj0hELnLeVPQlmYdVKCdCpxanepl6z7R5KhXhWzg==}
+  react-select@5.8.2:
+    resolution: {integrity: sha512-a/LkOckoI62710gGPQSQqUp7A10fGbH/ya3/IR49qaq3XoBvwymgD5mJgtiHxBDsutyEQfdKNycWVh8Cg8UCjw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -8439,7 +8449,14 @@ snapshots:
       eslint: 9.13.0(jiti@2.3.3)
       eslint-visitor-keys: 3.4.3
 
+  '@eslint-community/eslint-utils@4.4.1(eslint@9.13.0(jiti@2.3.3))':
+    dependencies:
+      eslint: 9.13.0(jiti@2.3.3)
+      eslint-visitor-keys: 3.4.3
+
   '@eslint-community/regexpp@4.11.1': {}
+
+  '@eslint-community/regexpp@4.11.2': {}
 
   '@eslint/config-array@0.18.0':
     dependencies:
@@ -11409,8 +11426,8 @@ snapshots:
 
   eslint@9.13.0(jiti@2.3.3):
     dependencies:
-      '@eslint-community/eslint-utils': 4.4.0(eslint@9.13.0(jiti@2.3.3))
-      '@eslint-community/regexpp': 4.11.1
+      '@eslint-community/eslint-utils': 4.4.1(eslint@9.13.0(jiti@2.3.3))
+      '@eslint-community/regexpp': 4.11.2
       '@eslint/config-array': 0.18.0
       '@eslint/core': 0.7.0
       '@eslint/eslintrc': 3.1.0
@@ -14316,9 +14333,9 @@ snapshots:
       - webpack-hot-middleware
       - webpack-plugin-serve
 
-  react-select@5.8.1(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-select@5.8.2(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.25.7
+      '@babel/runtime': 7.26.0
       '@emotion/cache': 11.13.1
       '@emotion/react': 11.13.3(@types/react@18.3.12)(react@18.3.1)
       '@floating-ui/dom': 1.6.11
