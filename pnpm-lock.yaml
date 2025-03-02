@@ -73,7 +73,7 @@ importers:
         version: 7.2.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-scripts:
         specifier: 5.0.1
-        version: 5.0.1(@babel/plugin-syntax-flow@7.26.0(@babel/core@7.25.8))(@babel/plugin-transform-react-jsx@7.25.9(@babel/core@7.25.8))(@types/babel__core@7.20.5)(eslint@9.21.0(jiti@2.4.2))(react@19.0.0)(type-fest@4.35.0)(typescript@5.8.2)
+        version: 5.0.1(@babel/plugin-syntax-flow@7.26.0(@babel/core@7.25.8))(@babel/plugin-transform-react-jsx@7.25.9(@babel/core@7.25.8))(@types/babel__core@7.20.5)(eslint@9.21.0(jiti@2.4.2))(react@19.0.0)(type-fest@4.36.0)(typescript@5.8.2)
       react-select:
         specifier: ^5.10.0
         version: 5.10.0(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -6804,8 +6804,8 @@ packages:
     resolution: {integrity: sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==}
     engines: {node: '>=10'}
 
-  type-fest@4.35.0:
-    resolution: {integrity: sha512-2/AwEFQDFEy30iOLjrvHDIH7e4HEWH+f1Yl1bI5XMqzuoCUqwYCdxachgsgv0og/JdVZUhbfjcJAoHj5L1753A==}
+  type-fest@4.36.0:
+    resolution: {integrity: sha512-3T/PUdKTCnkUmhQU6FFJEHsLwadsRegktX3TNHk+2JJB9HlA8gp1/VXblXVDI93kSnXF2rdPx0GMbHtJIV2LPg==}
     engines: {node: '>=16'}
 
   type-is@1.6.18:
@@ -8971,7 +8971,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.11.0)(type-fest@4.35.0)(webpack-dev-server@4.15.2(webpack@5.95.0))(webpack@5.95.0)':
+  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(react-refresh@0.11.0)(type-fest@4.36.0)(webpack-dev-server@4.15.2(webpack@5.95.0))(webpack@5.95.0)':
     dependencies:
       ansi-html: 0.0.9
       core-js-pure: 3.38.1
@@ -8983,7 +8983,7 @@ snapshots:
       source-map: 0.7.4
       webpack: 5.95.0
     optionalDependencies:
-      type-fest: 4.35.0
+      type-fest: 4.36.0
       webpack-dev-server: 4.15.2(webpack@5.95.0)
 
   '@popperjs/core@2.11.8': {}
@@ -14422,10 +14422,10 @@ snapshots:
     optionalDependencies:
       react-dom: 19.0.0(react@19.0.0)
 
-  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.26.0(@babel/core@7.25.8))(@babel/plugin-transform-react-jsx@7.25.9(@babel/core@7.25.8))(@types/babel__core@7.20.5)(eslint@9.21.0(jiti@2.4.2))(react@19.0.0)(type-fest@4.35.0)(typescript@5.8.2):
+  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.26.0(@babel/core@7.25.8))(@babel/plugin-transform-react-jsx@7.25.9(@babel/core@7.25.8))(@types/babel__core@7.20.5)(eslint@9.21.0(jiti@2.4.2))(react@19.0.0)(type-fest@4.36.0)(typescript@5.8.2):
     dependencies:
       '@babel/core': 7.25.8
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.11.0)(type-fest@4.35.0)(webpack-dev-server@4.15.2(webpack@5.95.0))(webpack@5.95.0)
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.11.0)(type-fest@4.36.0)(webpack-dev-server@4.15.2(webpack@5.95.0))(webpack@5.95.0)
       '@svgr/webpack': 5.5.0
       babel-jest: 27.5.1(@babel/core@7.25.8)
       babel-loader: 8.4.1(@babel/core@7.25.8)(webpack@5.95.0)
@@ -15477,7 +15477,7 @@ snapshots:
 
   type-fest@0.21.3: {}
 
-  type-fest@4.35.0:
+  type-fest@4.36.0:
     optional: true
 
   type-is@1.6.18:
