@@ -17,7 +17,7 @@
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.2.0",
         "@testing-library/user-event": "^14.6.1",
-        "axios": "^1.8.3",
+        "axios": "^1.8.4",
         "bootstrap": "^5.3.3",
         "electron-updater": "^6.3.9",
         "foreman": "^3.0.1",
@@ -26,8 +26,8 @@
         "react-bootstrap": "^2.10.9",
         "react-dom": "^19.0.0",
         "react-pro-sidebar": "^1.1.0",
-        "react-router": "^7.3.0",
-        "react-router-dom": "^7.3.0",
+        "react-router": "^7.4.0",
+        "react-router-dom": "^7.4.0",
         "react-scripts": "5.0.1",
         "react-select": "^5.10.1",
         "serialport": "^13.0.0",
@@ -123,7 +123,7 @@
         }
     },
     "devDependencies": {
-        "electron": "^35.0.2",
+        "electron": "^35.0.3",
         "electron-builder": "^25.1.8",
         "electron-devtools-installer": "^4.0.0",
         "enzyme": "^3.11.0",
