@@ -12,13 +12,13 @@
         "@fortawesome/fontawesome-svg-core": "^6.7.2",
         "@fortawesome/free-solid-svg-icons": "^6.7.2",
         "@fortawesome/react-fontawesome": "^0.2.2",
-        "@mui/material": "^7.0.2",
+        "@mui/material": "^7.1.0",
         "@serialport/parser-regex": "^13.0.0",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",
         "@testing-library/user-event": "^14.6.1",
         "axios": "^1.9.0",
-        "bootstrap": "^5.3.5",
+        "bootstrap": "^5.3.6",
         "electron-updater": "^6.6.2",
         "foreman": "^3.0.1",
         "react": "^19.1.0",
@@ -26,12 +26,12 @@
         "react-bootstrap": "^2.10.9",
         "react-dom": "^19.1.0",
         "react-pro-sidebar": "^1.1.0",
-        "react-router": "^7.5.3",
-        "react-router-dom": "^7.5.3",
+        "react-router": "^7.6.0",
+        "react-router-dom": "^7.6.0",
         "react-scripts": "5.0.1",
         "react-select": "^5.10.1",
         "serialport": "^13.0.0",
-        "styled-components": "^6.1.17",
+        "styled-components": "^6.1.18",
         "usb-detection": "^4.14.2",
         "uuid": "^11.1.0"
     },
@@ -123,12 +123,12 @@
         }
     },
     "devDependencies": {
-        "electron": "^36.1.0",
+        "electron": "^36.2.0",
         "electron-builder": "^26.0.12",
         "electron-devtools-installer": "^4.0.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.8",
-        "node-abi": "^4.6.0"
+        "node-abi": "^4.8.0"
     },
     "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }
