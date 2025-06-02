@@ -12,7 +12,7 @@
         "@fortawesome/fontawesome-svg-core": "^6.7.2",
         "@fortawesome/free-solid-svg-icons": "^6.7.2",
         "@fortawesome/react-fontawesome": "^0.2.2",
-        "@mui/material": "^7.1.0",
+        "@mui/material": "^7.1.1",
         "@serialport/parser-regex": "^13.0.0",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",
@@ -26,8 +26,8 @@
         "react-bootstrap": "^2.10.10",
         "react-dom": "^19.1.0",
         "react-pro-sidebar": "^1.1.0",
-        "react-router": "^7.6.0",
-        "react-router-dom": "^7.6.0",
+        "react-router": "^7.6.1",
+        "react-router-dom": "^7.6.1",
         "react-scripts": "5.0.1",
         "react-select": "^5.10.1",
         "serialport": "^13.0.0",
@@ -123,12 +123,12 @@
         }
     },
     "devDependencies": {
-        "electron": "^36.2.1",
+        "electron": "^36.3.2",
         "electron-builder": "^26.0.12",
         "electron-devtools-installer": "^4.0.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.8",
-        "node-abi": "^4.8.0"
+        "node-abi": "^4.9.0"
     },
     "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }
