@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import DragChannel from './DragChannel'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext } from '@hello-pangea/dnd'
 
 
 export class Drag extends Component {

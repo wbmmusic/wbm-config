@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Droppable } from 'react-beautiful-dnd'
+import { Droppable } from '@hello-pangea/dnd'
 import DragObject from './DragObject'
 
 export class DragChannel extends Component {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import styled from 'styled-components'
 import InnerDrag from './InnerDrag'
 
