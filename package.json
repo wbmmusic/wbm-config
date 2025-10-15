@@ -1,134 +1,134 @@
 {
-    "name": "wbm-config",
-    "version": "0.0.112",
-    "author": "Marece Williams",
-    "description": "App for configuring WBM Tek devices",
-    "homepage": "./",
-    "main": "public/main.js",
-    "private": true,
-    "dependencies": {
-        "@emotion/react": "^11.14.0",
-        "@emotion/styled": "^11.14.1",
-        "@fortawesome/fontawesome-svg-core": "^7.1.0",
-        "@fortawesome/free-solid-svg-icons": "^7.1.0",
-        "@fortawesome/react-fontawesome": "^3.1.0",
-        "@hello-pangea/dnd": "^18.0.1",
-        "@mui/material": "^7.3.4",
-        "@serialport/parser-regex": "^13.0.0",
-        "@testing-library/jest-dom": "^6.9.1",
-        "@testing-library/react": "^16.3.0",
-        "@testing-library/user-event": "^14.6.1",
-        "axios": "^1.12.2",
-        "bootstrap": "^5.3.8",
-        "electron-updater": "^6.6.2",
-        "foreman": "^3.0.1",
-        "react": "^19.2.0",
-        "react-bootstrap": "^2.10.10",
-        "react-dom": "^19.2.0",
-        "react-pro-sidebar": "^1.1.0",
-        "react-router": "^7.9.4",
-        "react-router-dom": "^7.9.4",
-        "react-scripts": "5.0.1",
-        "react-select": "^5.10.2",
-        "serialport": "^13.0.0",
-        "styled-components": "^6.1.19",
-        "usb-detection": "^4.14.2",
-        "uuid": "^13.0.0"
-    },
-    "scripts": {
-        "dev": "nf start",
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test --watchAll=false --forceExit",
-        "testWatch": "react-scripts test --watchAll",
-        "eject": "react-scripts eject",
-        "electron": "electron .",
-        "ebuild": "pnpm build && node_modules/.bin/build",
-        "package": "electron-builder build -c.extraMetadata.main=build/main.js --publish never",
-        "deploy": "electron-builder build -c.extraMetadata.main=build/main.js --publish always",
-        "backup": "git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master",
-        "upload": "pnpm build && git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master && pnpm deploy",
-        "refresh": "pnpm upgrade --latest",
-        "postinstall": "electron-builder install-app-deps"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/wbmmusic/wbm-config.git"
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "build": {
-        "productName": "WBM Config App",
-        "appId": "com.reactbits.reactelectron",
-        "copyright": "WBM Tek",
-        "extends": null,
-        "npmRebuild": false,
-        "files": [
-            "build/**/*",
-            "electron/*"
-        ],
-        "mac": {
-            "gatekeeperAssess": "true",
-            "icon": "public/logo.icns",
-            "fileAssociations": [
-                {
-                    "ext": "wbmlight",
-                    "icon": "public/wbmlight.icns"
-                },
-                {
-                    "ext": "wbmgpio",
-                    "icon": "public/wbmgpio.icns"
-                },
-                {
-                    "ext": "wbmbtn",
-                    "icon": "public/wbmbtn.icns"
-                }
-            ]
+  "name": "wbm-config",
+  "version": "0.0.112",
+  "author": "Marece Williams",
+  "description": "App for configuring WBM Tek devices",
+  "homepage": "./",
+  "main": "public/main.js",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
+    "@hello-pangea/dnd": "^18.0.1",
+    "@mui/material": "^7.3.4",
+    "@serialport/parser-regex": "^13.0.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "axios": "^1.12.2",
+    "bootstrap": "^5.3.8",
+    "electron-updater": "^6.6.2",
+    "foreman": "^3.0.1",
+    "react": "^19.2.0",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.0",
+    "react-pro-sidebar": "^1.1.0",
+    "react-router": "^7.9.4",
+    "react-router-dom": "^7.9.4",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.10.2",
+    "serialport": "^13.0.0",
+    "styled-components": "^6.1.19",
+    "usb-detection": "^4.14.2",
+    "uuid": "^13.0.0"
+  },
+  "scripts": {
+    "dev": "nf start",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --watchAll=false --forceExit",
+    "testWatch": "react-scripts test --watchAll",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "ebuild": "pnpm build && node_modules/.bin/build",
+    "package": "electron-builder build -c.extraMetadata.main=build/main.js --publish never",
+    "deploy": "electron-builder build -c.extraMetadata.main=build/main.js --publish always",
+    "backup": "git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master",
+    "upload": "pnpm build && git add . && git commit -m %NPM_PACKAGE_VERSION% && git push origin master && pnpm deploy",
+    "refresh": "pnpm upgrade --latest",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wbmmusic/wbm-config.git"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "build": {
+    "productName": "WBM Config App",
+    "appId": "com.reactbits.reactelectron",
+    "copyright": "WBM Tek",
+    "extends": null,
+    "npmRebuild": false,
+    "files": [
+      "build/**/*",
+      "electron/*"
+    ],
+    "mac": {
+      "gatekeeperAssess": "true",
+      "icon": "public/logo.icns",
+      "fileAssociations": [
+        {
+          "ext": "wbmlight",
+          "icon": "public/wbmlight.icns"
         },
-        "dmg": {
-            "icon": "public/dmg.icns"
+        {
+          "ext": "wbmgpio",
+          "icon": "public/wbmgpio.icns"
         },
-        "win": {
-            "icon": "public/favicon.ico",
-            "extraFiles": [
-                "public/bossacwin.exe"
-            ],
-            "fileAssociations": [
-                {
-                    "ext": "wbmlight",
-                    "icon": "public/wbmlight.ico"
-                },
-                {
-                    "ext": "wbmgpio",
-                    "icon": "public/wbmgpio.ico"
-                },
-                {
-                    "ext": "wbmbtn",
-                    "icon": "public/wbmbtn.ico"
-                }
-            ]
+        {
+          "ext": "wbmbtn",
+          "icon": "public/wbmbtn.icns"
         }
+      ]
     },
-    "devDependencies": {
-        "electron": "^38.2.2",
-        "electron-builder": "^26.0.12",
-        "electron-devtools-installer": "^4.0.0",
-        "enzyme": "^3.11.0",
-        "enzyme-adapter-react-16": "^1.15.8",
-        "node-abi": "^4.14.0"
+    "dmg": {
+      "icon": "public/dmg.icns"
     },
-    "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
+    "win": {
+      "icon": "public/favicon.ico",
+      "extraFiles": [
+        "public/bossacwin.exe"
+      ],
+      "fileAssociations": [
+        {
+          "ext": "wbmlight",
+          "icon": "public/wbmlight.ico"
+        },
+        {
+          "ext": "wbmgpio",
+          "icon": "public/wbmgpio.ico"
+        },
+        {
+          "ext": "wbmbtn",
+          "icon": "public/wbmbtn.ico"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^38.3.0",
+    "electron-builder": "^26.0.12",
+    "electron-devtools-installer": "^4.0.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.8",
+    "node-abi": "^4.14.0"
+  },
+  "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }
