@@ -151,9 +151,9 @@ Menu.setApplicationMenu(menu)
 
 
 //USB Detection ///////////////////////////////////////////////////////////
-var usbDetect = require('usb-detection');
-usbDetect.on('add:1003', function(device) { checkIfWBMdevice(device) });
-usbDetect.on('remove:1003', function(device) { usbDisconnected(device) });
+const { usb } = require('usb');
+usb.on('attach', () => doWeCareAboutThisUSBdevice());
+usb.on('detach', () => handleRemove());
 //END USB Detection ///////////////////////////////////////////////////////
 
 //WINDOW SCALING BYPASS
@@ -240,7 +240,6 @@ function createWindow() {
 
     // Emitted when the window is closed.
     win.on('closed', () => {
-        usbDetect.stopMonitoring()
         win = null
     })
 
@@ -251,7 +250,6 @@ function createWindow() {
 
     checkYo()
     setInterval(checkYo, 60000)
-    usbDetect.startMonitoring();
 
 }
 
@@ -269,7 +267,7 @@ ipcMain.on('react-is-up', function() {
 
 
             //On boot look for any devices that are already connected
-            usbDetect.find(1003, function(err, devices) { findAtmelDevices(devices, err) });
+            doWeCareAboutThisUSBdevice();
 
             //Check To See If Some File Exists yet
             //If not show whats new window
@@ -643,16 +641,45 @@ function usbDisconnected(device) {
     }
 }
 
-function findAtmelDevices(devices, err) {
-    /*
-    Feed each connected ATMEL device to checkIfWBMdevice()
+function doWeCareAboutThisUSBdevice() {
+    const devices = usb.getDeviceList();
+    for (const device of devices) {
+        if (device.deviceDescriptor.idVendor === 0x03EB) { // 1003 in hex = 0x03EB
+            const serNum = device.deviceDescriptor.iSerialNumber;
+            if (serNum) {
+                device.open();
+                device.getStringDescriptor(serNum, (err, data) => {
+                    if (!err && data) {
+                        checkIfWBMdevice({ serialNumber: data });
+                    }
+                    device.close();
+                });
+            }
+        }
+    }
+}
 
-    This is beacuse usbDetect.find could feed us a list of 
-    multiple connected ATMEL devices
-    */
-    for (var i = 0; i < devices.length; i++) {
-
-        checkIfWBMdevice(devices[i])
+function handleRemove() {
+    const devices = usb.getDeviceList();
+    const connectedSerials = new Set();
+    
+    for (const device of devices) {
+        if (device.deviceDescriptor.idVendor === 0x03EB) {
+            const serNum = device.deviceDescriptor.iSerialNumber;
+            if (serNum) {
+                device.open();
+                device.getStringDescriptor(serNum, (err, data) => {
+                    if (!err && data) connectedSerials.add(data);
+                    device.close();
+                });
+            }
+        }
+    }
+    
+    for (let i = conDevs.length - 1; i >= 0; i--) {
+        if (!connectedSerials.has(conDevs[i].info.serialNumber)) {
+            usbDisconnected({ serialNumber: conDevs[i].info.serialNumber });
+        }
     }
 }
 
