@@ -31,7 +31,7 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.10.2",
     "serialport": "^13.0.0",
-    "styled-components": "^6.3.10",
+    "styled-components": "^6.3.11",
     "usb": "^2.17.0",
     "uuid": "^13.0.0"
   },
@@ -123,7 +123,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^40.4.1",
+    "electron": "^40.6.0",
     "electron-builder": "^26.8.1",
     "electron-devtools-installer": "^4.0.0",
     "enzyme": "^3.11.0",
