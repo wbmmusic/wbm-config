@@ -9,16 +9,16 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@fortawesome/fontawesome-svg-core": "^7.2.0",
-    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/fontawesome-svg-core": "^7.3.0",
+    "@fortawesome/free-solid-svg-icons": "^7.3.0",
     "@fortawesome/react-fontawesome": "^3.3.1",
     "@hello-pangea/dnd": "^18.0.1",
-    "@mui/material": "^9.1.1",
+    "@mui/material": "^9.1.2",
     "@serialport/parser-regex": "^13.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "axios": "^1.18.0",
+    "axios": "^1.18.1",
     "bootstrap": "^5.3.8",
     "electron-updater": "^6.8.9",
     "foreman": "^3.0.1",
@@ -26,13 +26,13 @@
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.7",
     "react-pro-sidebar": "^1.1.0",
-    "react-router": "^8.0.1",
-    "react-router-dom": "^7.18.0",
+    "react-router": "^8.1.0",
+    "react-router-dom": "^7.18.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.2",
     "serialport": "^13.0.0",
-    "styled-components": "^6.4.2",
-    "usb": "^3.0.0",
+    "styled-components": "^6.4.3",
+    "usb": "^3.0.1",
     "uuid": "^14.0.1"
   },
   "scripts": {
@@ -123,12 +123,12 @@
     }
   },
   "devDependencies": {
-    "electron": "^42.4.1",
+    "electron": "^43.0.0",
     "electron-builder": "^26.15.3",
     "electron-devtools-installer": "^4.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.8",
-    "node-abi": "^4.31.0"
+    "node-abi": "^4.32.0"
   },
   "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }
