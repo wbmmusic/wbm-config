@@ -17,7 +17,7 @@
     "@serialport/parser-regex": "^13.0.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^14.6.6",
+    "@testing-library/user-event": "^14.6.7",
     "axios": "^1.20.0",
     "bootstrap": "^5.3.8",
     "electron-updater": "^6.8.9",
@@ -123,7 +123,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^44.1.0",
+    "electron": "^44.1.1",
     "electron-builder": "^26.15.3",
     "electron-devtools-installer": "^4.0.0",
     "enzyme": "^3.11.0",
