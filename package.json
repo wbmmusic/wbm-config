@@ -26,7 +26,7 @@
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.3.1",
     "react-pro-sidebar": "^1.1.0",
-    "react-router": "^8.4.0",
+    "react-router": "^8.5.0",
     "react-router-dom": "^7.18.4",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.2",
@@ -123,7 +123,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^44.8.0",
+    "electron": "^44.9.0",
     "electron-builder": "^26.15.3",
     "electron-devtools-installer": "^4.0.0",
     "enzyme": "^3.11.0",
